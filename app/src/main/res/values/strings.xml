@@ -1,4 +1,21 @@
 <resources>
-    <string name="Team_name">ProjectGame</string>
+    <!-- CREDENCIALES APLICATIVO -->
+    <string name="app_name">Dados</string>
+    <string name="developer">Esteban GC</string>
+    <string name="desarrollo">Desarrollado por:</string>
+    <string name="version">version 1.0.0</string>
+
+    <!-- LOGIN -->
+    <string name="titulo_login">Ingrese Sesion</string>
+    <string name="lbl_usuario">Usuario</string>
+    <string name="txt_usuario">Ingrese Usuario</string>
+    <string name="lbl_contraseña">Contraseña</string>
+    <string name="txt_contraseña">Ingrese Contraseña</string>
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="lbl_crear_cuenta">No Tienes Cuenta?</string>
+
+    <!-- REGISTRO -->
+    <!-- ELECCION-->
+    <!-- MAS DATOS -->
 
 </resources>
