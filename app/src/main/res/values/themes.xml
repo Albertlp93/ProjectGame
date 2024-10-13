@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ProjectGame" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customizer nuestro fondo superior de pantalla -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/GreenPocker</item>
+        <item name="colorPrimaryVariant">@color/GreenPocker</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/black</item>
     </style>
