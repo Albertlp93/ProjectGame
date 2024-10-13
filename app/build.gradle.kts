@@ -39,7 +39,8 @@ dependencies {
     implementation(libs.constraintlayout)
 
     //libreria de animacion
-    implementation ("com.airbnb.android:lottie:6.5.2")
+    //implementation ("com.airbnb.android:lottie:6.5.2")
+    implementation (libs.android.lottie)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
