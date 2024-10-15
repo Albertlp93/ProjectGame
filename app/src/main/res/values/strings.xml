@@ -1,0 +1,26 @@
+<resources>
+    <!-- CREDENCIALES APLICATIVO -->
+    <string name="app_name">Dados</string>
+    <string name="developer">Esteban GC</string>
+    <string name="desarrollo">Desarrollado por:</string>
+    <string name="version">version 1.0.0</string>
+
+    <!-- LOGIN -->
+    <string name="titulo_login">Ingrese Sesion</string>
+    <string name="lbl_usuario">Usuario</string>
+    <string name="txt_usuario">Ingrese Usuario</string>
+    <string name="lbl_contraseña">Contraseña</string>
+    <string name="txt_contraseña">Ingrese Contraseña</string>
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="lbl_crear_cuenta">No Tienes Cuenta?</string>
+    <string name="btn_crear_cuenta">Crear Cuenta</string>
+    <string name="lbl_olvidaste_contraseña">Olvidaste tu contraseña?</string>
+    <string name="btn_olvidaste_contraseña">Recuperar</string>
+    <string name="lbl_registrarse">Registrarse</string>
+    <string name="btn_start">START</string>
+
+    <!-- REGISTRO -->
+    <!-- ELECCION-->
+    <!-- MAS DATOS -->
+
+</resources>
