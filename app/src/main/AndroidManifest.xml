@@ -11,10 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectGame"
         tools:targetApi="31">
-    <!---
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-    -->
 
         <activity
             android:name=".InitialPag"
@@ -26,8 +22,16 @@
         </activity>
 
         <activity
+            android:name=".CrearCuentaActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".SecondPag"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
+
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 </manifest>
