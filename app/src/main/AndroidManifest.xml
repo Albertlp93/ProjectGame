@@ -28,6 +28,10 @@
         <activity
             android:name=".SecondPag"
             android:exported="false" />
+        <activity
+            android:name=".gamePag"
+            android:exported="false" />
+
 
     </application>
 

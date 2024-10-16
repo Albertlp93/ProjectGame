@@ -37,9 +37,10 @@ public class SecondPag extends AppCompatActivity {
 
                 // Verificar si el usuario existe en la base de datos
                 if (dbHelper.verificarUsuario(usuario, contraseña)) {
-                    // Si el usuario existe, ir al juego (o a la siguiente actividad)
-                    Intent intent = new Intent(SecondPag.this, gamePag.class); // Asumiendo que la siguiente es "JuegoActivity"
+                    // Si el usuario existe, ir al juego
+                    Intent intent = new Intent(SecondPag.this, gamePag.class); // Clase del juego
                     startActivity(intent);
+                    finish(); // Cierra la actividad actual si ya no la necesitas
                 } else {
                     // Si no existe, mostrar mensaje de error y permitir crear cuenta
                     Toast.makeText(SecondPag.this, "Usuario desconocido", Toast.LENGTH_SHORT).show();
