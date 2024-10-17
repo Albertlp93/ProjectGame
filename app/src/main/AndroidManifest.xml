@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.projectgame.projectgame">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,31 +14,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectGame"
         tools:targetApi="31">
-
+        <activity
+            android:name=".UserRepository"
+            android:exported="false" />
         <activity
             android:name=".InitialPag"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CrearCuentaActivity"
             android:exported="false" />
-
         <activity
             android:name=".SecondPag"
             android:exported="false" />
         <activity
             android:name=".gamePag"
             android:exported="false" />
-
-
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

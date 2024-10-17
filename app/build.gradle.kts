@@ -37,9 +37,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-
+    
+    //RXJava
+    implementation ("io.reactivex.rxjava3:rxjava:1.3.8")
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     //libreria de animacion
-    //implementation ("com.airbnb.android:lottie:6.5.2")
+    implementation ("com.airbnb.android:lottie:6.5.2")
+
     implementation (libs.android.lottie)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

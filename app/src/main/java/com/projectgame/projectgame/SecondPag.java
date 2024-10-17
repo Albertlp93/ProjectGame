@@ -7,12 +7,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SecondPag extends AppCompatActivity {
 
     private EditText editTextUsuario, editTextContraseña; // EditText para ingresar usuario y contraseña
     private Button buttonStart, buttonCrearCuenta;        // Botones para iniciar sesión y crear cuenta
-    private BaseDeDatosHelper dbHelper;                  // Base de datos SQLite
+    private UserRepository userRepository;                // Repositorio para manejar usuarios
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,38 +27,40 @@ public class SecondPag extends AppCompatActivity {
         buttonStart = findViewById(R.id.buttonStart);
         buttonCrearCuenta = findViewById(R.id.buttonCrearCuenta);
 
-        // Inicializar el helper de la base de datos
-        dbHelper = new BaseDeDatosHelper(this);
+        // Inicializar el repositorio de usuarios
+        userRepository = new UserRepository(this);
 
         // Configura el onClickListener para el botón "START"
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String usuario = editTextUsuario.getText().toString();    // Obtener el nombre de usuario
-                String contraseña = editTextContraseña.getText().toString(); // Obtener la contraseña
+        buttonStart.setOnClickListener(v -> {
+            String usuario = editTextUsuario.getText().toString();    // Obtener el nombre de usuario
+            String contraseña = editTextContraseña.getText().toString(); // Obtener la contraseña
 
-                // Verificar si el usuario existe en la base de datos
-                if (dbHelper.verificarUsuario(usuario, contraseña)) {
-                    // Si el usuario existe, ir al juego
-                    Intent intent = new Intent(SecondPag.this, gamePag.class); // Clase del juego
-                    startActivity(intent);
-                    finish(); // Cierra la actividad actual si ya no la necesitas
-                } else {
-                    // Si no existe, mostrar mensaje de error y permitir crear cuenta
-                    Toast.makeText(SecondPag.this, "Usuario desconocido", Toast.LENGTH_SHORT).show();
-                    buttonCrearCuenta.setVisibility(View.VISIBLE); // Mostrar el botón para crear cuenta
-                }
-            }
+            // Verificar si el usuario existe en la base de datos
+            userRepository.verificarUsuario(usuario, contraseña)
+                    .subscribeOn(Schedulers.io()) // Ejecutar en un hilo de fondo
+                    .observeOn(AndroidSchedulers.mainThread()) // Volver al hilo principal para la UI
+                    .subscribe(existe -> {
+                        if (existe) {
+                            // Si el usuario existe, ir al juego
+                            Intent intent = new Intent(SecondPag.this, gamePag.class); // Clase del juego
+                            startActivity(intent);
+                            finish(); // Cierra la actividad actual si ya no la necesitas
+                        } else {
+                            // Si no existe, mostrar mensaje de error
+                            Toast.makeText(SecondPag.this, "Usuario desconocido", Toast.LENGTH_SHORT).show();
+                            buttonCrearCuenta.setVisibility(View.VISIBLE); // Mostrar el botón para crear cuenta
+                        }
+                    }, throwable -> {
+                        // Manejar el error de la consulta
+                        Toast.makeText(SecondPag.this, "Error en la consulta", Toast.LENGTH_SHORT).show();
+                    });
         });
 
         // Configura el onClickListener para el botón "Crear Cuenta"
-        buttonCrearCuenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Ir a la actividad de crear una nueva cuenta
-                Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
-                startActivity(intent);
-            }
+        buttonCrearCuenta.setOnClickListener(v -> {
+            // Ir a la actividad de crear una nueva cuenta
+            Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
+            startActivity(intent);
         });
     }
 }
