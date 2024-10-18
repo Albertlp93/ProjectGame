@@ -24,9 +24,11 @@
     <string name="hint_nuevo_usuario">Nuevo Usuario</string>
     <string name="hint_nueva_contraseña">Nueva Contraseña</string>
     <string name="btn_registrar">Registrar</string>
-    <string name="btn_regresar">Volver</string>
+    <string name="btn_regresar">Volver</string>     <!-- esta en mas de un layout -->
 
-    <!-- ELECCION-->
+    <!-- JUEGO-->
+    <string name="lbl_monedas">Monedas: </string>
+    <string name="btn_recargar">Recargar monedas</string>
     <!-- MAS DATOS -->
 
 </resources>
