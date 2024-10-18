@@ -24,6 +24,7 @@
     <string name="hint_nuevo_usuario">Nuevo Usuario</string>
     <string name="hint_nueva_contraseña">Nueva Contraseña</string>
     <string name="btn_registrar">Registrar</string>
+    <string name="btn_regresar">Volver</string>
 
     <!-- ELECCION-->
     <!-- MAS DATOS -->
