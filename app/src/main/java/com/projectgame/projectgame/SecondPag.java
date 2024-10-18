@@ -5,16 +5,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SecondPag extends AppCompatActivity {
 
     private EditText editTextUsuario, editTextContraseña; // EditText para ingresar usuario y contraseña
-    private Button buttonStart, buttonCrearCuenta;        // Botones para iniciar sesión y crear cuenta
+    private Button buttonStart;                            // Botón para iniciar sesión
     private UserRepository userRepository;                // Repositorio para manejar usuarios
+    private TextView textViewCrearCuenta;                 // TextView para el mensaje de crear cuenta
+    private Button buttonCrearCuenta;                     // Botón para crear cuenta
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +30,8 @@ public class SecondPag extends AppCompatActivity {
         editTextUsuario = findViewById(R.id.editTextUsuario);
         editTextContraseña = findViewById(R.id.editTextContraseña);
         buttonStart = findViewById(R.id.buttonStart);
-        buttonCrearCuenta = findViewById(R.id.buttonCrearCuenta);
+        textViewCrearCuenta = findViewById(R.id.textView5); // Inicializa el TextView para crear cuenta
+        buttonCrearCuenta = findViewById(R.id.buttonCrearCuenta); // Inicializa el botón de crear cuenta
 
         // Inicializar el repositorio de usuarios
         userRepository = new UserRepository(this);
@@ -56,9 +62,15 @@ public class SecondPag extends AppCompatActivity {
                     });
         });
 
+        // Configura el onClickListener para el mensaje de crear cuenta
+        textViewCrearCuenta.setOnClickListener(v -> {
+            // Ir a la actividad de crear una nueva cuenta
+            Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
+            startActivity(intent);
+        });
+
         // Configura el onClickListener para el botón "Crear Cuenta"
         buttonCrearCuenta.setOnClickListener(v -> {
-            // Ir a la actividad de crear una nueva cuenta
             Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
             startActivity(intent);
         });
