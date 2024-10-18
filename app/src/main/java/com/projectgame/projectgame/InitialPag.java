@@ -22,7 +22,7 @@ public class InitialPag extends AppCompatActivity {
             public void onClick(View v) {
                 // Crear el intent para navegar a SecondPag
                 Intent intent = new Intent(InitialPag.this, SecondPag.class);
-                startActivity(intent); // Lanza la nueva actividad
+                startActivity(intent); // Lanza la aanueva actividad
             }
         });
     }
