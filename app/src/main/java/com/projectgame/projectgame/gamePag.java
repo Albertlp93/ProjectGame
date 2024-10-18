@@ -33,7 +33,7 @@ public class gamePag extends AppCompatActivity {
 
     // Variable para almacenar la apuesta
     private int playerBet = 0;
-    private int playerCoins = 30; // Inicializa con 10 monedas
+    private int playerCoins = 30; // Inicializa con 30 monedas
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
