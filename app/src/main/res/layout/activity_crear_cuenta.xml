@@ -33,12 +33,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
+    <EditText
+        android:id="@+id/editTextConfirmarContraseña"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_confirmar_contraseña"
+        android:inputType="textPassword"
+        android:autofillHints="new-password"
+        android:minHeight="48dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextNuevaContraseña"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
+
     <Button
         android:id="@+id/buttonRegistrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_registrar"
-        app:layout_constraintTop_toBottomOf="@id/editTextNuevaContraseña"
+        app:layout_constraintTop_toBottomOf="@id/editTextConfirmarContraseña"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.2" />
@@ -52,6 +65,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegistrar" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
