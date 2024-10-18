@@ -146,6 +146,11 @@
         android:layout_margin="20dp"
         android:layout_gravity="bottom"/>
 
+    <Button
+        android:id="@+id/buttonVolver"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_regresar" />
 
 
 </LinearLayout>

@@ -1,5 +1,7 @@
+
 package com.projectgame.projectgame;
 
+import android.content.Intent; //libreria para ejecutar botones
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class gamePag extends AppCompatActivity{
     private gamePag.Dice dice1;
     private gamePag.Dice dice2;
@@ -18,6 +21,7 @@ public class gamePag extends AppCompatActivity{
     private ImageView diceImage2;
     private TextView diceResult;
     private TextView coinsTextView;
+    private Button buttonVolver;
     private int[] diceImages = {
             R.drawable.dice_1,
             R.drawable.dice_2,
@@ -31,6 +35,7 @@ public class gamePag extends AppCompatActivity{
     private int playerBet = 0;
     private int playerCoins = 50; // Inicializa con 50 monedas
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +47,11 @@ public class gamePag extends AppCompatActivity{
         diceImage1 = findViewById(R.id.diceImage1);
         diceImage2 = findViewById(R.id.diceImage2);
         diceResult = findViewById(R.id.diceResult);
+        coinsTextView = findViewById(R.id.coinsTextView);
+
+        // Inicializacion de botones
         Button rollButton = findViewById(R.id.rollButton);
-        coinsTextView = findViewById(R.id.coinsTextView); // Inicializa el TextView de monedas
+        buttonVolver = findViewById(R.id.buttonVolver);
 
         // Actualiza la visualización de monedas
         updateCoinsDisplay();
@@ -62,6 +70,14 @@ public class gamePag extends AppCompatActivity{
                 rollDiceWithAnimation();
             }
         });
+
+        // Configurar el botón volver para ir a la actividad SecondPag
+        buttonVolver.setOnClickListener(v -> {
+            Intent intent = new Intent(gamePag.this, SecondPag.class); // Cambiar a SecondPag
+            startActivity(intent); // Iniciar la actividad
+        });
+
+
     }
 
     // Botones de apuesta.
