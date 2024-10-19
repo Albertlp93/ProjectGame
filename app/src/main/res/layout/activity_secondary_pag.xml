@@ -13,6 +13,7 @@
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/fondo_dados_5"
         tools:layout_editor_absoluteX="0dp"
@@ -105,15 +106,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
+        android:clickable="true"
         android:focusable="true"
         android:text="@string/lbl_crear_cuenta"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="italic"
-        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonStart"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <!-- Botón para crear una cuenta -->
     <Button

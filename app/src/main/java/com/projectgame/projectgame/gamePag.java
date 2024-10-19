@@ -1,7 +1,6 @@
-
 package com.projectgame.projectgame;
 
-import android.content.Intent; //libreria para ejecutar botones
+import android.content.Intent; // Librería para ejecutar botones
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 
 public class gamePag extends AppCompatActivity {
     private Dice dice1;
@@ -33,7 +31,7 @@ public class gamePag extends AppCompatActivity {
 
     // Variable para almacenar la apuesta
     private int playerBet = 0;
-    private int playerCoins = 30; // Inicializa con 30 monedas
+    private int playerCoins = 50; // Inicializa con 30 monedas
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +79,11 @@ public class gamePag extends AppCompatActivity {
 
         // Configurar el botón "Recargar" para que llame a la función recargarMonedas
         buttonRecargar.setOnClickListener(v -> recargarMonedas());
+    }
+
+    // Función para actualizar la visualización de monedas
+    private void updateCoinsDisplay() {
+        coinsTextView.setText("Monedas: " + playerCoins);
     }
 
     // Función para configurar los botones de apuesta
@@ -166,11 +169,6 @@ public class gamePag extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Aún tienes saldo disponible", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // Actualiza el texto de monedas
-    private void updateCoinsDisplay() {
-        coinsTextView.setText("Monedas: " + playerCoins);
     }
 
     // Animación de desvanecimiento (fade out)
