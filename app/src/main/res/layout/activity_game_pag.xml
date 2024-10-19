@@ -6,12 +6,11 @@
     android:padding="16dp"
     android:background="@drawable/fondoverde_brillante">
 
-
     <TextView
         android:id="@+id/coinsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monedas: 50"
+        android:text="@string/coins_label"
         android:textSize="35sp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
@@ -19,25 +18,27 @@
     <!-- Contenedor horizontal para los dados -->
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_marginTop="50dp"
+        android:layout_weight="1">
 
         <ImageView
             android:id="@+id/diceImage1"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:src="@drawable/dice_1"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/dice_1" />
+            android:contentDescription="@string/dice_description"/>
 
         <ImageView
             android:id="@+id/diceImage2"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:src="@drawable/dice_1"
             android:layout_marginStart="20dp"
-            android:src="@drawable/dice_1" /> <!-- Margen entre los dados -->
+            android:contentDescription="@string/dice_description"/>
     </LinearLayout>
 
     <!-- Panel de apuestas (números del 2 al 12) -->
@@ -56,77 +57,77 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="2" />
+            android:text="@string/number_2" />
 
         <Button
             android:id="@+id/btn3"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="3" />
+            android:text="@string/number_3"/>
 
         <Button
             android:id="@+id/btn4"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="4" />
+            android:text="@string/number_4"/>
 
         <Button
             android:id="@+id/btn5"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="5" />
+            android:text="@string/number_5"/>
 
         <Button
             android:id="@+id/btn6"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="6" />
+            android:text="@string/number_6" />
 
         <Button
             android:id="@+id/btn7"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="7" />
+            android:text="@string/number_7"/>
 
         <Button
             android:id="@+id/btn8"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="8" />
+            android:text="@string/number_8" />
 
         <Button
             android:id="@+id/btn9"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="9" />
+            android:text="@string/number_9"/>
 
         <Button
             android:id="@+id/btn10"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="10" />
+            android:text="@string/number_10"/>
 
         <Button
             android:id="@+id/btn11"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="11" />
+            android:text="@string/number_11" />
 
         <Button
             android:id="@+id/btn12"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:text="12" />
+            android:text="@string/number_12" />
 
     </GridLayout>
 
@@ -134,7 +135,7 @@
         android:id="@+id/diceResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resultado: "
+        android:text="@string/dice_result"
         android:textSize="35sp"
         android:layout_margin="20dp"
         android:layout_gravity="bottom"/>
@@ -145,7 +146,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:text="Tirar Dados" />
+        android:text="@string/roll_dice"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
