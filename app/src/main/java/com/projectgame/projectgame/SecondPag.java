@@ -1,5 +1,6 @@
 package com.projectgame.projectgame;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class SecondPag extends AppCompatActivity {
     private TextView textViewCrearCuenta;                 // TextView para el mensaje de crear cuenta
     private Button buttonCrearCuenta;                     // Botón para crear cuenta
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class SecondPag extends AppCompatActivity {
                     .subscribe(existe -> {
                         if (existe) {
                             // Si el usuario existe, ir al juego
-                            Intent intent = new Intent(SecondPag.this, gamePag.class); // Clase del juego
+                            Intent intent = new Intent(SecondPag.this, ThirdPag.class); // Clase de la thirdpag
                             startActivity(intent);
                             finish(); // Cierra la actividad actual si ya no la necesitas
                         } else {

@@ -75,7 +75,7 @@ public class gamePag extends AppCompatActivity {
 
         // Configurar el botón volver para ir a la actividad SecondPag
         buttonVolver.setOnClickListener(v -> {
-            Intent intent = new Intent(gamePag.this, SecondPag.class); // Cambiar a SecondPag
+            Intent intent = new Intent(gamePag.this, ThirdPag.class); // Cambiar a SecondPag
             startActivity(intent); // Iniciar la actividad
         });
 

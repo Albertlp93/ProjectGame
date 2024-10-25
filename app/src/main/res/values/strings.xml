@@ -19,6 +19,12 @@
     <string name="lbl_registrarse">Registrarse</string>
     <string name="btn_start">START</string>
 
+    <!-- TERCERA PESTAÑA -->
+    <string name="btn_config">Configuracion</string>
+    <string name="btn_inicioJuego">Iniciar partida</string>
+    <string name="btn_user">Datos Usuario</string>
+    <string name="btn_historico">Datos Historicos</string>
+
     <!-- REGISTRO -->
 
     <string name="hint_nuevo_usuario">Nuevo Usuario</string>
