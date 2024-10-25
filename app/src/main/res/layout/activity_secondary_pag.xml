@@ -7,16 +7,17 @@
     android:layout_height="match_parent">
 
     <!-- Imagen de fondo -->
+
+    <!-- Etiqueta de usuario -->
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/fondo_dados_5"
-        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <!-- Etiqueta de usuario -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -108,6 +109,7 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="italic"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
