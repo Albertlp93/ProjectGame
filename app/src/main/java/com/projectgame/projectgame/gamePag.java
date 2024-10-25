@@ -65,7 +65,7 @@ public class gamePag extends AppCompatActivity {
             if (playerBet == 0) {
                 Toast.makeText(this, "Debe realizar una apuesta primero", Toast.LENGTH_SHORT).show();
             } else if (playerCoins < 5) { // Verifica si tiene suficientes monedas
-                Toast.makeText(this, "No tienes suficientes monedas para apostar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No tiene suficientes monedas para apostar", Toast.LENGTH_SHORT).show();
             } else {
                 playerCoins -= 5;
                 updateCoinsDisplay();
