@@ -14,8 +14,8 @@ public class ThirdPag extends AppCompatActivity {
         setContentView(R.layout.activity_third_pag);
 
         Button buttonIniciar = findViewById(R.id.buttonIniciar);
-        Button buttonConfig = findViewById(R.id.buttonConfig);
-        Button buttonUser = findViewById(R.id.buttonUser);
+        //Button buttonConfig = findViewById(R.id.buttonConfig); "Se habilitara para la practica 2
+        //Button buttonUser = findViewById(R.id.buttonUser);     "Se habilitara para la practica 2
         Button buttonHistorico = findViewById(R.id.buttonHistorico);
 
         //Boton - Inicial juego
