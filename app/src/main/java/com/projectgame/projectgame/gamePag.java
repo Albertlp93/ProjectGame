@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -20,6 +21,9 @@ public class gamePag extends AppCompatActivity {
     private TextView diceResult;
     private TextView coinsTextView;
     private Button buttonVolver;
+    private Button buttonRecargar; // Botón para recargar monedas
+    private Button buttonMostrarResultados; // Botón para mostrar resultados
+    private BaseDeDatosHelper dbHelper; // Declarar dbHelper
     private int[] diceImages = {
             R.drawable.dice_1,
             R.drawable.dice_2,
@@ -32,6 +36,7 @@ public class gamePag extends AppCompatActivity {
     // Variable para almacenar la apuesta
     private int playerBet = 0;
     private int playerCoins = 50; // Inicializa con 30 monedas
+    private String nombreUsuario; // Agregar una variable para el nombre del usuario
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +51,19 @@ public class gamePag extends AppCompatActivity {
         diceImage2 = findViewById(R.id.diceImage2);
         diceResult = findViewById(R.id.diceResult);
         coinsTextView = findViewById(R.id.coinsTextView);
+        buttonRecargar = findViewById(R.id.buttonRecargar); // Inicializar el botón recargar
+        buttonVolver = findViewById(R.id.buttonVolver);
+        buttonMostrarResultados = findViewById(R.id.buttonMostrarResultados); // Inicializa el botón para mostrar resultados
+
+        // Inicializar dbHelper
+        dbHelper = new BaseDeDatosHelper(this);
+
+        // Ocultar los botones de recargar y mostrar resultados al inicio
+        buttonRecargar.setVisibility(View.GONE);
+        buttonMostrarResultados.setVisibility(View.GONE);
 
         // Inicialización de botones
         Button rollButton = findViewById(R.id.rollButton);
-        buttonVolver = findViewById(R.id.buttonVolver);
-        Button buttonRecargar = findViewById(R.id.buttonRecargar); // Botón para recargar monedas
 
         // Actualiza la visualización de monedas
         updateCoinsDisplay();
@@ -73,12 +86,19 @@ public class gamePag extends AppCompatActivity {
 
         // Configurar el botón volver para ir a la actividad SecondPag
         buttonVolver.setOnClickListener(v -> {
-            Intent intent = new Intent(gamePag.this, ThirdPag.class); // Cambiar a SecondPag
+            Intent intent = new Intent(gamePag.this, ThirdPag.class); // Cambiar a ThirdPag
             startActivity(intent); // Iniciar la actividad
         });
 
         // Configurar el botón "Recargar" para que llame a la función recargarMonedas
         buttonRecargar.setOnClickListener(v -> recargarMonedas());
+
+        // Configurar el botón "Mostrar Resultados"
+        buttonMostrarResultados.setOnClickListener(v -> {
+            Intent intent = new Intent(gamePag.this, HistoricalPag.class);
+            intent.putExtra("puntuacion", playerCoins); // Pasa la puntuación del jugador
+            startActivity(intent);
+        });
     }
 
     // Función para actualizar la visualización de monedas
@@ -148,6 +168,8 @@ public class gamePag extends AppCompatActivity {
                 if (sum == playerBet) {
                     playerCoins += 10;
                     Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
+                    // Actualiza la puntuación en la base de datos
+                    dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins); // nombreUsuario debe ser el nombre del jugador
                 } else {
                     Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
                 }
@@ -156,19 +178,30 @@ public class gamePag extends AppCompatActivity {
                 playerBet = 0;
                 resetBetButtonColors(findViewById(R.id.betPanel));
                 updateCoinsDisplay();
+
+                // Aquí inicia el flujo de la interfaz
+                if (playerCoins <= 0) {
+                    // Muestra el botón de recargar si las monedas se han agotado
+                    buttonRecargar.setVisibility(View.VISIBLE);
+                    buttonMostrarResultados.setVisibility(View.VISIBLE); // Mostrar resultados cuando se queda sin monedas
+                } else {
+                    // Muestra el botón para mostrar resultados
+                    buttonMostrarResultados.setVisibility(View.VISIBLE);
+                }
+
             }, 80);
         }, 100);  // Tiempo de espera animación
     }
 
     // Función para recargar monedas
     private void recargarMonedas() {
-        if (playerCoins == 0) {
-            playerCoins += 10; // Recargar 10 monedas
-            Toast.makeText(this, "Se han recargado 10 monedas", Toast.LENGTH_SHORT).show();
-            updateCoinsDisplay(); // Actualizar la visualización de las monedas
-        } else {
-            Toast.makeText(this, "Aún tienes saldo disponible", Toast.LENGTH_SHORT).show();
-        }
+        playerCoins += 10; // Recargar 10 monedas
+        Toast.makeText(this, "Se han recargado 10 monedas", Toast.LENGTH_SHORT).show();
+        updateCoinsDisplay(); // Actualizar la visualización de las monedas
+
+        // Ocultar el botón después de recargar
+        buttonRecargar.setVisibility(View.GONE);
+        buttonMostrarResultados.setVisibility(View.GONE); // Ocultar resultados al recargar
     }
 
     // Animación de desvanecimiento (fade out)
