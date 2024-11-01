@@ -4,41 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Imagen de fondo ocupando toda la pantalla -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <TextView
+        android:id="@+id/textViewPuntuacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/fondo_dados_12" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Botón de regreso -->
+    <TableLayout
+        android:id="@+id/tableLayoutResultados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"
+        android:stretchColumns="1"
+        app:layout_constraintTop_toBottomOf="@id/textViewPuntuacion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay datos de partida."
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tableLayoutResultados"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
         android:id="@+id/buttonVolver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:text="@string/btn_regresar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.954" />
-
-    <!-- Contenedor de datos de la base de datos -->
-    <TextView
-        android:id="@+id/textViewDatos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Datos de la base de datos aparecerán aquí"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewNoData"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonVolver"
-        android:padding="16dp"
-        android:textSize="18sp" />
+        android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

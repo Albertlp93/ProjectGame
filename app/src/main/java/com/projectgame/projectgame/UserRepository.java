@@ -22,7 +22,8 @@ public class UserRepository {
     // Método para crear un nuevo usuario
     public Completable crearUsuario(String nombre, String contraseña) {
         return Completable.create(emitter -> {
-            boolean result = dbHelper.crearUsuario(nombre, contraseña);
+            int puntuacionInicial = 0; // O cualquier valor que desees usar
+            boolean result = dbHelper.crearUsuario(nombre, contraseña, puntuacionInicial);
             if (result) {
                 emitter.onComplete();
             } else {
@@ -30,4 +31,5 @@ public class UserRepository {
             }
         });
     }
+
 }
