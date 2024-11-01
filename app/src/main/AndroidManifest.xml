@@ -31,6 +31,12 @@
             android:name=".SecondPag"
             android:exported="false" />
         <activity
+            android:name=".ThirdPag"
+            android:exported="false" />
+        <activity
+            android:name=".HistoricalPag"
+            android:exported="false" />
+        <activity
             android:name=".gamePag"
             android:exported="false" />
     </application>
