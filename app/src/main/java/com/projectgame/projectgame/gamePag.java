@@ -35,7 +35,7 @@ public class gamePag extends AppCompatActivity {
 
     // Variable para almacenar la apuesta
     private int playerBet = 0;
-    private int playerCoins = 50; // Inicializa con 30 monedas
+    private int playerCoins = 30; // Inicializa con 30 monedas
     private String nombreUsuario; // Agregar una variable para el nombre del usuario
 
     @Override
