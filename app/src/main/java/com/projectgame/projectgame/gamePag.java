@@ -168,7 +168,7 @@ public class gamePag extends AppCompatActivity {
                 if (sum == playerBet) {
                     playerCoins += 10;
                     Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
-                    // Actualiza la puntuación en la base de datos
+                    // Aquí deberías actualizar la puntuación en la base de datos
                     dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins); // nombreUsuario debe ser el nombre del jugador
                 } else {
                     Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
@@ -183,11 +183,12 @@ public class gamePag extends AppCompatActivity {
                 if (playerCoins <= 0) {
                     // Muestra el botón de recargar si las monedas se han agotado
                     buttonRecargar.setVisibility(View.VISIBLE);
-                    buttonMostrarResultados.setVisibility(View.VISIBLE); // Mostrar resultados cuando se queda sin monedas
+                    buttonMostrarResultados.setVisibility(View.VISIBLE); // Asegúrate de que se muestre cuando no hay monedas
                 } else {
                     // Muestra el botón para mostrar resultados
                     buttonMostrarResultados.setVisibility(View.VISIBLE);
                 }
+
 
             }, 80);
         }, 100);  // Tiempo de espera animación

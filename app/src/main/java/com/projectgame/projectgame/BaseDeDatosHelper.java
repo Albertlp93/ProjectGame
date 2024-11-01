@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
@@ -18,13 +19,13 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CONTRASEÑA = "contraseña";
     public static final String COLUMN_PUNTUACION = "puntuacion"; // Nueva columna para las puntuaciones
 
-    // Actualiza la consulta para crear la tabla
+    // Consulta para crear la tabla
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_USUARIOS + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NOMBRE + " TEXT, " +
-                    COLUMN_CONTRASEÑA + " TEXT, " + // Se mantiene la contraseña
-                    COLUMN_PUNTUACION + " INTEGER DEFAULT 0);"; // Agrega la puntuación
+                    COLUMN_CONTRASEÑA + " TEXT, " +
+                    COLUMN_PUNTUACION + " INTEGER DEFAULT 0);";
 
     public BaseDeDatosHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,7 +62,17 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PUNTUACION, puntuacion); // Guarda la puntuación
 
         long resultado = db.insert(TABLE_USUARIOS, null, values);
-        return resultado != -1; // Devuelve true si la inserción fue exitosa
+        boolean userCreated = resultado != -1; // Devuelve true si la inserción fue exitosa
+
+        // Registra el resultado de la inserción
+        if (userCreated) {
+            Log.d("DB_INFO", "Usuario creado correctamente.");
+            logAllUsers(); // Registra todos los usuarios después de la inserción
+        } else {
+            Log.d("DB_INFO", "Error al crear el usuario.");
+        }
+
+        return userCreated;
     }
 
     // Método para agregar un nuevo usuario (si solo quieres guardar el nombre)
@@ -84,6 +95,39 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         int rowsAffected = db.update(TABLE_USUARIOS, values,
                 COLUMN_NOMBRE + "=?", new String[]{nombre});
         return rowsAffected > 0; // Devuelve true si la actualización fue exitosa
+    }
+
+    // Método para registrar todos los usuarios en el logcat
+    public void logAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase(); // Abrir la base de datos en modo lectura
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS, null); // Realizar la consulta
+
+        // Verificar si hay resultados
+        if (cursor.moveToFirst()) {
+            do {
+                // Obtener el índice de las columnas
+                int nombreIndex = cursor.getColumnIndex(COLUMN_NOMBRE);
+                int puntuacionIndex = cursor.getColumnIndex(COLUMN_PUNTUACION);
+
+                // Verifica que los índices sean válidos
+                if (nombreIndex != -1 && puntuacionIndex != -1) {
+                    // Recuperar el nombre y la puntuación de cada registro
+                    String nombre = cursor.getString(nombreIndex);
+                    int puntuacion = cursor.getInt(puntuacionIndex);
+
+                    // Imprimir los datos en el logcat
+                    Log.d("DB_INFO", "Nombre: " + nombre + ", Puntuación: " + puntuacion);
+                } else {
+                    Log.d("DB_INFO", "Una o más columnas no existen en el cursor.");
+                }
+            } while (cursor.moveToNext()); // Mover al siguiente registro
+        } else {
+            // Si no hay registros, imprimir un mensaje
+            Log.d("DB_INFO", "No hay usuarios en la base de datos.");
+        }
+
+        cursor.close(); // Cerrar el cursor
+        db.close(); // Cerrar la base de datos
     }
 
 }

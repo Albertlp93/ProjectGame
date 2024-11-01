@@ -94,15 +94,20 @@ public class HistoricalPag extends AppCompatActivity {
 
                     // Añadir la fila al TableLayout
                     tableLayout.addView(row);
-                } else {
-                    // Manejar el caso donde la columna no existe
-                    System.out.println("La columna de puntuación no existe.");
                 }
             } while (cursor.moveToNext());
+        } else {
+            // Si no hay datos, mostrar un mensaje
+            TextView noDataText = new TextView(this);
+            noDataText.setText("No hay datos de partidas");
+            noDataText.setPadding(16, 16, 16, 16);
+            tableLayout.addView(noDataText);
         }
 
         cursor.close();
         db.close(); // Cerrar la base de datos
     }
+
+
 
 }
