@@ -15,64 +15,78 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SecondPag extends AppCompatActivity {
+    //ATRIBUTOS
+        //BOTONES
+        private Button buttonStart;         //Iniciar sesión
+        private Button buttonCrearCuenta;   //Crear cuenta
 
-    private EditText editTextUsuario, editTextContraseña; // EditText para ingresar usuario y contraseña
-    private Button buttonStart;                            // Botón para iniciar sesión
-    private UserRepository userRepository;                // Repositorio para manejar usuarios
-    private TextView textViewCrearCuenta;                 // TextView para el mensaje de crear cuenta
-    private Button buttonCrearCuenta;                     // Botón para crear cuenta
+        //CAMPOS
+        private UserRepository userRepository;                //Repositorio para manejar usuarios
+        private TextView textViewCrearCuenta;                 //Mensaje de crear cuenta
+        private EditText editTextUsuario, editTextContraseña; //Ingresar usuario y Contraseña
 
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_secondary_pag); // Layout correspondiente
 
-        // Inicialización de los campos y botones
-        editTextUsuario = findViewById(R.id.editTextUsuario);
-        editTextContraseña = findViewById(R.id.editTextContraseña);
-        buttonStart = findViewById(R.id.buttonStart);
-        textViewCrearCuenta = findViewById(R.id.textView5); // Inicializa el TextView para crear cuenta
-        buttonCrearCuenta = findViewById(R.id.buttonCrearCuenta); // Inicializa el botón de crear cuenta
+        //LAYOUT
+        setContentView(R.layout.activity_secondary_pag);
 
-        // Inicializar el repositorio de usuarios
+        //INICIALIZAR BOTONES
+        buttonStart       = findViewById(R.id.buttonStart);       //Iniciar sesion
+        buttonCrearCuenta = findViewById(R.id.buttonCrearCuenta); //Crear cuenta
+
+        //INICIALIZAR CAMPOS
+        textViewCrearCuenta = findViewById(R.id.textView5);         //Crear cuenta
+        editTextUsuario     = findViewById(R.id.editTextUsuario);   //Ingresar usuario
+        editTextContraseña  = findViewById(R.id.editTextContraseña);//Ingresar contraseña
+
+
+        //INICIAR REPOSITORIO USUARIOS
         userRepository = new UserRepository(this);
 
-        // Configura el onClickListener para el botón "START"
+        //BOTON - START
         buttonStart.setOnClickListener(v -> {
-            String usuario = editTextUsuario.getText().toString();    // Obtener el nombre de usuario
-            String contraseña = editTextContraseña.getText().toString(); // Obtener la contraseña
+            String usuario    = editTextUsuario.getText().toString();    // Obtener el nombre de usuario ingresado
+            String contraseña = editTextContraseña.getText().toString(); // Obtener la contraseña ingresada
 
-            // Verificar si el usuario existe en la base de datos
+            //Verificar si el usuario existe en la base de datos
             userRepository.verificarUsuario(usuario, contraseña)
-                    .subscribeOn(Schedulers.io()) // Ejecutar en un hilo de fondo
-                    .observeOn(AndroidSchedulers.mainThread()) // Volver al hilo principal para la UI
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(existe -> {
+                        //EXISTE USUARIO
                         if (existe) {
-                            // Si el usuario existe, ir al juego
-                            Intent intent = new Intent(SecondPag.this, ThirdPag.class); // Clase de la thirdpag
-                            startActivity(intent);
-                            finish(); // Cierra la actividad actual si ya no la necesitas
-                        } else {
-                            // Si no existe, mostrar mensaje de error
+                            //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
+                            Intent intent = new Intent(SecondPag.this, ThirdPag.class);
+                                //Pasar el nombre de usuario a la siguiente actividad
+                                 intent.putExtra("nombreUsuario", usuario);
+                                 startActivity(intent);
+                                 finish();
+                        }
+                        else {
                             Toast.makeText(SecondPag.this, "Usuario desconocido", Toast.LENGTH_SHORT).show();
-                            buttonCrearCuenta.setVisibility(View.VISIBLE); // Mostrar el botón para crear cuenta
+                            //Mostrar el botón para crear cuenta
+                            buttonCrearCuenta.setVisibility(View.VISIBLE);
                         }
                     }, throwable -> {
-                        // Manejar el error de la consulta
                         Toast.makeText(SecondPag.this, "Error en la consulta", Toast.LENGTH_SHORT).show();
                     });
         });
 
-        // Configura el onClickListener para el mensaje de crear cuenta
+        //TEXTO/BOTON - CREAR CUENTA
         textViewCrearCuenta.setOnClickListener(v -> {
-            // Ir a la actividad de crear una nueva cuenta
+
+            //MOVER A LA SIGUIENTE PAGINA {CrearCuentaActivity}
             Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
             startActivity(intent);
         });
 
-        // Configura el onClickListener para el botón "Crear Cuenta"
+        //BOTON - CREAR CUENTA
         buttonCrearCuenta.setOnClickListener(v -> {
+
+            //MOVER A LA SIGUIENTE PAGINA {CrearCuentaActivity}
             Intent intent = new Intent(SecondPag.this, CrearCuentaActivity.class);
             startActivity(intent);
         });

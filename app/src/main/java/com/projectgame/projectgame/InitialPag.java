@@ -11,18 +11,22 @@ public class InitialPag extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //LAYOUT
         setContentView(R.layout.activity_initial_pag);
 
-        // Referencia al botón por su id
+        //INICIALIZAR BOTONES
         Button buttonStart = findViewById(R.id.button);
 
-        // Configura el onClickListener para el botón
+
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crear el intent para navegar a SecondPag
+
+                //MOVER A LA SIGUIENTE PAGINA {SecondPag}
                 Intent intent = new Intent(InitialPag.this, SecondPag.class);
-                startActivity(intent); // Lanza la anueva actividad
+                startActivity(intent);
+
             }
         });
     }

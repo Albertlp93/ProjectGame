@@ -14,50 +14,54 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class HistoricalPag extends AppCompatActivity {
 
+    //ATRIBUTOS
     private BaseDeDatosHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historical_pag); // Inicialización del layout
 
-        // Inicialización del TextView para mostrar la puntuación
-        TextView textViewPuntuacion = findViewById(R.id.textViewPuntuacion);
-        dbHelper = new BaseDeDatosHelper(this); // Inicializar el helper de la base de datos
+        //LAYOUT
+        setContentView(R.layout.activity_historical_pag);
 
-        // Recuperar la puntuación pasada
+        //INICIALIZACIONES
+        dbHelper = new BaseDeDatosHelper(this);
         int puntuacion = getIntent().getIntExtra("puntuacion", 0);
-        textViewPuntuacion.setText("Puntuación: " + puntuacion); // Mostrar la puntuación en el TextView
-
-        // Mostrar puntuaciones de todos los jugadores
-        mostrarPuntuaciones();
-
-        // Inicialización del botón volver
+        //INICIALIZAR BOTONES
         Button buttonVolver = findViewById(R.id.buttonVolver);
 
-        // Botón - VOLVER
+        //INICIALIZAR CAMPOS
+        TextView textViewPuntuacion = findViewById(R.id.textViewPuntuacion);
+        textViewPuntuacion.setText("Puntuación: " + puntuacion); //Mostrar la puntuación
+
+        //Puntuaciones de los jugadores
+        mostrarPuntuaciones();
+
+
+        //BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
-            Intent intent = new Intent(HistoricalPag.this, ThirdPag.class); // Cambiar a ThirdPag
+
+            //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
+            Intent intent = new Intent(HistoricalPag.this, ThirdPag.class);
             startActivity(intent);
             finish();
         });
     }
 
-
+    //METODO - MOSTRAR PUNTUACIONES
     private void mostrarPuntuaciones() {
-        // Obtener la base de datos en modo lectura
+        //Obtener la base de datos en modo lectura
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // Consulta para obtener todos los usuarios y sus puntuaciones
+
+        //Obtener usuarios y puntuaciones
         Cursor cursor = db.rawQuery("SELECT " + BaseDeDatosHelper.COLUMN_NOMBRE + ", " +
                 BaseDeDatosHelper.COLUMN_PUNTUACION + " FROM " +
                 BaseDeDatosHelper.TABLE_USUARIOS, null);
 
-        TableLayout tableLayout = findViewById(R.id.tableLayoutResultados); // Obtener el TableLayout
-
-        // Limpiar la tabla antes de agregar nuevas filas
+        TableLayout tableLayout = findViewById(R.id.tableLayoutResultados);
         tableLayout.removeAllViews();
 
-        // Agregar encabezados (opcional)
+        //Agregar encabezados
         TableRow headerRow = new TableRow(this);
         TextView headerNombre = new TextView(this);
         headerNombre.setText("Nombre");
@@ -80,12 +84,12 @@ public class HistoricalPag extends AppCompatActivity {
                     TableRow row = new TableRow(this);
                     TextView nombreTextView = new TextView(this);
                     nombreTextView.setText(nombre);
-                    nombreTextView.setPadding(8, 8, 8, 8); // Añadir padding
+                    nombreTextView.setPadding(8, 8, 8, 8);
                     nombreTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
                     TextView puntuacionTextView = new TextView(this);
                     puntuacionTextView.setText(String.valueOf(puntuacion));
-                    puntuacionTextView.setPadding(8, 8, 8, 8); // Añadir padding
+                    puntuacionTextView.setPadding(8, 8, 8, 8);
                     puntuacionTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
                     // Añadir las vistas a la fila
@@ -96,8 +100,8 @@ public class HistoricalPag extends AppCompatActivity {
                     tableLayout.addView(row);
                 }
             } while (cursor.moveToNext());
-        } else {
-            // Si no hay datos, mostrar un mensaje
+        }
+        else {
             TextView noDataText = new TextView(this);
             noDataText.setText("No hay datos de partidas");
             noDataText.setPadding(16, 16, 16, 16);
@@ -105,7 +109,7 @@ public class HistoricalPag extends AppCompatActivity {
         }
 
         cursor.close();
-        db.close(); // Cerrar la base de datos
+        db.close();
     }
 
 
