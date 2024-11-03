@@ -5,13 +5,14 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class UserRepository {
+    //ATRIBUTOS
     private BaseDeDatosHelper dbHelper;
 
     public UserRepository(Context context) {
         dbHelper = new BaseDeDatosHelper(context);
     }
 
-    // Método para verificar si el usuario existe
+    //METODO - Verifica si el usuario existe
     public Single<Boolean> verificarUsuario(String nombre, String contraseña) {
         return Single.create(emitter -> {
             boolean existe = dbHelper.verificarUsuario(nombre, contraseña);
@@ -19,7 +20,7 @@ public class UserRepository {
         });
     }
 
-    // Método para crear un nuevo usuario
+    //METODO - Crear nuevo usuario
     public Completable crearUsuario(String nombre, String contraseña) {
         return Completable.create(emitter -> {
             int puntuacionInicial = 0; // O cualquier valor que desees usar

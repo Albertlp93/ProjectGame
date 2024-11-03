@@ -41,8 +41,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
         onCreate(db);
     }
-
-    // Método para verificar si el usuario existe
+    //METODO - Verifica si el usuario existe
     public boolean verificarUsuario(String nombre, String contraseña) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS + " WHERE " +
@@ -53,13 +52,13 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         return existeUsuario;
     }
 
-    // Método para insertar un nuevo usuario
+    //METODO - Insertar un nuevo usuario
     public boolean crearUsuario(String nombre, String contraseña, int puntuacion) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOMBRE, nombre);
         values.put(COLUMN_CONTRASEÑA, contraseña);
-        values.put(COLUMN_PUNTUACION, puntuacion); // Guarda la puntuación
+        values.put(COLUMN_PUNTUACION, puntuacion > 0 ? puntuacion : 30); // Guarda la puntuación
 
         long resultado = db.insert(TABLE_USUARIOS, null, values);
         boolean userCreated = resultado != -1; // Devuelve true si la inserción fue exitosa
@@ -129,5 +128,29 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         cursor.close(); // Cerrar el cursor
         db.close(); // Cerrar la base de datos
     }
+
+    public int obtenerPuntuacion(String nombreUsuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_PUNTUACION + " FROM " + TABLE_USUARIOS +
+                " WHERE " + COLUMN_NOMBRE + "=?", new String[]{nombreUsuario});
+
+        int puntuacion = 30; // Valor predeterminado si no se encuentra el usuario
+
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(COLUMN_PUNTUACION);
+            if (columnIndex != -1) {
+                puntuacion = cursor.getInt(columnIndex);
+            } else {
+                Log.e("DB_ERROR", "La columna 'puntuacion' no existe en el cursor.");
+            }
+        } else {
+            Log.d("DB_INFO", "Usuario no encontrado, puntuación inicial establecida en 20.");
+        }
+
+        cursor.close();
+        return puntuacion;
+    }
+
+
 
 }

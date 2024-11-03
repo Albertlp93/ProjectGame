@@ -14,7 +14,7 @@
     <string name="btn_ingresar">Ingresar</string>
     <string name="lbl_crear_cuenta">No Tienes Cuenta?</string>
     <string name="btn_crear_cuenta">Crear Cuenta</string>
-    <string name="coins_label">Monedas: 50</string>
+    <string name="coins_label">Monedas:30</string>
     <string name="lbl_olvidaste_contraseña">Olvidaste tu contraseña?</string>
     <string name="btn_olvidaste_contraseña">Recuperar</string>
     <string name="lbl_registrarse">Registrarse</string>
