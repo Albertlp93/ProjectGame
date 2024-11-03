@@ -16,6 +16,7 @@ public class HistoricalPag extends AppCompatActivity {
 
     //ATRIBUTOS
     private BaseDeDatosHelper dbHelper;
+    private String nombreUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,16 @@ public class HistoricalPag extends AppCompatActivity {
         //Puntuaciones de los jugadores
         mostrarPuntuaciones();
 
+        //OBTENER - Nombre Usuario
+        nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+
 
         //BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
 
             //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
             Intent intent = new Intent(HistoricalPag.this, ThirdPag.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
             finish();
         });
@@ -111,7 +116,6 @@ public class HistoricalPag extends AppCompatActivity {
         cursor.close();
         db.close();
     }
-
 
 
 }

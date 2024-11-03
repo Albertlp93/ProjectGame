@@ -44,6 +44,7 @@ public class ThirdPag extends AppCompatActivity {
 
                 //MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
                 Intent intent = new Intent(ThirdPag.this, HistoricalPag.class);
+                intent.putExtra("nombreUsuario", nombreUsuario);
                 startActivity(intent);
             }
         });
