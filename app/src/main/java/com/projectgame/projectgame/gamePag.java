@@ -104,7 +104,7 @@ public class gamePag extends AppCompatActivity {
         //BOTON - RECARGAR
         buttonRecargar.setOnClickListener(v -> recargarMonedas());
 
-        //BOTON - MOSTRAR RESULTADOS
+        //BOTON - MOSTRAR RESULTADO
         buttonMostrarResultados.setOnClickListener(v -> {
             // Actualizar la puntuación del usuario en la base de datos
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
@@ -113,7 +113,7 @@ public class gamePag extends AppCompatActivity {
             Intent intent = new Intent(gamePag.this, HistoricalPag.class);
                 //Pasa la puntuación actual del jugador
                 intent.putExtra("puntuacion", playerCoins);
-                
+
                 //Pasa el nombre de usuario
                 intent.putExtra("nombreUsuario", nombreUsuario);
 
