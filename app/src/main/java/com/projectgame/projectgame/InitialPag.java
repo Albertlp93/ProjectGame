@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton; // Cambia a ImageButton
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class InitialPag extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayer; // Declarar el MediaPlayer
-    private boolean isMusicPlaying = false; // Estado de la música
+    public static MediaPlayer mediaPlayer; // Declarar el MediaPlayer como estático
+    public static boolean isMusicPlaying = false; // Estado de la música como estático
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,8 @@ public class InitialPag extends AppCompatActivity {
         mediaPlayer.setLooping(true); // Reproducir en bucle
         mediaPlayer.start(); // Comienza a reproducir la música al iniciar la actividad
 
-        // Botón para activar/desactivar la música
-        Button buttonToggleMusic = findViewById(R.id.buttonToggleMusic);
+        // Botón para activar/desactivar la música (cambiado a ImageButton)
+        ImageButton buttonToggleMusic = findViewById(R.id.buttonToggleMusic);
         buttonToggleMusic.setOnClickListener(v -> toggleMusic());
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -45,11 +46,21 @@ public class InitialPag extends AppCompatActivity {
         if (isMusicPlaying) {
             mediaPlayer.pause(); // Pausar la música
             isMusicPlaying = false;
-            ((Button) findViewById(R.id.buttonToggleMusic)).setText("Activar Música"); // Cambia el texto del botón
+            ((ImageButton) findViewById(R.id.buttonToggleMusic)).setImageResource(R.drawable.ic_volume_off); // Cambia el icono
         } else {
             mediaPlayer.start(); // Reproducir la música
             isMusicPlaying = true;
-            ((Button) findViewById(R.id.buttonToggleMusic)).setText("Detener Música"); // Cambia el texto del botón
+            ((ImageButton) findViewById(R.id.buttonToggleMusic)).setImageResource(R.drawable.ic_volume_up); // Cambia el icono
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isMusicPlaying) {
+            mediaPlayer.pause(); // Pausa la música cuando la actividad se detiene
+            isMusicPlaying = false; // Actualiza el estado de la música
+            ((ImageButton) findViewById(R.id.buttonToggleMusic)).setImageResource(R.drawable.ic_volume_off); // Cambia el icono
         }
     }
 
