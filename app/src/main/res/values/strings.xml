@@ -51,6 +51,9 @@
     <string name="number_12">12</string>
     <string name="dice_result">Resultado: </string>
     <string name="roll_dice">Tirar Dados</string>
+    <string name="toggle_music">Activar o desactivar música</string>
+    <string name="image_description">Fondo del juego</string>
+
 
     <!-- MAS DATOS -->
 
