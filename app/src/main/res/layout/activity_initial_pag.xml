@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".InitialPag">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_dados_2"
+        android:contentDescription="@string/image_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/initialpg_layout" />
+
     <!-- Botón para activar/desactivar música -->
     <ImageButton
         android:id="@+id/buttonToggleMusic"
@@ -19,16 +31,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/fondo_dados_2"
-        android:contentDescription="@string/image_description"
+    <!-- Botón de configuración, ahora debajo del botón de música -->
+
+    <ImageButton
+        android:id="@+id/buttonSettings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="4dp"
+        android:background="@null"
+        android:contentDescription="@string/settings"
+        android:elevation="4dp"
+        android:src="@drawable/ic_settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/initialpg_layout" />
+        app:layout_constraintTop_toBottomOf="@id/buttonToggleMusic" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
