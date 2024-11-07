@@ -40,6 +40,13 @@ public class InitialPag extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageButton buttonSettings = findViewById(R.id.buttonSettings);
+        buttonSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(InitialPag.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void toggleMusic() {
