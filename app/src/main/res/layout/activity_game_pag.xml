@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,31 +20,39 @@
         android:layout_marginBottom="16dp" />
 
 
-
-    <!-- Contenedor para los dados -->
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/buttonCaptureScreenshot"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:layout_height="34dp"
+        android:background="@null"
+        android:contentDescription="@string/capture_screenshot"
+        android:src="@drawable/ic_camera" />
+    <!-- Contenedor para los dados -->
+
+
+    <LinearLayout
+        android:layout_width="258dp"
+        android:layout_height="66dp"
         android:layout_marginTop="50dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/diceImage1"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/dice_1"
             android:layout_marginEnd="20dp"
-            android:contentDescription="@string/dice_description"/>
+            android:contentDescription="@string/dice_description"
+            android:src="@drawable/dice_1" />
 
         <ImageView
             android:id="@+id/diceImage2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/dice_1"
             android:layout_marginStart="20dp"
-            android:contentDescription="@string/dice_description"/>
+            android:contentDescription="@string/dice_description"
+            android:src="@drawable/dice_1" />
     </LinearLayout>
 
     <!-- Panel de apuestas (números del 2 al 12) -->
@@ -196,8 +205,6 @@
             android:textAlignment="center"
             android:text="Resultados"/>
     </LinearLayout>
-
-
 
 
 </LinearLayout>
