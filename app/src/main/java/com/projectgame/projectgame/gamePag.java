@@ -1,21 +1,35 @@
 package com.projectgame.projectgame;
 
-import android.content.Intent;
+import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color; // Importación de Color corregida
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.annotation.RequiresApi;
+import android.os.Build;
+import android.content.ContentValues;
+import android.net.Uri;
+import android.os.Environment;
+import java.io.OutputStream;
 
 public class gamePag extends AppCompatActivity {
 
-    //ATRIBUTOS
+    // ATRIBUTOS
     private Dice dice1;
     private Dice dice2;
     private ImageView diceImage1;
@@ -25,6 +39,7 @@ public class gamePag extends AppCompatActivity {
     private Button buttonVolver;
     private Button buttonRecargar;
     private Button buttonMostrarResultados;
+    private ImageButton buttonCaptureScreenshot;
     private BaseDeDatosHelper dbHelper;
     private int[] diceImages = {
             R.drawable.dice_1,
@@ -38,62 +53,62 @@ public class gamePag extends AppCompatActivity {
     private int playerBet = 0;
     private int playerCoins;
     private String nombreUsuario;
+    private static final int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //LAYOUT
         setContentView(R.layout.activity_game_pag);
 
         dice1 = new Dice();
         dice2 = new Dice();
 
-        //INICIALIZAR BOTONES
+        // INICIALIZAR BOTONES Y COMPONENTES
         buttonRecargar = findViewById(R.id.buttonRecargar);
         buttonVolver = findViewById(R.id.buttonVolver);
         Button rollButton = findViewById(R.id.rollButton);
         buttonMostrarResultados = findViewById(R.id.buttonMostrarResultados);
-
-        //INICIALIZAR CAMPOS
         coinsTextView = findViewById(R.id.coinsTextView);
-
-        //INICIALIZAR IMAGENES
         diceImage1 = findViewById(R.id.diceImage1);
         diceImage2 = findViewById(R.id.diceImage2);
         diceResult = findViewById(R.id.diceResult);
-
+        buttonCaptureScreenshot = findViewById(R.id.buttonCaptureScreenshot);
 
         dbHelper = new BaseDeDatosHelper(this);
-
-        //Obtener el nombre de usuario de la actividad anterior
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
-
-        //Puntuacion del usuario
         playerCoins = dbHelper.obtenerPuntuacion(nombreUsuario);
         updateCoinsDisplay();
 
-        //Ocultar botones al inicio
         buttonRecargar.setVisibility(View.GONE);
         buttonMostrarResultados.setVisibility(View.GONE);
-
         setupBetButtons();
+
+        buttonCaptureScreenshot.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    captureAndSaveScreenshotScopedStorage();
+                } else {
+                    captureAndSaveScreenshotLegacy();
+                }
+            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                requestStoragePermission();
+            } else {
+                captureAndSaveScreenshotScopedStorage();
+            }
+        });
 
         rollButton.setOnClickListener(v -> {
             if (playerBet == 0) {
                 Toast.makeText(this, "Debe realizar una apuesta primero", Toast.LENGTH_SHORT).show();
-            }
-            else if (playerCoins < 5) {
+            } else if (playerCoins < 5) {
                 Toast.makeText(this, "No tiene suficientes monedas para apostar", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 playerCoins -= 5;
                 updateCoinsDisplay();
                 rollDiceWithAnimation();
             }
         });
 
-        //BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
             Intent intent = new Intent(gamePag.this, ThirdPag.class);
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
@@ -101,38 +116,33 @@ public class gamePag extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //BOTON - RECARGAR
         buttonRecargar.setOnClickListener(v -> recargarMonedas());
 
-        //BOTON - MOSTRAR RESULTADO
         buttonMostrarResultados.setOnClickListener(v -> {
-            // Actualizar la puntuación del usuario en la base de datos
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
-
-            //MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
             Intent intent = new Intent(gamePag.this, HistoricalPag.class);
-                //Pasa la puntuación actual del jugador
-                intent.putExtra("puntuacion", playerCoins);
-
-                //Pasa el nombre de usuario
-                intent.putExtra("nombreUsuario", nombreUsuario);
-
-                startActivity(intent);
+            intent.putExtra("puntuacion", playerCoins);
+            intent.putExtra("nombreUsuario", nombreUsuario);
+            startActivity(intent);
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Obtener la puntuación actualizada del usuario desde la base de datos
-        playerCoins = dbHelper.obtenerPuntuacion(nombreUsuario);
-        updateCoinsDisplay();
-    }
-
+    // Método para actualizar el texto de las monedas
     private void updateCoinsDisplay() {
         coinsTextView.setText("Monedas: " + playerCoins);
     }
 
+    // Método para recargar monedas
+    private void recargarMonedas() {
+        playerCoins += 10;
+        Toast.makeText(this, "Se han recargado 10 monedas", Toast.LENGTH_SHORT).show();
+        updateCoinsDisplay();
+
+        buttonRecargar.setVisibility(View.GONE);
+        buttonMostrarResultados.setVisibility(View.GONE);
+    }
+
+    // Configurar botones de apuesta
     private void setupBetButtons() {
         GridLayout betPanel = findViewById(R.id.betPanel);
 
@@ -151,6 +161,7 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
+    // Restablecer colores de botones de apuesta
     private void resetBetButtonColors(GridLayout betPanel) {
         for (int i = 2; i <= 12; i++) {
             Button betButton = betPanel.findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
@@ -158,67 +169,117 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
+    // Verificar y solicitar permiso de almacenamiento
+    private boolean checkStoragePermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == STORAGE_PERMISSION_CODE && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                captureAndSaveScreenshotScopedStorage();
+            } else {
+                captureAndSaveScreenshotLegacy();
+            }
+        } else {
+            Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    // Método para capturar y guardar la captura de pantalla en Android 10+ (API 29 o superior)
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private void captureAndSaveScreenshotScopedStorage() {
+        Bitmap screenshot = getScreenshot();
+        if (screenshot == null) return;
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "VictoryScreenshot_" + System.currentTimeMillis() + ".jpg");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Screenshots");
+
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        try (OutputStream out = getContentResolver().openOutputStream(uri)) {
+            screenshot.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            Toast.makeText(this, "Captura guardada en la galería", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Error al guardar la captura", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Método para capturar y guardar la captura de pantalla en versiones anteriores a Android 10
+    private void captureAndSaveScreenshotLegacy() {
+        Bitmap screenshot = getScreenshot();
+        if (screenshot == null) return;
+
+        String imagePath = MediaStore.Images.Media.insertImage(
+                getContentResolver(),
+                screenshot,
+                "VictoryScreenshot_" + System.currentTimeMillis(),
+                "Victory screenshot after winning the game"
+        );
+
+        if (imagePath != null) {
+            Toast.makeText(this, "Captura guardada en la galería", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al guardar la captura", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Método auxiliar para capturar la vista actual
+    private Bitmap getScreenshot() {
+        View rootView = findViewById(android.R.id.content);
+        rootView.setDrawingCacheEnabled(true);
+        Bitmap screenshot = Bitmap.createBitmap(rootView.getDrawingCache());
+        rootView.setDrawingCacheEnabled(false);
+        return screenshot;
+    }
+
+
+    // Método para animar y mostrar el resultado de los dados
     private void rollDiceWithAnimation() {
+        // Animación de los dados
         animateDice(diceImage1);
         animateDice(diceImage2);
 
+        // Usamos un Handler para introducir una demora antes de mostrar el resultado
         new Handler().postDelayed(() -> {
-            fadeOutDice(diceImage1);
-            fadeOutDice(diceImage2);
-            new Handler().postDelayed(() -> {
-                int result1 = dice1.roll();
-                int result2 = dice2.roll();
-                int sum = result1 + result2;
+            int result1 = dice1.roll();
+            int result2 = dice2.roll();
+            int sum = result1 + result2;
 
-                diceImage1.setImageResource(diceImages[result1 - 1]);
-                diceImage2.setImageResource(diceImages[result2 - 1]);
+            diceImage1.setImageResource(diceImages[result1 - 1]);
+            diceImage2.setImageResource(diceImages[result2 - 1]);
+            diceResult.setText("Resultado: " + sum);
 
-                fadeInDice(diceImage1);
-                fadeInDice(diceImage2);
+            if (sum == playerBet) {
+                playerCoins += 10;
+                Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
+                dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
+            } else {
+                Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
+            }
 
-                diceResult.setText("Resultado: " + sum);
+            playerBet = 0;
+            resetBetButtonColors(findViewById(R.id.betPanel));
+            updateCoinsDisplay();
 
-                if (sum == playerBet) {
-                    playerCoins += 10;
-                    Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
-                    dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
-                } else {
-                    Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
-                }
-
-                playerBet = 0;
-                resetBetButtonColors(findViewById(R.id.betPanel));
-                updateCoinsDisplay();
-
-                if (playerCoins <= 0) {
-                    buttonRecargar.setVisibility(View.VISIBLE);
-                    buttonMostrarResultados.setVisibility(View.VISIBLE);
-                } else {
-                    buttonMostrarResultados.setVisibility(View.VISIBLE);
-                }
-            }, 80);
-        }, 100);
-    }
-
-    private void recargarMonedas() {
-        playerCoins += 10;
-        Toast.makeText(this, "Se han recargado 10 monedas", Toast.LENGTH_SHORT).show();
-        updateCoinsDisplay();
-
-        buttonRecargar.setVisibility(View.GONE);
-        buttonMostrarResultados.setVisibility(View.GONE);
-    }
-
-    private void fadeOutDice(ImageView diceImage) {
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(diceImage, "alpha", 1f, 0f);
-        fadeOut.setDuration(300);
-        fadeOut.start();
-    }
-
-    private void fadeInDice(ImageView diceImage) {
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(diceImage, "alpha", 0f, 1f);
-        fadeIn.setDuration(300);
-        fadeIn.start();
+            if (playerCoins <= 0) {
+                buttonRecargar.setVisibility(View.VISIBLE);
+                buttonMostrarResultados.setVisibility(View.VISIBLE);
+            } else {
+                buttonMostrarResultados.setVisibility(View.VISIBLE);
+            }
+        }, 1000);
     }
 
     private void animateDice(ImageView diceImage) {
@@ -233,4 +294,3 @@ public class gamePag extends AppCompatActivity {
         }
     }
 }
-
