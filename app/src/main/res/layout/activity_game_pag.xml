@@ -6,6 +6,9 @@
     android:padding="16dp"
     android:background="@drawable/fondoverde_brillante">
 
+
+
+
     <TextView
         android:id="@+id/coinsTextView"
         android:layout_width="wrap_content"
@@ -14,6 +17,8 @@
         android:textSize="35sp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
+
+
 
     <!-- Contenedor para los dados -->
     <LinearLayout
@@ -58,6 +63,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
             android:text="@string/number_2" />
+
 
         <Button
             android:id="@+id/btn3"
@@ -190,6 +196,8 @@
             android:textAlignment="center"
             android:text="Resultados"/>
     </LinearLayout>
+
+
 
 
 </LinearLayout>
