@@ -47,6 +47,7 @@ dependencies {
     dependencies {
         implementation ("androidx.appcompat:appcompat:1.6.1") // Asegúrate de que la versión sea la correcta
         implementation ("androidx.core:core-ktx:1.12.0") // Esto es opcional, pero puede ser útil
+
         // Otras dependencias...
     }
 

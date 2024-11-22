@@ -10,22 +10,39 @@ import android.util.Log;
 public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "usuarios.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incrementamos la versión para agregar una nueva tabla
 
-    // Nombre de la tabla y las columnas
+    // Tabla de usuarios
     public static final String TABLE_USUARIOS = "usuarios";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NOMBRE = "nombre";
     public static final String COLUMN_CONTRASEÑA = "contraseña";
-    public static final String COLUMN_PUNTUACION = "puntuacion"; // Nueva columna para las puntuaciones
+    public static final String COLUMN_PUNTUACION = "puntuacion";
 
-    // Consulta para crear la tabla
-    private static final String TABLE_CREATE =
+    // Tabla de ubicaciones
+    public static final String TABLE_UBICACIONES = "ubicaciones";
+    public static final String COLUMN_UBICACION_ID = "id";
+    public static final String COLUMN_LATITUD = "latitud";
+    public static final String COLUMN_LONGITUD = "longitud";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_USUARIO_ID = "usuario_id";
+
+    // Consultas para crear tablas
+    private static final String CREATE_TABLE_USUARIOS =
             "CREATE TABLE " + TABLE_USUARIOS + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NOMBRE + " TEXT, " +
                     COLUMN_CONTRASEÑA + " TEXT, " +
                     COLUMN_PUNTUACION + " INTEGER DEFAULT 0);";
+
+    private static final String CREATE_TABLE_UBICACIONES =
+            "CREATE TABLE " + TABLE_UBICACIONES + " (" +
+                    COLUMN_UBICACION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_LATITUD + " REAL, " +
+                    COLUMN_LONGITUD + " REAL, " +
+                    COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_USUARIO_ID + " INTEGER, " +
+                    "FOREIGN KEY(" + COLUMN_USUARIO_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "));";
 
     public BaseDeDatosHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,15 +50,61 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE); // Crear la tabla usuarios
+        db.execSQL(CREATE_TABLE_USUARIOS); // Crear la tabla de usuarios
+        db.execSQL(CREATE_TABLE_UBICACIONES); // Crear la tabla de ubicaciones
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL(CREATE_TABLE_UBICACIONES); // Agregar la tabla de ubicaciones en la versión 2
+        }
     }
-    //METODO - Verifica si el usuario existe
+
+    // Método para insertar ubicaciones en la base de datos
+    public void insertarUbicacion(double latitud, double longitud, int usuarioId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LATITUD, latitud);
+        values.put(COLUMN_LONGITUD, longitud);
+        values.put(COLUMN_USUARIO_ID, usuarioId);
+
+        long resultado = db.insert(TABLE_UBICACIONES, null, values);
+
+        if (resultado != -1) {
+            Log.d("DB_INFO", "Ubicación guardada: Latitud=" + latitud + ", Longitud=" + longitud + ", UsuarioID=" + usuarioId);
+        } else {
+            Log.e("DB_ERROR", "Error al guardar la ubicación.");
+        }
+        db.close();
+    }
+
+    // Método para obtener todas las ubicaciones de un usuario
+    public int obtenerPuntuacion(String nombreUsuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int puntuacion = 30; // Valor predeterminado si no se encuentra el usuario
+
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_PUNTUACION + " FROM " + TABLE_USUARIOS +
+                " WHERE " + COLUMN_NOMBRE + "=?", new String[]{nombreUsuario});
+
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(COLUMN_PUNTUACION);
+            if (columnIndex != -1) {
+                puntuacion = cursor.getInt(columnIndex);
+            } else {
+                Log.e("DB_ERROR", "La columna 'puntuacion' no existe en el cursor.");
+            }
+        } else {
+            Log.d("DB_INFO", "Usuario no encontrado, puntuación inicial establecida en 30.");
+        }
+
+        cursor.close();
+        db.close();
+        return puntuacion;
+    }
+
+
+    // Otros métodos (verificarUsuario, crearUsuario, etc.) permanecen iguales
     public boolean verificarUsuario(String nombre, String contraseña) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS + " WHERE " +
@@ -52,7 +115,6 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         return existeUsuario;
     }
 
-    //METODO - Insertar un nuevo usuario
     public boolean crearUsuario(String nombre, String contraseña, int puntuacion) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -61,9 +123,8 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PUNTUACION, puntuacion > 0 ? puntuacion : 30); // Guarda la puntuación
 
         long resultado = db.insert(TABLE_USUARIOS, null, values);
-        boolean userCreated = resultado != -1; // Devuelve true si la inserción fue exitosa
+        boolean userCreated = resultado != -1;
 
-        // Registra el resultado de la inserción
         if (userCreated) {
             Log.d("DB_INFO", "Usuario creado correctamente.");
             logAllUsers(); // Registra todos los usuarios después de la inserción
@@ -74,83 +135,37 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         return userCreated;
     }
 
-    // Método para agregar un nuevo usuario (si solo quieres guardar el nombre)
-    public boolean agregarUsuario(String nombreUsuario) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NOMBRE, nombreUsuario);
-
-        long resultado = db.insert(TABLE_USUARIOS, null, values);
-        db.close();
-        return resultado != -1;
-    }
-
-    // Método para actualizar la puntuación de un usuario
     public boolean actualizarPuntuacion(String nombre, int nuevaPuntuacion) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_PUNTUACION, nuevaPuntuacion);
 
-        int rowsAffected = db.update(TABLE_USUARIOS, values,
-                COLUMN_NOMBRE + "=?", new String[]{nombre});
-        return rowsAffected > 0; // Devuelve true si la actualización fue exitosa
+        int rowsAffected = db.update(TABLE_USUARIOS, values, COLUMN_NOMBRE + "=?", new String[]{nombre});
+        return rowsAffected > 0;
     }
 
-    // Método para registrar todos los usuarios en el logcat
     public void logAllUsers() {
-        SQLiteDatabase db = this.getReadableDatabase(); // Abrir la base de datos en modo lectura
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS, null); // Realizar la consulta
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS, null);
 
-        // Verificar si hay resultados
         if (cursor.moveToFirst()) {
             do {
-                // Obtener el índice de las columnas
                 int nombreIndex = cursor.getColumnIndex(COLUMN_NOMBRE);
                 int puntuacionIndex = cursor.getColumnIndex(COLUMN_PUNTUACION);
 
-                // Verifica que los índices sean válidos
                 if (nombreIndex != -1 && puntuacionIndex != -1) {
-                    // Recuperar el nombre y la puntuación de cada registro
                     String nombre = cursor.getString(nombreIndex);
                     int puntuacion = cursor.getInt(puntuacionIndex);
-
-                    // Imprimir los datos en el logcat
                     Log.d("DB_INFO", "Nombre: " + nombre + ", Puntuación: " + puntuacion);
                 } else {
                     Log.d("DB_INFO", "Una o más columnas no existen en el cursor.");
                 }
-            } while (cursor.moveToNext()); // Mover al siguiente registro
+            } while (cursor.moveToNext());
         } else {
-            // Si no hay registros, imprimir un mensaje
             Log.d("DB_INFO", "No hay usuarios en la base de datos.");
         }
 
-        cursor.close(); // Cerrar el cursor
-        db.close(); // Cerrar la base de datos
-    }
-
-    public int obtenerPuntuacion(String nombreUsuario) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_PUNTUACION + " FROM " + TABLE_USUARIOS +
-                " WHERE " + COLUMN_NOMBRE + "=?", new String[]{nombreUsuario});
-
-        int puntuacion = 30; // Valor predeterminado si no se encuentra el usuario
-
-        if (cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndex(COLUMN_PUNTUACION);
-            if (columnIndex != -1) {
-                puntuacion = cursor.getInt(columnIndex);
-            } else {
-                Log.e("DB_ERROR", "La columna 'puntuacion' no existe en el cursor.");
-            }
-        } else {
-            Log.d("DB_INFO", "Usuario no encontrado, puntuación inicial establecida en 20.");
-        }
-
         cursor.close();
-        return puntuacion;
+        db.close();
     }
-
-
-
 }

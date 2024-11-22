@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color; // Importación de Color corregida
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,6 +33,8 @@ import android.os.Environment;
 import java.io.OutputStream;
 import android.database.Cursor;
 import android.util.Log;
+import java.util.ArrayList;
+
 
 public class gamePag extends AppCompatActivity {
 
@@ -271,7 +275,7 @@ public class gamePag extends AppCompatActivity {
 
 
     // Método para guardar una victoria en el calendario
-    private void saveVictoryToGoogleCalendar(String title, String description, int coinsWon) {
+    private void saveVictoryToGoogleCalendar(String title, String nombreUsuario, int coinsWon, int winningRoll) {
         // Verificar permisos en tiempo de ejecución
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -281,13 +285,18 @@ public class gamePag extends AppCompatActivity {
             return;
         }
 
-        // Verifica el ID del calendario
-        long calendarId = getDefaultCalendarId(); // Obtén el ID predeterminado
+        // Verifica si hay un calendario guardado en preferencias
+        long calendarId = getSavedCalendarId();
 
         if (calendarId == -1) {
-            Toast.makeText(this, "No se encontró un calendario válido", Toast.LENGTH_SHORT).show();
-            Log.e("GoogleCalendar", "Error: No se encontró un calendario válido");
-            return;
+            // Si no hay un calendario guardado, busca uno predeterminado
+            calendarId = getDefaultCalendarId();
+            if (calendarId == -1) {
+                // Si no se encuentra un calendario predeterminado, permite al usuario seleccionar uno
+                showCalendarSelectionDialog(title, nombreUsuario, coinsWon, winningRoll);
+                return;
+            }
+            saveSelectedCalendarId(calendarId); // Guarda el calendario seleccionado para futuras ejecuciones
         }
 
         // Configurar los valores del evento
@@ -298,7 +307,10 @@ public class gamePag extends AppCompatActivity {
         values.put(CalendarContract.Events.DTSTART, startTime);
         values.put(CalendarContract.Events.DTEND, endTime);
         values.put(CalendarContract.Events.TITLE, title);
-        values.put(CalendarContract.Events.DESCRIPTION, description + "\nMonedas ganadas: " + coinsWon);
+        values.put(CalendarContract.Events.DESCRIPTION,
+                "Nombre de usuario: " + nombreUsuario +
+                        "\nMonedas ganadas: " + coinsWon +
+                        "\nTirada ganadora: " + winningRoll);
         values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, java.util.TimeZone.getDefault().getID());
 
@@ -320,7 +332,6 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
-    // Método para obtener el ID del calendario predeterminado
     private long getDefaultCalendarId() {
         Cursor cursor = null;
         try {
@@ -337,11 +348,7 @@ public class gamePag extends AppCompatActivity {
                     long id = cursor.getLong(0);
                     String name = cursor.getString(1);
                     Log.d("Calendars", "ID: " + id + ", Nombre: " + name);
-
-                    // Ajusta las condiciones según el nombre del calendario deseado
-                    if (name.toLowerCase().contains("personal") || name.toLowerCase().contains("my calendar") || name.toLowerCase().contains("default")) {
-                        return id; // Devuelve el primer calendario válido encontrado
-                    }
+                    return id; // Devuelve el primer calendario visible encontrado
                 }
             }
         } catch (Exception e) {
@@ -353,6 +360,56 @@ public class gamePag extends AppCompatActivity {
         }
 
         return -1; // Si no se encuentra un calendario válido
+    }
+
+    private void showCalendarSelectionDialog(String title, String nombreUsuario, int coinsWon, int winningRoll) {
+        Cursor cursor = getContentResolver().query(
+                CalendarContract.Calendars.CONTENT_URI,
+                new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
+                CalendarContract.Calendars.VISIBLE + " = 1",
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            ArrayList<String> calendarNames = new ArrayList<>();
+            ArrayList<Long> calendarIds = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                calendarIds.add(cursor.getLong(0));
+                calendarNames.add(cursor.getString(1));
+            }
+            cursor.close();
+
+            if (calendarNames.isEmpty()) {
+                Toast.makeText(this, "No hay calendarios disponibles", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Mostrar un diálogo para que el usuario seleccione un calendario
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Seleccionar calendario");
+            builder.setItems(calendarNames.toArray(new String[0]), (dialog, which) -> {
+                long selectedCalendarId = calendarIds.get(which);
+                saveSelectedCalendarId(selectedCalendarId); // Guarda el ID seleccionado
+                saveVictoryToGoogleCalendar(title, nombreUsuario, coinsWon, winningRoll); // Reintenta guardar la victoria
+            });
+            builder.show();
+        } else {
+            Toast.makeText(this, "No se pudieron cargar los calendarios", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveSelectedCalendarId(long calendarId) {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("selectedCalendarId", calendarId);
+        editor.apply();
+    }
+
+    private long getSavedCalendarId() {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        return prefs.getLong("selectedCalendarId", -1);
     }
 
 
@@ -382,7 +439,8 @@ public class gamePag extends AppCompatActivity {
                 dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
 
                 // Guardar la victoria en Google Calendar
-                saveVictoryToGoogleCalendar("¡Victoria!", "Has ganado una partida.", 10);
+                saveVictoryToGoogleCalendar("¡Victoria!", nombreUsuario, 10, sum);
+                saveVictoryToGoogleCalendar("¡Victoria!", nombreUsuario, 10, sum);
             } else {
                 Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
             }
