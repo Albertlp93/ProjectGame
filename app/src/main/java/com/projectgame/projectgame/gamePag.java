@@ -2,12 +2,15 @@ package com.projectgame.projectgame;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color; // Importación de Color corregida
+import android.icu.util.TimeZone;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +29,8 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Environment;
 import java.io.OutputStream;
+import android.database.Cursor;
+import android.util.Log;
 
 public class gamePag extends AppCompatActivity {
 
@@ -54,6 +59,7 @@ public class gamePag extends AppCompatActivity {
     private int playerCoins;
     private String nombreUsuario;
     private static final int STORAGE_PERMISSION_CODE = 1;
+    private static final int CALENDAR_PERMISSION_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,13 @@ public class gamePag extends AppCompatActivity {
             intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
         });
+
+        ImageButton helpButton = findViewById(R.id.helpButton);
+        helpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(gamePag.this, HelpActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     // Método para actualizar el texto de las monedas
@@ -134,8 +147,8 @@ public class gamePag extends AppCompatActivity {
 
     // Método para recargar monedas
     private void recargarMonedas() {
-        playerCoins += 10;
-        Toast.makeText(this, "Se han recargado 10 monedas", Toast.LENGTH_SHORT).show();
+        playerCoins += 50;
+        Toast.makeText(this, "Se han recargado 50 monedas", Toast.LENGTH_SHORT).show();
         updateCoinsDisplay();
 
         buttonRecargar.setVisibility(View.GONE);
@@ -183,17 +196,29 @@ public class gamePag extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == STORAGE_PERMISSION_CODE && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                captureAndSaveScreenshotScopedStorage();
+        // Manejo de permisos de almacenamiento
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    captureAndSaveScreenshotScopedStorage();
+                } else {
+                    captureAndSaveScreenshotLegacy();
+                }
             } else {
-                captureAndSaveScreenshotLegacy();
+                Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
+        }
+
+        // Manejo de permisos de calendario
+        if (requestCode == CALENDAR_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permisos de calendario concedidos", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permisos de calendario denegados", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 
 
     // Método para capturar y guardar la captura de pantalla en Android 10+ (API 29 o superior)
@@ -245,6 +270,96 @@ public class gamePag extends AppCompatActivity {
     }
 
 
+    // Método para guardar una victoria en el calendario
+    private void saveVictoryToGoogleCalendar(String title, String description, int coinsWon) {
+        // Verificar permisos en tiempo de ejecución
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR},
+                    CALENDAR_PERMISSION_CODE);
+            return;
+        }
+
+        // Verifica el ID del calendario
+        long calendarId = getDefaultCalendarId(); // Obtén el ID predeterminado
+
+        if (calendarId == -1) {
+            Toast.makeText(this, "No se encontró un calendario válido", Toast.LENGTH_SHORT).show();
+            Log.e("GoogleCalendar", "Error: No se encontró un calendario válido");
+            return;
+        }
+
+        // Configurar los valores del evento
+        long startTime = System.currentTimeMillis();
+        long endTime = startTime + (30 * 60 * 1000); // Duración del evento: 30 minutos
+
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startTime);
+        values.put(CalendarContract.Events.DTEND, endTime);
+        values.put(CalendarContract.Events.TITLE, title);
+        values.put(CalendarContract.Events.DESCRIPTION, description + "\nMonedas ganadas: " + coinsWon);
+        values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, java.util.TimeZone.getDefault().getID());
+
+        // Intentar guardar el evento en el calendario
+        try {
+            ContentResolver cr = getContentResolver();
+            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+
+            if (uri != null) {
+                Toast.makeText(this, "Victoria guardada en Google Calendar", Toast.LENGTH_SHORT).show();
+                Log.i("GoogleCalendar", "Evento creado con URI: " + uri.toString());
+            } else {
+                Toast.makeText(this, "Error al guardar en Google Calendar", Toast.LENGTH_SHORT).show();
+                Log.e("GoogleCalendar", "Error: Falló la inserción del evento");
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Ocurrió un error al guardar el evento", Toast.LENGTH_SHORT).show();
+            Log.e("GoogleCalendar", "Excepción: " + e.getMessage());
+        }
+    }
+
+    // Método para obtener el ID del calendario predeterminado
+    private long getDefaultCalendarId() {
+        Cursor cursor = null;
+        try {
+            cursor = getContentResolver().query(
+                    CalendarContract.Calendars.CONTENT_URI,
+                    new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
+                    CalendarContract.Calendars.VISIBLE + " = 1", // Solo calendarios visibles
+                    null,
+                    null
+            );
+
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    long id = cursor.getLong(0);
+                    String name = cursor.getString(1);
+                    Log.d("Calendars", "ID: " + id + ", Nombre: " + name);
+
+                    // Ajusta las condiciones según el nombre del calendario deseado
+                    if (name.toLowerCase().contains("personal") || name.toLowerCase().contains("my calendar") || name.toLowerCase().contains("default")) {
+                        return id; // Devuelve el primer calendario válido encontrado
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("GoogleCalendar", "Error al obtener el ID del calendario: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Asegurar que el cursor se cierre
+            }
+        }
+
+        return -1; // Si no se encuentra un calendario válido
+    }
+
+
+
+
+
+
     // Método para animar y mostrar el resultado de los dados
     private void rollDiceWithAnimation() {
         // Animación de los dados
@@ -265,6 +380,9 @@ public class gamePag extends AppCompatActivity {
                 playerCoins += 10;
                 Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
                 dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
+
+                // Guardar la victoria en Google Calendar
+                saveVictoryToGoogleCalendar("¡Victoria!", "Has ganado una partida.", 10);
             } else {
                 Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
             }
@@ -293,4 +411,7 @@ public class gamePag extends AppCompatActivity {
             return (int) (Math.random() * 6) + 1;
         }
     }
+
+
+
 }

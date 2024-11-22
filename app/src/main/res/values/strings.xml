@@ -55,6 +55,9 @@
     <string name="image_description">Fondo del juego</string>
     <string name="settings">Configuración</string>
     <string name="capture_screenshot">Capturar Pantalla</string>
+    <string name="help_button_description">Botón de ayuda</string>
+
+
 
 
     <!-- MAS DATOS -->
