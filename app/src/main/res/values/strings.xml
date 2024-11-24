@@ -21,10 +21,11 @@
     <string name="btn_start">START</string>
 
     <!-- TERCERA PESTAÑA -->
-    <string name="btn_config">Configuracion</string>
+
     <string name="btn_inicioJuego">Iniciar partida</string>
-    <string name="btn_user">Datos Usuario</string>
     <string name="btn_historico">Datos Historicos</string>
+    <string name="btn_user">Datos Usuario</string>
+    <string name="btn_config">Configuracion</string>
 
     <!-- REGISTRO -->
 

@@ -10,16 +10,17 @@ import android.util.Log;
 public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "usuarios.db";
-    private static final int DATABASE_VERSION = 2; // Incrementamos la versión para agregar una nueva tabla
+    private static final int DATABASE_VERSION = 2; //Numero de tablas existentes en BBDD (INCREMENTAR EN CASO DE USARR AS TABLAS)
 
-    // Tabla de usuarios
+//TABLAS - DEFINICION
+    //USUARIOS
     public static final String TABLE_USUARIOS = "usuarios";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NOMBRE = "nombre";
     public static final String COLUMN_CONTRASEÑA = "contraseña";
     public static final String COLUMN_PUNTUACION = "puntuacion";
 
-    // Tabla de ubicaciones
+    //UBICACIONES
     public static final String TABLE_UBICACIONES = "ubicaciones";
     public static final String COLUMN_UBICACION_ID = "id";
     public static final String COLUMN_LATITUD = "latitud";
@@ -27,7 +28,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_USUARIO_ID = "usuario_id";
 
-    // Consultas para crear tablas
+//TABLAS - CONSULTAS DE CREACION
     private static final String CREATE_TABLE_USUARIOS =
             "CREATE TABLE " + TABLE_USUARIOS + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

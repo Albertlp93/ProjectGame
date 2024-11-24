@@ -31,6 +31,7 @@ android {
     }
 }
 
+//LIBRERIAS
 dependencies {
 
     implementation(libs.appcompat)
@@ -41,14 +42,17 @@ dependencies {
     //RXJava
     implementation ("io.reactivex.rxjava3:rxjava:3.1.9")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
-    //libreria de animacion
+
+    //ANIMACION
     implementation ("com.airbnb.android:lottie:6.6.0")
 
-    dependencies {
-        implementation ("androidx.appcompat:appcompat:1.6.1") // Asegúrate de que la versión sea la correcta
-        implementation ("androidx.core:core-ktx:1.12.0") // Esto es opcional, pero puede ser útil
+    //UBICACION
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
-        // Otras dependencias...
+    dependencies {
+        implementation ("androidx.appcompat:appcompat:1.6.1")
+        implementation ("androidx.core:core-ktx:1.12.0") //Opcional, pero útil
+
     }
 
 

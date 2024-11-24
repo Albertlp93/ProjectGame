@@ -28,6 +28,7 @@ public class HistoricalPag extends AppCompatActivity {
         //INICIALIZACIONES
         dbHelper = new BaseDeDatosHelper(this);
         int puntuacion = getIntent().getIntExtra("puntuacion", 0);
+
         //INICIALIZAR BOTONES
         Button buttonVolver = findViewById(R.id.buttonVolver);
 

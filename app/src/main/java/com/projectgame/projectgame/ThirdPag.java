@@ -20,6 +20,7 @@ public class ThirdPag extends AppCompatActivity {
         // INICIALIZAR BOTONES
         Button buttonIniciar = findViewById(R.id.buttonIniciar);     // Iniciar juego
         Button buttonHistorico = findViewById(R.id.buttonHistorico); // Histórico juego
+        Button buttonUserData = findViewById(R.id.buttonUserData);   // Datos usuario
 
         // OBTENER - Nombre Usuario
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
@@ -42,6 +43,17 @@ public class ThirdPag extends AppCompatActivity {
             public void onClick(View v) {
                 // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
                 Intent intent = new Intent(ThirdPag.this, HistoricalPag.class);
+                intent.putExtra("nombreUsuario", nombreUsuario);
+                startActivity(intent);
+            }
+        });
+
+        // BOTON - DATOS USUARIO
+        buttonUserData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
+                Intent intent = new Intent(ThirdPag.this, UserDataPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
                 startActivity(intent);
             }
