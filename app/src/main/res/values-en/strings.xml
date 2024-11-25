@@ -1,38 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- CREDENCIALES APLICATIVO -->
     <string name="app_name">Dice</string>
-    <string name="developer">ProjectGame</string>
-    <string name="desarrollo">Developed by:</string>
-
-    <!-- LOGIN -->
-    <string name="titulo_login">Log in</string>
-    <string name="lbl_usuario">User</string>
-    <string name="lbl_contraseña">Password</string>
-    <string name="txt_contraseña">Password</string>
-    <string name="btn_ingresar">Sing in</string>
+    <string name="lbl_crear_cuenta">Don\'t have an account? Create One</string>
     <string name="btn_crear_cuenta">Create account</string>
     <string name="coins_label">Coins: 30</string>
     <string name="lbl_olvidaste_contraseña">¿Forgot your password?</string>
     <string name="btn_olvidaste_contraseña">Recover</string>
+    <string name="lbl_registrarse">Sign in</string>
     <string name="btn_start">START</string>
-
-    <!-- TERCERA PESTAÑA -->
-
     <string name="btn_inicioJuego">Start game</string>
     <string name="btn_historico">Historical data</string>
     <string name="btn_user">User information</string>
     <string name="btn_config">Settings</string>
-
-    <!-- REGISTRO -->
-
     <string name="hint_nuevo_usuario">New user</string>
     <string name="hint_nueva_contraseña">New password</string>
     <string name="hint_confirmar_contraseña">Set password</string>
-    <string name="btn_registrar">Sing up</string>
-    <string name="btn_regresar">Return</string>     <!-- esta en mas de un layout -->
-
-    <!-- JUEGO-->
-    <string name="lbl_monedas">"Coins: "</string>
+    <string name="btn_registrar">Sign up</string>
+    <string name="btn_regresar">Return</string>
+    <string name="lbl_monedas">Coins:</string>
     <string name="btn_recargar">Reload coins</string>
     <string name="dice_description">Dice</string>
     <string name="number_2">2</string>
@@ -42,23 +27,24 @@
     <string name="number_6">6</string>
     <string name="number_7">7</string>
     <string name="number_8">8</string>
+    <string name="number_9">9</string>
     <string name="number_10">10</string>
     <string name="number_11">11</string>
     <string name="number_12">12</string>
-    <string name="dice_result">"Results: "</string>
-    <string name="roll_dice">Roll dice</string>
+    <string name="dice_result">Results:</string>
+    <string name="roll_dice">Roll the dice</string>
     <string name="toggle_music">Turn music on or off</string>
     <string name="image_description">Game Background</string>
     <string name="settings">Settings</string>
     <string name="capture_screenshot">Capture Screen</string>
-    <string name="number_9">9</string>
     <string name="help_button_description">Help button</string>
     <string name="version">version 1.0.0</string>
+    <string name="developer">ProjectGame</string>
+    <string name="desarrollo">Developed by:</string>
+    <string name="titulo_login">Log in</string>
+    <string name="lbl_usuario">User</string>
     <string name="txt_usuario">User</string>
-    <string name="lbl_crear_cuenta">Don\'t have an account? Create One</string>
-    <string name="lbl_registrarse">Sign in</string>
-
-
-    <!-- MAS DATOS -->
-
+    <string name="lbl_contraseña">Password</string>
+    <string name="txt_contraseña">Password</string>
+    <string name="btn_ingresar">Sign in</string>
 </resources>
