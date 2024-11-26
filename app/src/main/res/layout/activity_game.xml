@@ -7,11 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <!-- Botón para activar/desactivar la música -->
     <Button
         android:id="@+id/toggleMusicButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activar Música" />
+        android:text="Activar Música"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rollDiceButton"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Botón para lanzar los dados -->
+    <Button
+        android:id="@+id/rollDiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lanzar Dados"
+        app:layout_constraintTop_toBottomOf="@+id/toggleMusicButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
