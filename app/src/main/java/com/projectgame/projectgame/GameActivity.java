@@ -1,10 +1,8 @@
 package com.projectgame.projectgame;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +11,16 @@ public class GameActivity extends AppCompatActivity {
 
     private SoundPool soundPool;
     private int diceRollSound; // ID del sonido del dado
+    private BackgroundMusicManager musicManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        // Inicializar música de fondo
+        musicManager = BackgroundMusicManager.getInstance();
+        musicManager.startMusic(this, R.raw.musica_oficial);
 
         // Inicializar efectos de sonido
         initializeSoundPool();
@@ -26,31 +29,21 @@ public class GameActivity extends AppCompatActivity {
         Button rollDiceButton = findViewById(R.id.rollDiceButton);
         rollDiceButton.setOnClickListener(v -> playDiceRollSound());
 
-        // Configurar botón para detener la música
-        Button stopMusicButton = findViewById(R.id.toggleMusicButton);
-        stopMusicButton.setOnClickListener(v -> toggleMusic());
+        // Configurar botón para activar/desactivar música
+        Button toggleMusicButton = findViewById(R.id.toggleMusicButton);
+        toggleMusicButton.setOnClickListener(v -> toggleMusic());
     }
 
     private void initializeSoundPool() {
-        // Configurar atributos de audio para el SoundPool
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
 
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(5) // Máximo número de sonidos simultáneos
+                .setMaxStreams(5)
                 .setAudioAttributes(audioAttributes)
                 .build();
-
-        // Cargar el sonido del dado
-        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            if (status == 0) {
-                Log.d("GameActivity", "Sonido de dados cargado correctamente");
-            } else {
-                Log.e("GameActivity", "Error al cargar el sonido de dados");
-            }
-        });
 
         diceRollSound = soundPool.load(this, R.raw.dado_sonido, 1);
     }
@@ -62,8 +55,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toggleMusic() {
-        Intent musicServiceIntent = new Intent(this, BackgroundMusicService.class);
-        stopService(musicServiceIntent); // Detiene la música
+        if (musicManager != null) {
+            musicManager.stopMusic();
+        }
     }
 
     @Override
@@ -75,3 +69,4 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 }
+
