@@ -4,14 +4,14 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 public class BackgroundMusicManager {
+
     private static BackgroundMusicManager instance;
     private MediaPlayer mediaPlayer;
-    private boolean isPlaying = false;
 
     private BackgroundMusicManager() {
     }
 
-    public static BackgroundMusicManager getInstance() {
+    public static synchronized BackgroundMusicManager getInstance() {
         if (instance == null) {
             instance = new BackgroundMusicManager();
         }
@@ -23,24 +23,34 @@ public class BackgroundMusicManager {
             mediaPlayer = MediaPlayer.create(context, musicResId);
             mediaPlayer.setLooping(true);
         }
-        if (!isPlaying) {
+        if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            isPlaying = true;
         }
     }
 
     public void stopMusic() {
-        if (mediaPlayer != null && isPlaying) {
-            mediaPlayer.pause();
-            isPlaying = false;
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
-    public void release() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-            isPlaying = false;
+    public void pauseMusic() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
         }
+    }
+
+    public void resumeMusic() {
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    public boolean isPlaying() {
+        return mediaPlayer != null && mediaPlayer.isPlaying();
     }
 }
