@@ -104,69 +104,89 @@ public class gamePag extends AppCompatActivity {
             if (checkStoragePermission()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     captureAndSaveScreenshotScopedStorage();
-                } else {
+                }
+                else {
                     captureAndSaveScreenshotLegacy();
                 }
-            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            }
+            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 requestStoragePermission();
-            } else {
+            }
+            else {
                 captureAndSaveScreenshotScopedStorage();
             }
         });
 
         rollButton.setOnClickListener(v -> {
+
+            String gp_first_bet = getString(R.string.gp_first_bet);
+            String gp_no_coins = getString(R.string.gp_no_coins);
+
             if (playerBet == 0) {
-                Toast.makeText(this, "Debe realizar una apuesta primero", Toast.LENGTH_SHORT).show();
-            } else if (playerCoins < 5) {
-                Toast.makeText(this, "No tiene suficientes monedas para apostar", Toast.LENGTH_SHORT).show();
-            } else {
+                Toast.makeText(this, gp_first_bet, Toast.LENGTH_SHORT).show();
+            }
+            else if (playerCoins < 5) {
+                Toast.makeText(this, gp_no_coins, Toast.LENGTH_SHORT).show();
+            }
+            else {
                 playerCoins -= 5;
                 updateCoinsDisplay();
                 rollDiceWithAnimation();
             }
         });
 
+        //BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
+            //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
             Intent intent = new Intent(gamePag.this, ThirdPag.class);
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
             intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
         });
 
+        //BOTON - RECARGAR
         buttonRecargar.setOnClickListener(v -> recargarMonedas());
 
+        //BOTON - MOSTRAR RESULTADOS
         buttonMostrarResultados.setOnClickListener(v -> {
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
+
+            //MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
             Intent intent = new Intent(gamePag.this, HistoricalPag.class);
             intent.putExtra("puntuacion", playerCoins);
             intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
         });
 
+        //BOTON - AYUDA
         ImageButton helpButton = findViewById(R.id.helpButton);
         helpButton.setOnClickListener(v -> {
+            //MOVER A LA SIGUIENTE PAGINA {HelpActivity}
             Intent intent = new Intent(gamePag.this, HelpActivity.class);
             startActivity(intent);
         });
 
     }
 
-    // Método para actualizar el texto de las monedas
+    //METODO - ACTUALIZACION TEXTO DE MONEDAS
     private void updateCoinsDisplay() {
-        coinsTextView.setText("Monedas: " + playerCoins);
+        String gp_coins = getString(R.string.gp_coins);
+        coinsTextView.setText(gp_coins + playerCoins);
     }
 
-    // Método para recargar monedas
+    //METODO - REECRGAR MONEDAASA
     private void recargarMonedas() {
-        playerCoins += 50;
-        Toast.makeText(this, "Se han recargado 50 monedas", Toast.LENGTH_SHORT).show();
+        String gp_recharged = getString(R.string.gp_recharged);
+        String gp_recharged_coins = getString(R.string.gp_recharged_coins);
+        playerCoins += 25;
+        Toast.makeText(this, gp_recharged + playerCoins + gp_recharged_coins, Toast.LENGTH_SHORT).show();
         updateCoinsDisplay();
 
         buttonRecargar.setVisibility(View.GONE);
         buttonMostrarResultados.setVisibility(View.GONE);
     }
 
-    // Configurar botones de apuesta
+    //METODO - CONFIGURACION BOTONES DE APUESTA
     private void setupBetButtons() {
         GridLayout betPanel = findViewById(R.id.betPanel);
 
@@ -185,7 +205,7 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
-    // Restablecer colores de botones de apuesta
+    //METODO- RESTABLECER COLORES DE LOS BOTONES DE APUESTA
     private void resetBetButtonColors(GridLayout betPanel) {
         for (int i = 2; i <= 12; i++) {
             Button betButton = betPanel.findViewById(getResources().getIdentifier("btn" + i, "id", getPackageName()));
@@ -193,50 +213,63 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
-    // Verificar y solicitar permiso de almacenamiento
+    //METODO - PERMISOS DE ALMACENAMIENTO
     private boolean checkStoragePermission() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
+    //METODO - SOLICITAR PERMISOS DE ALMACENAMIENTO
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
 
-
+    //METODO - MANEJO DE PERMISOS
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        String gp_storage_denied = getString(R.string.gp_storage_denied);
+        String gp_calendar_granted = getString(R.string.gp_calendar_granted);
+        String gp_calendar_denied = getString(R.string.gp_calendar_denied);
+
 
         // Manejo de permisos de almacenamiento
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     captureAndSaveScreenshotScopedStorage();
-                } else {
+                }
+                else {
                     captureAndSaveScreenshotLegacy();
                 }
-            } else {
-                Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, gp_storage_denied, Toast.LENGTH_SHORT).show();
             }
         }
 
         // Manejo de permisos de calendario
         if (requestCode == CALENDAR_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de calendario concedidos", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Permisos de calendario denegados", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, gp_calendar_granted, Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, gp_calendar_denied, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
 
 
-    // Método para capturar y guardar la captura de pantalla en Android 10+ (API 29 o superior)
+    //METODO - CAPTURA DE PANTALLA
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void captureAndSaveScreenshotScopedStorage() {
+        String gp_calendar_denied = getString(R.string.gp_calendar_denied);
+        String gp_screenshot_saved = getString(R.string.gp_screenshot_saved);
+        String gp_error_saving_screenshot = getString(R.string.gp_error_saving_screenshot);
+
         Bitmap screenshot = getScreenshot();
         if (screenshot == null) return;
+
 
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.DISPLAY_NAME, "VictoryScreenshot_" + System.currentTimeMillis() + ".jpg");
@@ -246,14 +279,17 @@ public class gamePag extends AppCompatActivity {
         Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         try (OutputStream out = getContentResolver().openOutputStream(uri)) {
             screenshot.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            Toast.makeText(this, "Captura guardada en la galería", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, gp_screenshot_saved, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Error al guardar la captura", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, gp_error_saving_screenshot, Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Método para capturar y guardar la captura de pantalla en versiones anteriores a Android 10
+    //METODO - CAPTURA DE PANTALLA LEGACY
     private void captureAndSaveScreenshotLegacy() {
+        String gp_screenshot_saved = getString(R.string.gp_screenshot_saved);
+        String gp_error_saving_screenshot = getString(R.string.gp_error_saving_screenshot);
+
         Bitmap screenshot = getScreenshot();
         if (screenshot == null) return;
 
@@ -265,24 +301,33 @@ public class gamePag extends AppCompatActivity {
         );
 
         if (imagePath != null) {
-            Toast.makeText(this, "Captura guardada en la galería", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, gp_screenshot_saved, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error al guardar la captura", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, gp_error_saving_screenshot, Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Método auxiliar para capturar la vista actual
+    //METODO - OBTENER PANTALLA
     private Bitmap getScreenshot() {
         View rootView = findViewById(android.R.id.content);
         rootView.setDrawingCacheEnabled(true);
         Bitmap screenshot = Bitmap.createBitmap(rootView.getDrawingCache());
         rootView.setDrawingCacheEnabled(false);
+
         return screenshot;
     }
 
 
-    // Método para guardar una victoria en el calendario
+    //METODO - GUARDAR VICTORIA EN GOOGLE CALENDAR
     private void saveVictoryToGoogleCalendar(String title, String nombreUsuario, int coinsWon, int winningRoll) {
+        String gp_victory_saved_calendar = getString(R.string.gp_victory_saved_calendar);
+        String gp_event_created_URI = getString(R.string.gp_event_created_URI);
+        String gp_error_saving_calendar = getString(R.string.gp_error_saving_calendar);
+        String gp_error_insertion = getString(R.string.gp_error_insertion);
+        String gp_error_saving_event = getString(R.string.gp_error_saving_event);
+        String gp_error_exception = getString(R.string.gp_error_exception);
+
+
         // Verificar permisos en tiempo de ejecución
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -327,19 +372,25 @@ public class gamePag extends AppCompatActivity {
             Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
 
             if (uri != null) {
-                Toast.makeText(this, "Victoria guardada en Google Calendar", Toast.LENGTH_SHORT).show();
-                Log.i("GoogleCalendar", "Evento creado con URI: " + uri.toString());
-            } else {
-                Toast.makeText(this, "Error al guardar en Google Calendar", Toast.LENGTH_SHORT).show();
-                Log.e("GoogleCalendar", "Error: Falló la inserción del evento");
+                Toast.makeText(this, gp_victory_saved_calendar, Toast.LENGTH_SHORT).show();
+                Log.i("GoogleCalendar", gp_event_created_URI + uri.toString());
             }
-        } catch (Exception e) {
-            Toast.makeText(this, "Ocurrió un error al guardar el evento", Toast.LENGTH_SHORT).show();
-            Log.e("GoogleCalendar", "Excepción: " + e.getMessage());
+            else {
+                Toast.makeText(this, gp_error_saving_calendar, Toast.LENGTH_SHORT).show();
+                Log.e("GoogleCalendar", gp_error_insertion);
+            }
+        }
+        catch (Exception e) {
+            Toast.makeText(this, gp_error_saving_event, Toast.LENGTH_SHORT).show();
+            Log.e("GoogleCalendar", gp_error_exception + e.getMessage());
         }
     }
 
+    //METODO - OBTENER ID DEL CALENDARIO PREDETERMINADO
     private long getDefaultCalendarId() {
+
+        String gp_error_clendar_ID = getString(R.string.gp_error_clendar_ID);
+
         Cursor cursor = null;
         try {
             cursor = getContentResolver().query(
@@ -359,7 +410,7 @@ public class gamePag extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e("GoogleCalendar", "Error al obtener el ID del calendario: " + e.getMessage());
+            Log.e("GoogleCalendar", gp_error_clendar_ID + e.getMessage());
         } finally {
             if (cursor != null) {
                 cursor.close(); // Asegurar que el cursor se cierre
@@ -369,7 +420,12 @@ public class gamePag extends AppCompatActivity {
         return -1; // Si no se encuentra un calendario válido
     }
 
+    //METODO - MOSTRAR SELECCION DE CALENDARIO
     private void showCalendarSelectionDialog(String title, String nombreUsuario, int coinsWon, int winningRoll) {
+        String gp_calendar_select = getString(R.string.gp_calendar_select);
+        String gp_calendar_no_available = getString(R.string.gp_calendar_no_available);
+        String gp_calendar_failed_load = getString(R.string.gp_calendar_failed_load);
+
         Cursor cursor = getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
@@ -389,13 +445,14 @@ public class gamePag extends AppCompatActivity {
             cursor.close();
 
             if (calendarNames.isEmpty()) {
-                Toast.makeText(this, "No hay calendarios disponibles", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, gp_calendar_no_available, Toast.LENGTH_SHORT).show();
+
                 return;
             }
 
             // Mostrar un diálogo para que el usuario seleccione un calendario
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Seleccionar calendario");
+            builder.setTitle(gp_calendar_select);
             builder.setItems(calendarNames.toArray(new String[0]), (dialog, which) -> {
                 long selectedCalendarId = calendarIds.get(which);
                 saveSelectedCalendarId(selectedCalendarId); // Guarda el ID seleccionado
@@ -403,10 +460,11 @@ public class gamePag extends AppCompatActivity {
             });
             builder.show();
         } else {
-            Toast.makeText(this, "No se pudieron cargar los calendarios", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, gp_calendar_failed_load, Toast.LENGTH_SHORT).show();
         }
     }
 
+    //METODO - GUARDAR ID DEL CALENDARIO SELECCIONADO
     private void saveSelectedCalendarId(long calendarId) {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -414,18 +472,21 @@ public class gamePag extends AppCompatActivity {
         editor.apply();
     }
 
+    //METODO - OBTENER ID DEL CALENDARIO SELECCIONADO
     private long getSavedCalendarId() {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+
         return prefs.getLong("selectedCalendarId", -1);
     }
 
-
-
-
-
-
-    //Método para animar y mostrar el resultado de los dados
+    //METODO - ANIMACION DE LOS DADOS
     private void rollDiceWithAnimation() {
+        String gp_results = getString(R.string.gp_results);
+        String gp_won = getString(R.string.gp_won);
+        String gp_victory = getString(R.string.gp_victory);
+        String gp_lost = getString(R.string.gp_lost);
+
+
         // Reproducir el sonido de los dados
         if (soundPool != null && diceRollSound != 0) {
             soundPool.play(diceRollSound, 1.0f, 1.0f, 1, 0, 1.0f);
@@ -443,18 +504,18 @@ public class gamePag extends AppCompatActivity {
 
             diceImage1.setImageResource(diceImages[result1 - 1]);
             diceImage2.setImageResource(diceImages[result2 - 1]);
-            diceResult.setText("Resultado: " + sum);
+            diceResult.setText(gp_results + sum);
 
             if (sum == playerBet) {
                 playerCoins += 10;
-                Toast.makeText(gamePag.this, "¡Has ganado!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(gamePag.this, gp_won, Toast.LENGTH_SHORT).show();
                 dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
 
                 // Guardar la victoria en Google Calendar
-                saveVictoryToGoogleCalendar("¡Victoria!", nombreUsuario, 10, sum);
-                saveVictoryToGoogleCalendar("¡Victoria!", nombreUsuario, 10, sum);
+                saveVictoryToGoogleCalendar(gp_victory, nombreUsuario, 10, sum);
+                saveVictoryToGoogleCalendar(gp_victory, nombreUsuario, 10, sum);
             } else {
-                Toast.makeText(gamePag.this, "Lo siento, vuelve a intentarlo.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(gamePag.this, gp_lost, Toast.LENGTH_SHORT).show();
             }
 
             playerBet = 0;
@@ -470,18 +531,21 @@ public class gamePag extends AppCompatActivity {
         }, 1000);
     }
 
+    //METODO - ANIMACION DE LOS DADOS
     private void animateDice(ImageView diceImage) {
         ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(diceImage, "rotation", 0f, 360f);
         rotateAnimator.setDuration(500);
         rotateAnimator.start();
     }
 
+    //METODO - CLASE DE LOS DADOS
     private class Dice {
         public int roll() {
             return (int) (Math.random() * 6) + 1;
         }
     }
 
+    //METODO - INICIALIZAR SONIDO DADOS
     private void initializeSoundPool() {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -497,6 +561,7 @@ public class gamePag extends AppCompatActivity {
         diceRollSound = soundPool.load(this, R.raw.dado_sonido, 1);
     }
 
+    //METODO - LIBERAR RECURSOS
     @Override
     protected void onDestroy() {
         super.onDestroy();

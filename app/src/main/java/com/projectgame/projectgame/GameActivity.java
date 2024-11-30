@@ -17,21 +17,18 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        // Inicializar música de fondo
+        //INIICIALIZAR MUSICAS Y SONIDOS
         BackgroundMusicManager.getInstance().startMusic(this, R.raw.musica_oficial);
-
-        // Inicializar efectos de sonido
         initializeSoundPool();
 
-        // Configurar botón para activar/desactivar música
-        Button toggleMusicButton = findViewById(R.id.toggleMusicButton);
+        //INCILIZAR BOTONES
+        Button toggleMusicButton = findViewById(R.id.toggleMusicButton); // Activar/desactivar musica
         toggleMusicButton.setOnClickListener(v -> toggleMusic());
-
-        // Configurar botón para lanzar los dados
-        Button rollDiceButton = findViewById(R.id.rollDiceButton);
+        Button rollDiceButton = findViewById(R.id.rollDiceButton);// Configurar botón para lanzar los dados
         rollDiceButton.setOnClickListener(v -> playDiceRollSound());
     }
 
+    //METODO - INICIALIZAR SONIDOS DADOS
     private void initializeSoundPool() {
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -47,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
         diceRollSound = soundPool.load(this, R.raw.dado_sonido, 1);
     }
 
+    //METODO - ACTIVAR/DESACTIVAR MUSICA
     private void toggleMusic() {
         BackgroundMusicManager musicManager = BackgroundMusicManager.getInstance();
         if (musicManager.isPlaying()) {
@@ -56,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    //METODO - SONIDO AL LANZAR DADOS
     private void playDiceRollSound() {
         if (soundPool != null && diceRollSound != 0) {
             BackgroundMusicManager.getInstance().pauseMusic();
@@ -66,6 +65,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
+    //METODO - CIERRE SONDIOS PARA LIBERAR MEMORIA
     @Override
     protected void onDestroy() {
         super.onDestroy();
