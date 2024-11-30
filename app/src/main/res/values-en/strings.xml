@@ -58,4 +58,7 @@
     <string name="db_name">"Name: "</string>
     <string name="db_score">"Score: "</string>
     <string name="db_columns_found">One or more columns do not exist in the cursor.</string>
+    <string name="cc_new_user">User registered successfully</string>
+    <string name="cc_error_register">Error registering user</string>
+    <string name="cc_access">Please enter a username and password</string>
 </resources>

@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CrearCuentaActivity extends AppCompatActivity {
-
+//ATRIBUTOS
     private EditText editTextNuevoUsuario;
     private EditText editTextNuevaContraseña; // Si decides usar la contraseña
     private Button buttonRegistrar;
@@ -25,48 +25,56 @@ public class CrearCuentaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_cuenta);
 
-        // Inicializar vistas
+        //INICIALIZAR VISTAS
         editTextNuevoUsuario = findViewById(R.id.editTextNuevoUsuario);
         editTextNuevaContraseña = findViewById(R.id.editTextNuevaContraseña);
+
+        //INICIALIZAR BOTONES
         buttonRegistrar = findViewById(R.id.buttonRegistrar);
         buttonVolver = findViewById(R.id.buttonVolver); // Inicializar el botón volver
 
-        // Inicializar el repositorio de usuarios
+        //INICIALIZAR REPOSITORIO DE USUARIOS
         userRepository = new UserRepository(this);
 
-        // Configurar el botón para registrar el usuario
+        //BOTTON - registrar el usuario
         buttonRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nombreUsuario = editTextNuevoUsuario.getText().toString().trim();
-                String contraseña = editTextNuevaContraseña.getText().toString().trim(); // Si decides usarla
+                String pssword = editTextNuevaContraseña.getText().toString().trim(); // Si decides usarla
+                String cc_new_user = getString(R.string.cc_new_user);
+                String cc_error_register = getString(R.string.cc_new_user);
+                String cc_access = getString(R.string.cc_access);
 
-                if (!nombreUsuario.isEmpty() && !contraseña.isEmpty()) {
+                
+                if (!nombreUsuario.isEmpty() && !pssword.isEmpty()) {
                     // Guardar el usuario en la base de datos de forma asíncrona
-                    userRepository.crearUsuario(nombreUsuario, contraseña)
+                    userRepository.crearUsuario(nombreUsuario, pssword)
                             .subscribeOn(Schedulers.io()) // Ejecutar en un hilo de fondo
                             .observeOn(AndroidSchedulers.mainThread()) // Volver al hilo principal para la UI
                             .subscribe(() -> {
-                                Toast.makeText(CrearCuentaActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CrearCuentaActivity.this, cc_new_user, Toast.LENGTH_SHORT).show();
                                 // Limpiar los campos
                                 editTextNuevoUsuario.setText("");
                                 editTextNuevaContraseña.setText(""); // Si decides usar la contraseña
                             }, throwable -> {
-                                Toast.makeText(CrearCuentaActivity.this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CrearCuentaActivity.this, cc_error_register, Toast.LENGTH_SHORT).show();
                             });
-                } else {
-                    Toast.makeText(CrearCuentaActivity.this, "Por favor ingresa un nombre de usuario y una contraseña", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(CrearCuentaActivity.this, cc_access, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        // Configurar el botón para volver a la pantalla inicial
+        //BOTON - INICIO
         buttonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crear un Intent para redirigir a la actividad InitialPag
+                //MOVER A LA SIGUIENTE PAGINA {SecondPag}
                 Intent intent = new Intent(CrearCuentaActivity.this, SecondPag.class);
-                startActivity(intent); // Iniciar la nueva actividad
+                startActivity(intent);
+
             }
         });
     }

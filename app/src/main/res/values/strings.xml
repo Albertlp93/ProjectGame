@@ -60,7 +60,7 @@
     <string name="btn_results">Results</string>
 
 
-
+<!-- ARCHIVOS JAVA -->
     <!-- BASE DE DATOS HELPER -->
     <string name="db_location_saved">Location saved: Latitude=%1$s, Longitude=%2$s, User=%3$s</string>
     <string name="db_score_not_found">The column score does not exist in the cursor.</string>
@@ -71,6 +71,11 @@
     <string name="db_columns_found">One or more columns do not exist in the cursor.</string>>
     <string name="db_no_users">There are no users in the database.</string>
     <string name="db_error">Error saving location.</string>
-    <string name="db_name">"Name: "</string>>
+    <string name="db_name">Name: </string>>
+
+    <!-- CREAR CUENTA -->
+    <string name="cc_new_user">User registered successfully</string>
+    <string name="cc_error_register">Error registering user</string>
+    <string name="cc_access">Please enter a username and password</string>
 
 </resources>
