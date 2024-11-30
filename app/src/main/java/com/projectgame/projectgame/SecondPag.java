@@ -30,6 +30,9 @@ public class SecondPag extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String sp_user_unknown = getString(R.string.sp_user_unknown);
+        String sp_error_query = getString(R.string.sp_error_query);
+
         //LAYOUT
         setContentView(R.layout.activity_secondary_pag);
 
@@ -66,12 +69,12 @@ public class SecondPag extends AppCompatActivity {
                                  finish();
                         }
                         else {
-                            Toast.makeText(SecondPag.this, "Usuario desconocido", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SecondPag.this, sp_user_unknown, Toast.LENGTH_SHORT).show();
                             //Mostrar el botón para crear cuenta
                             buttonCrearCuenta.setVisibility(View.VISIBLE);
                         }
                     }, throwable -> {
-                        Toast.makeText(SecondPag.this, "Error en la consulta", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SecondPag.this, sp_error_query, Toast.LENGTH_SHORT).show();
                     });
         });
 

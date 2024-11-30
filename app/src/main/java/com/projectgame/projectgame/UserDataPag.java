@@ -27,6 +27,7 @@ public class UserDataPag extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;  //Ubicacion del cliente
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001; //Solicitud de permisos
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,7 @@ public class UserDataPag extends AppCompatActivity {
 
     //METODO - OBTENER UBICACION
     private void obtenerUbicacion() {
+        String udp_not_location = getString(R.string.udp_not_location);
 
         //Verificar permisos
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -85,12 +87,15 @@ public class UserDataPag extends AppCompatActivity {
                 solicitarNuevaUbicacion();
             }
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, udp_not_location, Toast.LENGTH_SHORT).show();
         });
     }
 
     //METODO - OBTENER NUEVA UBICACION
     private void solicitarNuevaUbicacion() {
+        String udp_not_location = getString(R.string.udp_not_location);
+
         //Verificar permisos
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -118,36 +123,49 @@ public class UserDataPag extends AppCompatActivity {
                     fusedLocationProviderClient.removeLocationUpdates(this); // Detener actualizaciones
                 }
                 else {
-                    Toast.makeText(UserDataPag.this, "No se pudo obtener la ubicación activa", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserDataPag.this, udp_not_location, Toast.LENGTH_SHORT).show();
                 }
             }
         }, getMainLooper());
     }
 
+    //METODO - ACTUALIZAR UI CON UBICACION
     @SuppressLint("SetTextI18n")
     private void actualizarUIConUbicacion(Location location) {
-        latitudText.setText("Latitud: " + location.getLatitude());
-        longitudText.setText("Longitud: " + location.getLongitude());
-        precisionText.setText("Precisión: " + location.getAccuracy() + " metros");
-        altitudText.setText("Altitud: " + location.getAltitude() + " metros");
+
+        String udp_latitude = getString(R.string.udp_latitude);
+        String udp_longitude = getString(R.string.udp_longitude);
+        String udp_precision = getString(R.string.udp_precision);
+        String udp_altitud = getString(R.string.udp_altitud);
+        String udp_distance = getString(R.string.udp_distance);
+
+        latitudText.setText(udp_latitude + location.getLatitude());
+        longitudText.setText(udp_longitude + location.getLongitude());
+        precisionText.setText(udp_precision + location.getAccuracy() + udp_distance);
+        altitudText.setText(udp_altitud + location.getAltitude() + udp_distance);
 
         //Guardar ubicación en la base de datos
         BaseDeDatosHelper dbHelper = new BaseDeDatosHelper(this);
         dbHelper.insertarUbicacion(location.getLatitude(), location.getLongitude(), obtenerIdUsuario(nombreUsuario));
     }
 
+    //METODO - SOLICITAR PERMISOS
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        String udp_not_permision = getString(R.string.udp_not_permision);
+
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 obtenerUbicacion();
-            } else {
+            }
+            else {
                 Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    //METODO - OBTENER ID USUARIO
     private int obtenerIdUsuario(String nombreUsuario) {
         return 1;
     }

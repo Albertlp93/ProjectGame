@@ -85,4 +85,17 @@
     <string name="gp_results">"Results: "</string>
     <string name="gp_won">¡You have won!</string>
     <string name="gp_victory">¡Victory!</string>
+    <string name="hp_name">"Name: "</string>
+    <string name="hp_score">"Score: "</string>
+    <string name="hp_no_data">"No game data available "</string>
+    <string name="sp_user_unknown">User unknown</string>
+    <string name="sp_error_query">Error executing query</string>
+    <string name="udp_not_location">No location available</string>
+    <string name="udp_latitude">"Latitude: "</string>
+    <string name="udp_longitude">"Longitude: "</string>
+    <string name="udp_precision">"Precision: "</string>
+    <string name="udp_altitud">"Altitude: "</string>
+    <string name="udp_distance">" meters"</string>
+    <string name="udp_not_permision">Location permission denied</string>
+    <string name="ur_error_user_creation">Error creating user</string>
 </resources>

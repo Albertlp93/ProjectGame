@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -56,6 +55,10 @@ public class HistoricalPag extends AppCompatActivity {
 
     //METODO - MOSTRAR PUNTUACIONES
     private void mostrarPuntuaciones() {
+        String hp_name = getString(R.string.hp_name);
+        String hp_score = getString(R.string.hp_score);
+        String hp_no_data = getString(R.string.hp_no_data);
+
         //Obtener la base de datos en modo lectura
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -70,9 +73,9 @@ public class HistoricalPag extends AppCompatActivity {
         //Agregar encabezados
         TableRow headerRow = new TableRow(this);
         TextView headerNombre = new TextView(this);
-        headerNombre.setText("Nombre");
+        headerNombre.setText(hp_name);
         TextView headerPuntuacion = new TextView(this);
-        headerPuntuacion.setText("Puntuación");
+        headerPuntuacion.setText(hp_score);
         headerRow.addView(headerNombre);
         headerRow.addView(headerPuntuacion);
         tableLayout.addView(headerRow);
@@ -109,7 +112,7 @@ public class HistoricalPag extends AppCompatActivity {
         }
         else {
             TextView noDataText = new TextView(this);
-            noDataText.setText("No hay datos de partidas");
+            noDataText.setText(hp_no_data);
             noDataText.setPadding(16, 16, 16, 16);
             tableLayout.addView(noDataText);
         }
