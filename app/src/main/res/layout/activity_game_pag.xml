@@ -216,7 +216,7 @@
             android:layout_marginStart="6dp"
             android:minWidth="100dp"
             android:textAlignment="center"
-            android:text="Resultados"/>
+            android:text="@string/btn_results"/>
     </LinearLayout>
 
 

@@ -47,4 +47,5 @@
     <string name="settings">Configuración</string>
     <string name="capture_screenshot">Capturar Pantalla</string>
     <string name="help_button_description">Boton de ayuda</string>
+    <string name="btn_results">Resultados</string>
 </resources>

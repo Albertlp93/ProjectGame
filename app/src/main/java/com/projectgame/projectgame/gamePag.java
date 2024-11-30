@@ -34,6 +34,8 @@ import java.io.OutputStream;
 import android.database.Cursor;
 import android.util.Log;
 import java.util.ArrayList;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 
 
 public class gamePag extends AppCompatActivity {
@@ -64,16 +66,21 @@ public class gamePag extends AppCompatActivity {
     private String nombreUsuario;
     private static final int STORAGE_PERMISSION_CODE = 1;
     private static final int CALENDAR_PERMISSION_CODE = 2;
+    private SoundPool soundPool;
+    private int diceRollSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_pag);
 
+        //INICIALIZAR SONIDO DADOS
+        initializeSoundPool();
+
         dice1 = new Dice();
         dice2 = new Dice();
 
-        // INICIALIZAR BOTONES Y COMPONENTES
+        //INICIALIZAR BOTONES Y COMPONENTES
         buttonRecargar = findViewById(R.id.buttonRecargar);
         buttonVolver = findViewById(R.id.buttonVolver);
         Button rollButton = findViewById(R.id.rollButton);
@@ -90,7 +97,7 @@ public class gamePag extends AppCompatActivity {
         updateCoinsDisplay();
 
         buttonRecargar.setVisibility(View.GONE);
-        buttonMostrarResultados.setVisibility(View.GONE);
+        buttonMostrarResultados.setVisibility(View.VISIBLE);
         setupBetButtons();
 
         buttonCaptureScreenshot.setOnClickListener(v -> {
@@ -417,8 +424,13 @@ public class gamePag extends AppCompatActivity {
 
 
 
-    // Método para animar y mostrar el resultado de los dados
+    //Método para animar y mostrar el resultado de los dados
     private void rollDiceWithAnimation() {
+        // Reproducir el sonido de los dados
+        if (soundPool != null && diceRollSound != 0) {
+            soundPool.play(diceRollSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
+
         // Animación de los dados
         animateDice(diceImage1);
         animateDice(diceImage2);
@@ -470,6 +482,28 @@ public class gamePag extends AppCompatActivity {
         }
     }
 
+    private void initializeSoundPool() {
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
 
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(5)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        // Cargar el sonido del dado
+        diceRollSound = soundPool.load(this, R.raw.dado_sonido, 1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
+    }
 
 }

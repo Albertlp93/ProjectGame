@@ -11,6 +11,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "usuarios.db";
     private static final int DATABASE_VERSION = 2; //Numero de tablas existentes en BBDD (INCREMENTAR EN CASO DE USARR AS TABLAS)
+    private final Context context;
 
 //TABLAS - DEFINICION
     //USUARIOS
@@ -45,8 +46,11 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
                     COLUMN_USUARIO_ID + " INTEGER, " +
                     "FOREIGN KEY(" + COLUMN_USUARIO_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "));";
 
+    //METODO - CONSTRUCTOR
     public BaseDeDatosHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+
     }
 
     @Override
@@ -70,12 +74,17 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
         values.put(COLUMN_LONGITUD, longitud);
         values.put(COLUMN_USUARIO_ID, usuarioId);
 
+        //INICIALIZACION TEXTOS
+        String db_locationMessage = context.getString(R.string.db_location_saved, String.valueOf(latitud), String.valueOf(longitud), String.valueOf(usuarioId));
+        String db_errorMessage = context.getString(R.string.db_error);
+
         long resultado = db.insert(TABLE_UBICACIONES, null, values);
 
         if (resultado != -1) {
-            Log.d("DB_INFO", "Ubicación guardada: Latitud=" + latitud + ", Longitud=" + longitud + ", UsuarioID=" + usuarioId);
-        } else {
-            Log.e("DB_ERROR", "Error al guardar la ubicación.");
+            Log.d("DB_INFO", db_locationMessage);
+        }
+        else {
+            Log.e("DB_ERROR", db_errorMessage);
         }
         db.close();
     }

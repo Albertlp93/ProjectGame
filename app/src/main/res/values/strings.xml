@@ -57,8 +57,11 @@
     <string name="txt_usuario">User</string>
     <string name="lbl_crear_cuenta">Don\'t have an account? Create One</string>
     <string name="lbl_registrarse">Sign in</string>
+    <string name="btn_results">Results</string>
 
 
-    <!-- MAS DATOS -->
 
+    <!-- BASE DE DATOS HELPER -->
+    <string name="db_location_saved">Location saved: Latitude=%1$s, Longitude=%2$s, User=%3$s</string>
+    <string name="db_error">Error al guardar la ubicación.</string>">
 </resources>

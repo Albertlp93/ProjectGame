@@ -47,4 +47,5 @@
     <string name="lbl_contraseña">Password</string>
     <string name="txt_contraseña">Password</string>
     <string name="btn_ingresar">Sign in</string>
+    <string name="btn_results">Results</string>
 </resources>
