@@ -48,4 +48,14 @@
     <string name="capture_screenshot">Capturar Pantalla</string>
     <string name="help_button_description">Boton de ayuda</string>
     <string name="btn_results">Resultados</string>
+    <string name="db_location_saved">Localizacion guardada: Latitud=%1$s, Longitud=%2$s, Usuario=%3$s</string>
+    <string name="db_no_users">No hay usuarios en la base de datos.</string>
+    <string name="db_error">Error al guardar la ubicación.</string>
+    <string name="db_score_not_found">La columna \'Puntucion\' no existe en el cursor.</string>
+    <string name="db_user_not_found">Usuario no encontrado, puntuacion inicial 30.</string>
+    <string name="db_user_created">Usuario credo correctamente</string>
+    <string name="db_user_not_created">Error al crear el usuario</string>
+    <string name="db_name">"Nombre: "</string>
+    <string name="db_score">Puntuacion:</string>
+    <string name="db_columns_found">Una o mas columns no existen en el cursor.</string>
 </resources>

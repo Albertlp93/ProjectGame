@@ -48,4 +48,14 @@
     <string name="txt_contraseña">Password</string>
     <string name="btn_ingresar">Sign in</string>
     <string name="btn_results">Results</string>
+    <string name="db_location_saved">Location saved: Latitude=%1$s, Longitude=%2$s, User=%3$s</string>
+    <string name="db_no_users">There are no users in the database.</string>
+    <string name="db_error">Error saving location.</string>
+    <string name="db_score_not_found">The column \'score\' does not exist in the cursor.</string>
+    <string name="db_user_not_found">User not found, initial score set to 30.</string>
+    <string name="db_user_created">User created successfully.</string>
+    <string name="db_user_not_created">Error creating user.</string>
+    <string name="db_name">"Name: "</string>
+    <string name="db_score">"Score: "</string>
+    <string name="db_columns_found">One or more columns do not exist in the cursor.</string>
 </resources>
