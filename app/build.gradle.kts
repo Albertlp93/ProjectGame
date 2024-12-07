@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -25,42 +26,31 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
-//LIBRERIAS
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    
-    //RXJava
+
+    implementation ("com.airbnb.android:lottie:6.6.0")
     implementation ("io.reactivex.rxjava3:rxjava:3.1.9")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
-
-    //ANIMACION
-    implementation ("com.airbnb.android:lottie:6.6.0")
-
-    //UBICACION
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-
-    dependencies {
-        implementation ("androidx.appcompat:appcompat:1.6.1")
-        implementation ("androidx.core:core-ktx:1.12.0") //Opcional, pero útil
-
-    }
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
 
-
-    implementation (libs.android.lottie)
-    implementation(libs.recyclerview)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-
+    // Añade otras dependencias necesarias
 }
