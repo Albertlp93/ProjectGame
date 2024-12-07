@@ -6,88 +6,122 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Título de la pantalla -->
+
+
     <TextView
-        android:id="@+id/ubicacionTitle"
+        android:id="@+id/userInfoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ubicación Actual"
-        android:textSize="24sp"
+        android:layout_marginTop="60dp"
+        android:text="@string/udp_TitleUserInfo"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/infoLinearLayout" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- LinearLayout para latitud, longitud, precisión y altitud -->
+    <!-- Botón para volver -->
+
+    <LinearLayout
+        android:id="@+id/userInfoLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userInfoTitle">
+
+        <TextView
+            android:id="@+id/userNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/udp_UserName"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userPasswordText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/udp_UserPassword"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/locationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/udp_TitleUserLocation"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userInfoLinearLayout" />
+
     <LinearLayout
         android:id="@+id/infoLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/darker_gray"
         android:orientation="vertical"
         android:padding="8dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/ubicacionTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/locationTitle">
 
-        <!-- Mostrar la Latitud -->
         <TextView
             android:id="@+id/latitudText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Latitud: Esperando..."
-            android:textSize="18sp"
-            android:layout_marginBottom="10dp" />
+            android:text="@string/udp_latitude"
+            android:textSize="16sp" />
 
-        <!-- Mostrar la Longitud -->
         <TextView
             android:id="@+id/longitudText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Longitud: Esperando..."
-            android:textSize="18sp"
-            android:layout_marginBottom="10dp" />
+            android:text="@string/udp_longitude"
+            android:textSize="16sp" />
 
-        <!-- Mostrar la Precisión -->
         <TextView
             android:id="@+id/precisionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Precisión: Esperando..."
-            android:textSize="18sp"
-            android:layout_marginBottom="10dp" />
+            android:text="@string/udp_precision"
+            android:textSize="16sp" />
 
-        <!-- Mostrar la Altitud -->
         <TextView
             android:id="@+id/altitudText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Altitud: Esperando..."
-            android:textSize="18sp"
-            android:layout_marginBottom="10dp" />
+            android:text="@string/udp_altitude"
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- Botón para obtener la ubicación -->
     <Button
         android:id="@+id/btnObtenerUbicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Obtener Ubicación"
-        android:textSize="18sp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/infoLinearLayout"
+        android:layout_marginTop="40dp"
+        android:text="@string/udp_GetLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/infoLinearLayout" />
 
-    <!-- Botón para volver a ThirdPag -->
     <Button
         android:id="@+id/buttonVolver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="368dp"
+        android:layout_marginTop="112dp"
         android:text="@string/btn_regresar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

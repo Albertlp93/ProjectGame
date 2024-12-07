@@ -24,6 +24,7 @@ public class UserDataPag extends AppCompatActivity {
     private Button buttonVolver, btnObtenerUbicacion;
     private TextView latitudText, longitudText, precisionText, altitudText;
     private String nombreUsuario;
+    private String passwordUsuario;
     private FusedLocationProviderClient fusedLocationProviderClient;  //Ubicacion del cliente
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001; //Solicitud de permisos
 
@@ -45,8 +46,29 @@ public class UserDataPag extends AppCompatActivity {
         precisionText = findViewById(R.id.precisionText);
         altitudText = findViewById(R.id.altitudText);
 
-        //OBTENER - Nombre Usuario
-        nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        //OBTENER - Nombre Usuario + Password Usuario
+        nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
+        passwordUsuario = getIntent().getStringExtra("contraseña");
+
+            //MOSTRAR - Nombre Usuario + paswword
+            TextView userNameDisplay = findViewById(R.id.userNameText);
+            TextView PasswordUserDisplay = findViewById(R.id.userPasswordText);
+
+
+            if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                userNameDisplay.setText(getString(R.string.udp_UserName) + nombreUsuario);
+            } else {
+                userNameDisplay.setText(getString(R.string.udp_UserName) + " Error en el usuario");
+            }
+
+            if (passwordUsuario != null ) {
+                PasswordUserDisplay.setText(getString(R.string.udp_UserPassword) + passwordUsuario);
+            } else {
+                PasswordUserDisplay.setText(getString(R.string.udp_UserPassword) + " Error en la password");
+            }
+
+
+
 
         // Inicializar el cliente de ubicación
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -55,6 +77,7 @@ public class UserDataPag extends AppCompatActivity {
         buttonVolver.setOnClickListener(v -> {
             Intent intent = new Intent(UserDataPag.this, ThirdPag.class);
             intent.putExtra("nombreUsuario", nombreUsuario);
+            intent.putExtra("contraseña", passwordUsuario);
             startActivity(intent);
             finish();
         });
@@ -136,7 +159,7 @@ public class UserDataPag extends AppCompatActivity {
         String udp_latitude = getString(R.string.udp_latitude);
         String udp_longitude = getString(R.string.udp_longitude);
         String udp_precision = getString(R.string.udp_precision);
-        String udp_altitud = getString(R.string.udp_altitud);
+        String udp_altitud = getString(R.string.udp_altitude);
         String udp_distance = getString(R.string.udp_distance);
 
         latitudText.setText(udp_latitude + location.getLatitude());

@@ -16,12 +16,6 @@
     <string name="btn_olvidaste_contraseña">Recover</string>
     <string name="btn_start">START</string>
 
-    <!-- TERCERA PESTAÑA -->
-
-    <string name="btn_inicioJuego">Start game</string>
-    <string name="btn_historico">Historical data</string>
-    <string name="btn_user">User information</string>
-    <string name="btn_config">Settings</string>
 
     <!-- REGISTRO -->
 
@@ -104,26 +98,41 @@
     <string name="gp_recharged_coins">" coins "</string>
     <string name="gp_calendar_select">"Select calendar: "</string>
 
-    <!-- HISTORICALPAG -->
-    <string name="hp_name">Name: </string>>
-    <string name="hp_score">Score: </string>
-    <string name="hp_no_data">No game data available </string>>
 
     <!-- SECONDPAG -->
     <string name="sp_user_unknown">User unknown</string>
     <string name="sp_error_query">Error executing query</string>
 
+    <!-- TERCERA PESTAÑA -->
+
+    <string name="btn_inicioJuego">Start game</string>
+    <string name="btn_historico">Historical data</string>
+    <string name="btn_user">User information</string>
+    <string name="btn_config">Settings</string>
+
+    <!-- HISTORICALPAG -->
+    <string name="hp_name">Name: </string>>
+    <string name="hp_score">Score: </string>
+    <string name="hp_no_data">No game data available </string>>
+
+
     <!-- USERDATAPAG -->
-    <string name="udp_not_location">No location available</string>
+    <string name="udp_TitleUserInfo">INFORMATION </string>
+    <string name="udp_TitleUserLocation">LOCATION </string>
     <string name="udp_latitude">"Latitude: "</string>
     <string name="udp_longitude">"Longitude: "</string>
     <string name="udp_precision">"Precision: "</string>
-    <string name="udp_altitud">"Altitude: "</string>
+    <string name="udp_altitude">"Altitude: "</string>
     <string name="udp_distance">" meters"</string>
     <string name="udp_not_permision">Location permission denied</string>
+    <string name="udp_not_location">No location available</string>
+    <string name="udp_GetLocation">Search location</string>
+    <string name="udp_UserName">User: </string>
+    <string name="udp_UserPassword">Password: </string>
 
     <!-- USERREPOSITORY -->
     <string name="ur_error_user_creation">Error creating user</string>
+    <string name="udp_altitud">"Altitude: "</string>
 
 
 </resources>

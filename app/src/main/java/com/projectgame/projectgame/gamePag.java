@@ -64,6 +64,7 @@ public class gamePag extends AppCompatActivity {
     private int playerBet = 0;
     private int playerCoins;
     private String nombreUsuario;
+    private String passwordUsuario;
     private static final int STORAGE_PERMISSION_CODE = 1;
     private static final int CALENDAR_PERMISSION_CODE = 2;
     private SoundPool soundPool;
@@ -93,6 +94,8 @@ public class gamePag extends AppCompatActivity {
 
         dbHelper = new BaseDeDatosHelper(this);
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        passwordUsuario = getIntent().getStringExtra("contraseña");
+
         playerCoins = dbHelper.obtenerPuntuacion(nombreUsuario);
         updateCoinsDisplay();
 
@@ -141,6 +144,7 @@ public class gamePag extends AppCompatActivity {
             Intent intent = new Intent(gamePag.this, ThirdPag.class);
             dbHelper.actualizarPuntuacion(nombreUsuario, playerCoins);
             intent.putExtra("nombreUsuario", nombreUsuario);
+            intent.putExtra("contraseña", passwordUsuario);
             startActivity(intent);
         });
 
@@ -155,6 +159,7 @@ public class gamePag extends AppCompatActivity {
             Intent intent = new Intent(gamePag.this, HistoricalPag.class);
             intent.putExtra("puntuacion", playerCoins);
             intent.putExtra("nombreUsuario", nombreUsuario);
+            intent.putExtra("contraseña", passwordUsuario);
             startActivity(intent);
         });
 

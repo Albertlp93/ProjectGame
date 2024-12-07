@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ThirdPag extends AppCompatActivity {
     // ATRIBUTOS
     private String nombreUsuario;
+    private String passwordUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,8 @@ public class ThirdPag extends AppCompatActivity {
         Button buttonUserData = findViewById(R.id.buttonUserData);   // Datos usuario
 
         // OBTENER - Nombre Usuario
-        nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
+        passwordUsuario = getIntent().getStringExtra("contraseña");
 
         // BOTON - INICIAR JUEGO
         buttonIniciar.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +35,7 @@ public class ThirdPag extends AppCompatActivity {
                 Intent intent = new Intent(ThirdPag.this, gamePag.class);
                 // Pasar el nombre de usuario a la siguiente actividad
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });
@@ -44,6 +47,7 @@ public class ThirdPag extends AppCompatActivity {
                 // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
                 Intent intent = new Intent(ThirdPag.this, HistoricalPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });
@@ -55,6 +59,7 @@ public class ThirdPag extends AppCompatActivity {
                 // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
                 Intent intent = new Intent(ThirdPag.this, UserDataPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });
