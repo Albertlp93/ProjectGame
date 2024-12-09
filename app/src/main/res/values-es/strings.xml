@@ -98,4 +98,6 @@
     <string name="udp_distance">" metros"</string>
     <string name="udp_not_permision">Permisos de localizacion denegados</string>
     <string name="ur_error_user_creation">Error creando usuario</string>
+    <string name="default_web_client_id">TU_WEB_CLIENT_ID</string>
+
 </resources>
