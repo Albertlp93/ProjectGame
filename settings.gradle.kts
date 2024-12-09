@@ -12,10 +12,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // Configuración que causa el problema
     repositories {
-        google()
-        mavenCentral()
+        google() // Repositorio de Google
+        mavenCentral() // Repositorio Maven Central
+        // Añade otros repositorios aquí si es necesario
     }
 }
 

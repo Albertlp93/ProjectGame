@@ -7,8 +7,6 @@
     android:layout_height="match_parent">
 
     <!-- Imagen de fondo -->
-
-    <!-- Etiqueta de usuario -->
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
@@ -19,6 +17,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
+    <!-- Etiqueta de usuario -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -100,6 +99,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextContraseña" />
 
+    <!-- Botón para iniciar sesión con Google -->
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signInButtonGoogle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
+
+    <!-- Botón para crear cuenta -->
+    <Button
+        android:id="@+id/buttonCrearCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        android:text="@string/btn_crear_cuenta"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInButtonGoogle" />
+
+
     <!-- Mensaje para invitar a crear una cuenta -->
     <TextView
         android:id="@+id/textView5"
@@ -114,25 +140,7 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStart"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCrearCuenta"
         tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Botón para crear una cuenta -->
-    <Button
-        android:id="@+id/buttonCrearCuenta"
-        android:layout_width="129dp"
-        android:layout_height="48dp"
-        android:background="@color/black"
-        android:text="@string/btn_crear_cuenta"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.09" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "270631014169",
+    "project_id": "projectgame-fp061",
+    "storage_bucket": "projectgame-fp061.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270631014169:android:86f22b5e0f8de0a4d6bf88",
+        "android_client_info": {
+          "package_name": "com.projectgame.projectgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270631014169-aq92230k71es2klk3f90prstl8ch84r2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectgame.projectgame",
+            "certificate_hash": "61532a38fd93ac81ac35e60973b20cb01ce2a0d2"
+          }
+        },
+        {
+          "client_id": "270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRyIeBobMxNGKJZXqA0vUTOvy1f9VRBes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

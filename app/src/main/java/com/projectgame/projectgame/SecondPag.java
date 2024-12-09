@@ -63,9 +63,8 @@ public class SecondPag extends AppCompatActivity {
                         if (existe) {
                             //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
                             Intent intent = new Intent(SecondPag.this, ThirdPag.class);
-                                //Pasar el nombre de usuario y la contraseña la siguiente actividad
+                                //Pasar el nombre de usuario a la siguiente actividad
                                  intent.putExtra("nombreUsuario", usuario);
-                                 intent.putExtra("contraseña", contraseña);
                                  startActivity(intent);
                                  finish();
                         }
