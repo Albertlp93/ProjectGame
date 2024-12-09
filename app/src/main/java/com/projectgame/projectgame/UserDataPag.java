@@ -54,17 +54,22 @@ public class UserDataPag extends AppCompatActivity {
             TextView userNameDisplay = findViewById(R.id.userNameText);
             TextView PasswordUserDisplay = findViewById(R.id.userPasswordText);
 
+            String udp_UserNameError = getString(R.string.udp_UserNameError);
+            String udp_UserPasswordError = getString(R.string.udp_UserPasswordError);
+
 
             if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
                 userNameDisplay.setText(getString(R.string.udp_UserName) + nombreUsuario);
-            } else {
-                userNameDisplay.setText(getString(R.string.udp_UserName) + " Error en el usuario");
+            }
+            else {
+                userNameDisplay.setText(getString(R.string.udp_UserName) + udp_UserNameError);
             }
 
             if (passwordUsuario != null ) {
                 PasswordUserDisplay.setText(getString(R.string.udp_UserPassword) + passwordUsuario);
-            } else {
-                PasswordUserDisplay.setText(getString(R.string.udp_UserPassword) + " Error en la password");
+            }
+            else {
+                PasswordUserDisplay.setText(getString(R.string.udp_UserPassword) + udp_UserPasswordError);
             }
 
 

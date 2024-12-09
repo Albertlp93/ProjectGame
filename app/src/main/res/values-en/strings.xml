@@ -100,8 +100,10 @@
     <string name="udp_distance">" meters"</string>
     <string name="udp_not_permision">Location permission denied</string>
     <string name="udp_UserPassword">"Password: "</string>
+    <string name="udp_UserPasswordError">Password error</string>
     <string name="ur_error_user_creation">Error creating user</string>
     <string name="udp_TitleUserInfo">"INFORMATION "</string>
     <string name="udp_GetLocation">Search location</string>
     <string name="udp_UserName">"User: "</string>
+    <string name="udp_UserNameError">User error</string>
 </resources>
