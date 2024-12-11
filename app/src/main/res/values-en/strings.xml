@@ -98,4 +98,7 @@
     <string name="udp_distance">" meters"</string>
     <string name="udp_not_permision">Location permission denied</string>
     <string name="ur_error_user_creation">Error creating user</string>
+    <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
+
+
 </resources>

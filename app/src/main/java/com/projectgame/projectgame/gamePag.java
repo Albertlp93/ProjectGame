@@ -3,16 +3,20 @@ package com.projectgame.projectgame;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color; // Importación de Color corregida
-import android.icu.util.TimeZone;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -20,23 +24,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.annotation.RequiresApi;
-import android.os.Build;
-import android.content.ContentValues;
-import android.net.Uri;
-import android.os.Environment;
+
 import java.io.OutputStream;
-import android.database.Cursor;
-import android.util.Log;
 import java.util.ArrayList;
+
+import android.database.Cursor;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
-
 
 public class gamePag extends AppCompatActivity {
 
@@ -92,7 +93,13 @@ public class gamePag extends AppCompatActivity {
         buttonCaptureScreenshot = findViewById(R.id.buttonCaptureScreenshot);
 
         dbHelper = new BaseDeDatosHelper(this);
+
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        // Comprobación y asignación de valor por defecto si es null
+        if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+            nombreUsuario = "UsuarioDesconocido";
+        }
+
         playerCoins = dbHelper.obtenerPuntuacion(nombreUsuario);
         updateCoinsDisplay();
 
@@ -104,31 +111,25 @@ public class gamePag extends AppCompatActivity {
             if (checkStoragePermission()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     captureAndSaveScreenshotScopedStorage();
-                }
-                else {
+                } else {
                     captureAndSaveScreenshotLegacy();
                 }
-            }
-            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 requestStoragePermission();
-            }
-            else {
+            } else {
                 captureAndSaveScreenshotScopedStorage();
             }
         });
 
         rollButton.setOnClickListener(v -> {
-
             String gp_first_bet = getString(R.string.gp_first_bet);
             String gp_no_coins = getString(R.string.gp_no_coins);
 
             if (playerBet == 0) {
                 Toast.makeText(this, gp_first_bet, Toast.LENGTH_SHORT).show();
-            }
-            else if (playerCoins < 5) {
+            } else if (playerCoins < 5) {
                 Toast.makeText(this, gp_no_coins, Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 playerCoins -= 5;
                 updateCoinsDisplay();
                 rollDiceWithAnimation();
@@ -237,12 +238,10 @@ public class gamePag extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     captureAndSaveScreenshotScopedStorage();
-                }
-                else {
+                } else {
                     captureAndSaveScreenshotLegacy();
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(this, gp_storage_denied, Toast.LENGTH_SHORT).show();
             }
         }
@@ -251,8 +250,7 @@ public class gamePag extends AppCompatActivity {
         if (requestCode == CALENDAR_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, gp_calendar_granted, Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Toast.makeText(this, gp_calendar_denied, Toast.LENGTH_SHORT).show();
             }
         }
@@ -327,7 +325,6 @@ public class gamePag extends AppCompatActivity {
         String gp_error_saving_event = getString(R.string.gp_error_saving_event);
         String gp_error_exception = getString(R.string.gp_error_exception);
 
-
         // Verificar permisos en tiempo de ejecución
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -348,7 +345,7 @@ public class gamePag extends AppCompatActivity {
                 showCalendarSelectionDialog(title, nombreUsuario, coinsWon, winningRoll);
                 return;
             }
-            saveSelectedCalendarId(calendarId); // Guarda el calendario seleccionado para futuras ejecuciones
+            saveSelectedCalendarId(calendarId); // Guarda el calendario seleccionado
         }
 
         // Configurar los valores del evento
@@ -366,7 +363,6 @@ public class gamePag extends AppCompatActivity {
         values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, java.util.TimeZone.getDefault().getID());
 
-        // Intentar guardar el evento en el calendario
         try {
             ContentResolver cr = getContentResolver();
             Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
@@ -374,13 +370,11 @@ public class gamePag extends AppCompatActivity {
             if (uri != null) {
                 Toast.makeText(this, gp_victory_saved_calendar, Toast.LENGTH_SHORT).show();
                 Log.i("GoogleCalendar", gp_event_created_URI + uri.toString());
-            }
-            else {
+            } else {
                 Toast.makeText(this, gp_error_saving_calendar, Toast.LENGTH_SHORT).show();
                 Log.e("GoogleCalendar", gp_error_insertion);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(this, gp_error_saving_event, Toast.LENGTH_SHORT).show();
             Log.e("GoogleCalendar", gp_error_exception + e.getMessage());
         }
@@ -413,11 +407,11 @@ public class gamePag extends AppCompatActivity {
             Log.e("GoogleCalendar", gp_error_clendar_ID + e.getMessage());
         } finally {
             if (cursor != null) {
-                cursor.close(); // Asegurar que el cursor se cierre
+                cursor.close();
             }
         }
 
-        return -1; // Si no se encuentra un calendario válido
+        return -1;
     }
 
     //METODO - MOSTRAR SELECCION DE CALENDARIO
@@ -446,7 +440,6 @@ public class gamePag extends AppCompatActivity {
 
             if (calendarNames.isEmpty()) {
                 Toast.makeText(this, gp_calendar_no_available, Toast.LENGTH_SHORT).show();
-
                 return;
             }
 
@@ -455,8 +448,8 @@ public class gamePag extends AppCompatActivity {
             builder.setTitle(gp_calendar_select);
             builder.setItems(calendarNames.toArray(new String[0]), (dialog, which) -> {
                 long selectedCalendarId = calendarIds.get(which);
-                saveSelectedCalendarId(selectedCalendarId); // Guarda el ID seleccionado
-                saveVictoryToGoogleCalendar(title, nombreUsuario, coinsWon, winningRoll); // Reintenta guardar la victoria
+                saveSelectedCalendarId(selectedCalendarId);
+                saveVictoryToGoogleCalendar(title, nombreUsuario, coinsWon, winningRoll);
             });
             builder.show();
         } else {
@@ -475,7 +468,6 @@ public class gamePag extends AppCompatActivity {
     //METODO - OBTENER ID DEL CALENDARIO SELECCIONADO
     private long getSavedCalendarId() {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-
         return prefs.getLong("selectedCalendarId", -1);
     }
 
@@ -485,7 +477,6 @@ public class gamePag extends AppCompatActivity {
         String gp_won = getString(R.string.gp_won);
         String gp_victory = getString(R.string.gp_victory);
         String gp_lost = getString(R.string.gp_lost);
-
 
         // Reproducir el sonido de los dados
         if (soundPool != null && diceRollSound != 0) {
