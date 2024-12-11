@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "270631014169-aq92230k71es2klk3f90prstl8ch84r2.apps.googleusercontent.com",
+          "client_id": "270631014169-56ev0aefa60c8ps1satekb4qge9v0fch.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.projectgame.projectgame",
-            "certificate_hash": "61532a38fd93ac81ac35e60973b20cb01ce2a0d2"
+            "certificate_hash": "51e4f04d4d1d2d9b3371b7f5e259a9248f30688c"
           }
         },
         {

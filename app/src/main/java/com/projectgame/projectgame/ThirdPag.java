@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ThirdPag extends AppCompatActivity {
@@ -14,8 +16,6 @@ public class ThirdPag extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // LAYOUT
         setContentView(R.layout.activity_third_pag);
 
         // INICIALIZAR BOTONES
@@ -27,10 +27,20 @@ public class ThirdPag extends AppCompatActivity {
         nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
         passwordUsuario = getIntent().getStringExtra("contraseña");
 
+        // Si nombreUsuario es null, asignar un valor por defecto
+        if (nombreUsuario == null) {
+            nombreUsuario = "UsuarioDesconocido";
+        }
+
         // BOTON - INICIAR JUEGO
         buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+                    Toast.makeText(ThirdPag.this, "El nombre de usuario no está disponible", Toast.LENGTH_SHORT).show();
+                    return; // Evita iniciar la siguiente actividad sin nombre de usuario
+                }
+
                 // MOVER A LA SIGUIENTE PAGINA {gamePag}
                 Intent intent = new Intent(ThirdPag.this, gamePag.class);
                 // Pasar el nombre de usuario a la siguiente actividad
@@ -44,6 +54,11 @@ public class ThirdPag extends AppCompatActivity {
         buttonHistorico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+                    Toast.makeText(ThirdPag.this, "El nombre de usuario no está disponible", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
                 Intent intent = new Intent(ThirdPag.this, HistoricalPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
@@ -56,6 +71,11 @@ public class ThirdPag extends AppCompatActivity {
         buttonUserData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+                    Toast.makeText(ThirdPag.this, "El nombre de usuario no está disponible", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
                 Intent intent = new Intent(ThirdPag.this, UserDataPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
