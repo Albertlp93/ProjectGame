@@ -32,6 +32,11 @@ public class ThirdPag extends AppCompatActivity {
             nombreUsuario = "UsuarioDesconocido";
         }
 
+        // Si nombreUsuario es null, asignar un valor por defecto
+        if (nombreUsuario == null) {
+            nombreUsuario = "UsuarioDesconocido";
+        }
+
         // BOTON - INICIAR JUEGO
         buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
