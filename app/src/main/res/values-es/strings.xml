@@ -91,14 +91,21 @@
     <string name="sp_user_unknown">Usuario desconocido</string>
     <string name="sp_error_query">Error de ejecucion de query</string>
     <string name="udp_not_location">Localizacion no disponible</string>
-    <string name="udp_latitude">"Laatitud: "</string>
+    <string name="udp_latitude">"Latitud: "</string>
     <string name="udp_longitude">"Longitud: "</string>
     <string name="udp_precision">"Precision: "</string>
     <string name="udp_altitud">"Altitud: "</string>
     <string name="udp_distance">" metros"</string>
     <string name="udp_not_permision">Permisos de localizacion denegados</string>
+    <string name="udp_UserName">Nombre de Usuario: </string>
+    <string name="udp_UserNameError">Error al obtener el nombre de usuario</string>
+    <string name="udp_UserPassword">Contraseña: </string>
+    <string name="udp_UserPasswordError">Error al obtener la contraseña</string>
+    <string name="udp_altitude">Altitud: </string>
     <string name="ur_error_user_creation">Error creando usuario</string>
     <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
+
+
 
 
 </resources>
