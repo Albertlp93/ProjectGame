@@ -50,10 +50,9 @@ public class UserDataPag extends AppCompatActivity {
         nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
         passwordUsuario = getIntent().getStringExtra("contraseña");
 
-            //MOSTRAR - Nombre Usuario + paswword
+            //MOSTRAR - Nombre Usuario + paswword + msg error
             TextView userNameDisplay = findViewById(R.id.userNameText);
             TextView PasswordUserDisplay = findViewById(R.id.userPasswordText);
-
             String udp_UserNameError = getString(R.string.udp_UserNameError);
             String udp_UserPasswordError = getString(R.string.udp_UserPasswordError);
 
