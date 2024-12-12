@@ -15,7 +15,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -38,26 +37,30 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Firebase BoM - Gestiona automáticamente las versiones de las dependencias de Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+
+    // Firebase core dependencies
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
-    // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
+
+    // Google Play Services
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-    implementation ("com.google.firebase:firebase-auth:22.1.0") // Firebase Auth para la integración
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    // Dependencia para pruebas instrumentadas
-    androidTestImplementation ("androidx.test:core:1.5.0")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation ("junit:junit:4.13.2")
-    implementation ("com.airbnb.android:lottie:6.6.0")
-    implementation ("io.reactivex.rxjava3:rxjava:3.1.9")
-    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    // Lottie para animaciones
+    implementation("com.airbnb.android:lottie:6.6.0")
 
+    // RxJava para reactividad
+    implementation("io.reactivex.rxjava3:rxjava:3.1.9")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
-    // Añade otras dependencias necesarias
+    // Testing
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("junit:junit:4.13.2")
 }

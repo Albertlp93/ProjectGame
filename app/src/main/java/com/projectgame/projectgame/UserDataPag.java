@@ -9,16 +9,17 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserDataPag extends AppCompatActivity {
 
@@ -26,150 +27,156 @@ public class UserDataPag extends AppCompatActivity {
     private Button buttonVolver, btnObtenerUbicacion;
     private TextView latitudText, longitudText, precisionText, altitudText;
     private String nombreUsuario;
-    private String passwordUsuario;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    private FusedLocationProviderClient fusedLocationProviderClient;  // Ubicación del cliente
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001; // Solicitud de permisos
+
+    private FirebaseFirestore firestore; // Firestore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // LAYOUT
         setContentView(R.layout.activity_userdata_pag);
 
-        // INICIALIZAR BOTONES Y CAMPOS
+        // INICIALIZAR BOTONES
         buttonVolver = findViewById(R.id.buttonVolver);
         btnObtenerUbicacion = findViewById(R.id.btnObtenerUbicacion);
+
+        // INICIALIZAR CAMPOS
         latitudText = findViewById(R.id.latitudText);
         longitudText = findViewById(R.id.longitudText);
         precisionText = findViewById(R.id.precisionText);
         altitudText = findViewById(R.id.altitudText);
 
-        // OBTENER NOMBRE Y CONTRASEÑA DEL USUARIO
+        // OBTENER - Nombre Usuario
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
-        passwordUsuario = getIntent().getStringExtra("contraseña");
 
-        // MOSTRAR NOMBRE Y CONTRASEÑA
-        TextView userNameDisplay = findViewById(R.id.userNameText);
-        TextView passwordUserDisplay = findViewById(R.id.userPasswordText);
-
-        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
-            userNameDisplay.setText(getString(R.string.udp_UserName) + nombreUsuario);
-        } else {
-            userNameDisplay.setText(getString(R.string.udp_UserName) + getString(R.string.udp_UserNameError));
-        }
-
-        if (passwordUsuario != null) {
-            passwordUserDisplay.setText(getString(R.string.udp_UserPassword) + passwordUsuario);
-        } else {
-            passwordUserDisplay.setText(getString(R.string.udp_UserPassword) + getString(R.string.udp_UserPasswordError));
-        }
-
-        // INICIALIZAR CLIENTE DE UBICACIÓN
+        // Inicializar el cliente de ubicación
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // BOTÓN VOLVER
+        // Inicializar Firestore
+        firestore = FirebaseFirestore.getInstance();
+
+        // BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
             Intent intent = new Intent(UserDataPag.this, ThirdPag.class);
             intent.putExtra("nombreUsuario", nombreUsuario);
-            intent.putExtra("contraseña", passwordUsuario);
             startActivity(intent);
             finish();
         });
 
-        // BOTÓN OBTENER UBICACIÓN
+        // BOTON - OBTENER UBICACION
         btnObtenerUbicacion.setOnClickListener(v -> obtenerUbicacion());
     }
 
-    // MÉTODO - OBTENER UBICACIÓN
+    // METODO - OBTENER UBICACION
     private void obtenerUbicacion() {
-        if (!verificarPermisos()) {
-            solicitarPermisos();
+        String udp_not_location = getString(R.string.udp_not_location);
+
+        // Verificar permisos
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Solicitar permisos
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
 
-        try {
-            fusedLocationProviderClient.getLastLocation()
-                    .addOnSuccessListener(this, location -> {
-                        if (location != null) {
-                            actualizarUIConUbicacion(location);
-                        } else {
-                            solicitarNuevaUbicacion();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, getString(R.string.udp_not_location), Toast.LENGTH_SHORT).show();
-                    });
-        } catch (SecurityException e) {
-            Toast.makeText(this, getString(R.string.udp_not_permision), Toast.LENGTH_SHORT).show();
-        }
+        // Obtener la última ubicación conocida
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                actualizarUIConUbicacion(location);
+            } else { // Si no hay última ubicación, realiza una solicitud activa
+                solicitarNuevaUbicacion();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, udp_not_location, Toast.LENGTH_SHORT).show();
+        });
     }
 
-    // MÉTODO - VERIFICAR PERMISOS
-    private boolean verificarPermisos() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    // MÉTODO - SOLICITAR PERMISOS
-    private void solicitarPermisos() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                LOCATION_PERMISSION_REQUEST_CODE);
-    }
-
-    // MÉTODO - OBTENER NUEVA UBICACIÓN
+    // METODO - OBTENER NUEVA UBICACION
     private void solicitarNuevaUbicacion() {
-        if (!verificarPermisos()) {
-            solicitarPermisos();
+        String udp_not_location = getString(R.string.udp_not_location);
+
+        // Verificar permisos
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Si los permisos no han sido otorgados, solicita los permisos necesarios
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
 
+        // Crear solicitud de ubicación
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10000)
                 .setFastestInterval(5000);
 
-        try {
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
-                @Override
-                public void onLocationResult(@NonNull LocationResult locationResult) {
-                    Location location = locationResult.getLastLocation();
-                    if (location != null) {
-                        actualizarUIConUbicacion(location);
-                        fusedLocationProviderClient.removeLocationUpdates(this);
-                    } else {
-                        Toast.makeText(UserDataPag.this, getString(R.string.udp_not_location), Toast.LENGTH_SHORT).show();
-                    }
+        // Actualizaciones de ubicación
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                    actualizarUIConUbicacion(location);
+                    fusedLocationProviderClient.removeLocationUpdates(this); // Detener actualizaciones
+                } else {
+                    Toast.makeText(UserDataPag.this, udp_not_location, Toast.LENGTH_SHORT).show();
                 }
-            }, getMainLooper());
-        } catch (SecurityException e) {
-            Toast.makeText(this, getString(R.string.udp_not_permision), Toast.LENGTH_SHORT).show();
-        }
+            }
+        }, getMainLooper());
     }
 
-    // MÉTODO - ACTUALIZAR UI CON UBICACIÓN
+    // METODO - ACTUALIZAR UI CON UBICACION
     @SuppressLint("SetTextI18n")
     private void actualizarUIConUbicacion(Location location) {
-        latitudText.setText(getString(R.string.udp_latitude) + location.getLatitude());
-        longitudText.setText(getString(R.string.udp_longitude) + location.getLongitude());
-        precisionText.setText(getString(R.string.udp_precision) + location.getAccuracy() + getString(R.string.udp_distance));
-        altitudText.setText(getString(R.string.udp_altitude) + location.getAltitude() + getString(R.string.udp_distance));
+
+        String udp_latitude = getString(R.string.udp_latitude);
+        String udp_longitude = getString(R.string.udp_longitude);
+        String udp_precision = getString(R.string.udp_precision);
+        String udp_altitud = getString(R.string.udp_altitud);
+        String udp_distance = getString(R.string.udp_distance);
+
+        latitudText.setText(udp_latitude + location.getLatitude());
+        longitudText.setText(udp_longitude + location.getLongitude());
+        precisionText.setText(udp_precision + location.getAccuracy() + udp_distance);
+        altitudText.setText(udp_altitud + location.getAltitude() + udp_distance);
+
+        // Guardar ubicación en Firestore
+        Map<String, Object> ubicacion = new HashMap<>();
+        ubicacion.put("latitud", location.getLatitude());
+        ubicacion.put("longitud", location.getLongitude());
+        ubicacion.put("precision", location.getAccuracy());
+        ubicacion.put("altitud", location.getAltitude());
+        ubicacion.put("usuario", nombreUsuario);
+
+        firestore.collection("ubicaciones")
+                .add(ubicacion)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Ubicación guardada con éxito", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al guardar la ubicación", Toast.LENGTH_SHORT).show();
+                });
     }
 
-    // MÉTODO - RESPUESTA DE PERMISOS
+    // METODO - SOLICITAR PERMISOS
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // Llamar a la implementación de la superclase
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permiso concedido, obtener ubicación
                 obtenerUbicacion();
             } else {
-                // Permiso denegado, mostrar mensaje
-                Toast.makeText(this, getString(R.string.udp_not_permision), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }
