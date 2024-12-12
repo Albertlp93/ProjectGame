@@ -75,6 +75,7 @@ public class HistoricalPag extends AppCompatActivity {
         tableLayout.addView(headerRow);
 
         // Obtener puntuaciones de Firestore
+        // Obtener puntuaciones de Firestore
         db.collection("usuarios")
                 .orderBy("puntuacion", Query.Direction.DESCENDING)
                 .get()
@@ -82,7 +83,8 @@ public class HistoricalPag extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         for (var document : queryDocumentSnapshots.getDocuments()) {
                             String nombre = document.getString("nombre");
-                            int puntuacion = document.getLong("puntuacion").intValue();
+                            Long puntuacionLong = document.getLong("puntuacion");
+                            int puntuacion = puntuacionLong != null ? puntuacionLong.intValue() : 0;
 
                             // Crear una nueva fila para la tabla
                             TableRow row = new TableRow(this);
@@ -116,5 +118,6 @@ public class HistoricalPag extends AppCompatActivity {
                     noDataText.setPadding(16, 16, 16, 16);
                     tableLayout.addView(noDataText);
                 });
+
     }
 }
