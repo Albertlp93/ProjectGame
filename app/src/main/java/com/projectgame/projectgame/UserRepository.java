@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -56,15 +59,20 @@ public class UserRepository {
     }
 
     // METODO - Crear nuevo usuario
-    public Completable crearUsuario(String nombre, String contraseña) {
+    public Completable crearUsuario(String nombre, int puntuacion) {
         return Completable.create(emitter -> {
-            db.collection("usuarios")
-                    .document(nombre)
-                    .set(new Usuario(nombre, contraseña, 0))
+            Map<String, Object> data = new HashMap<>();
+            data.put("nombre", nombre);
+            data.put("puntuacion", puntuacion);
+
+            db.collection("usuarios").document(nombre)
+                    .set(data)
                     .addOnSuccessListener(aVoid -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });
     }
+
+
 
     // Clase interna para estructurar los datos del usuario
     private static class Usuario {

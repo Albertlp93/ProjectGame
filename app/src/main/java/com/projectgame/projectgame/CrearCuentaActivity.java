@@ -41,14 +41,14 @@ public class CrearCuentaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nombreUsuario = editTextNuevoUsuario.getText().toString().trim();
-                String pssword = editTextNuevaContraseña.getText().toString().trim(); // Si decides usarla
+                String password = editTextNuevaContraseña.getText().toString().trim(); // Si decides usarla
                 String cc_new_user = getString(R.string.cc_new_user);
                 String cc_error_register = getString(R.string.cc_error_register);
                 String cc_access = getString(R.string.cc_access);
 
-                if (!nombreUsuario.isEmpty() && !pssword.isEmpty()) {
+                if (!nombreUsuario.isEmpty() && !password.isEmpty()) {
                     // Guardar el usuario en la base de datos de forma asíncrona
-                    userRepository.crearUsuario(nombreUsuario, pssword)
+                    userRepository.crearUsuario(nombreUsuario, 50) // Se establece la puntuación inicial a 50
                             .subscribeOn(Schedulers.io()) // Ejecutar en un hilo de fondo
                             .observeOn(AndroidSchedulers.mainThread()) // Volver al hilo principal para la UI
                             .subscribe(() -> {

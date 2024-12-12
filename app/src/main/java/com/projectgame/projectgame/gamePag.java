@@ -22,6 +22,9 @@ import android.media.SoundPool;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -29,6 +32,7 @@ public class gamePag extends AppCompatActivity {
 
     // ATRIBUTOS
 
+    private FirebaseFirestore db;
     private SoundPool soundPool;
     private int diceRollSound;
     private Dice dice1;
@@ -61,6 +65,9 @@ public class gamePag extends AppCompatActivity {
 
         // INICIALIZAR REPOSITORIO
         userRepository = new UserRepository(this);
+        db = FirebaseFirestore.getInstance();
+
+        obtenerTopDiez(); // Método para recuperar el Top 10 de jugadores
 
         dice1 = new Dice();
         dice2 = new Dice();
@@ -140,15 +147,35 @@ public class gamePag extends AppCompatActivity {
 
     // METODO - ACTUALIZAR PUNTUACION INICIAL EN FIRESTORE
     private void actualizarPuntuacionInicial() {
-        userRepository.crearUsuario(nombreUsuario, "50")
+        userRepository.crearUsuario(nombreUsuario, playerCoins)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> Log.d("gamePag", "Puntuación inicial asignada: 50 créditos"),
-                        throwable -> Log.e("gamePag", "Error asignando puntuación inicial", throwable)
+                        () -> Log.d("gamePag", "Puntuación actualizada"),
+                        throwable -> Log.e("gamePag", "Error actualizando puntuación", throwable)
                 );
+
     }
 
+    // METODO - OBTENER TOP 10 JUGADORES
+    private void obtenerTopDiez() {
+        db.collection("usuarios")
+                .orderBy("victorias", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (var document : queryDocumentSnapshots.getDocuments()) {
+                            String nombre = document.getString("nombre");
+                            Long victorias = document.getLong("victorias");
+                            Log.d("Top10", "Jugador: " + nombre + ", Victorias: " + victorias);
+                        }
+                    } else {
+                        Log.d("Top10", "No se encontraron jugadores en el top 10");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Top10", "Error obteniendo el top 10", e));
+    }
 
     // METODO - ACTUALIZACION TEXTO DE MONEDAS
     private void updateCoinsDisplay() {
@@ -243,12 +270,7 @@ public class gamePag extends AppCompatActivity {
 
     // METODO - ACTUALIZAR PUNTUACION EN FIRESTORE
     private void actualizarPuntuacionFirestore() {
-        userRepository.crearUsuario(nombreUsuario, "")
-                .andThen(userRepository.obtenerPuntuacion(nombreUsuario)
-                        .flatMapCompletable(puntuacion -> {
-                            int nuevaPuntuacion = Math.max(playerCoins, puntuacion);
-                            return userRepository.crearUsuario(nombreUsuario, nuevaPuntuacion + "");
-                        }))
+        userRepository.crearUsuario(nombreUsuario, playerCoins)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -256,6 +278,7 @@ public class gamePag extends AppCompatActivity {
                         throwable -> Log.e("gamePag", "Error actualizando puntuación", throwable)
                 );
     }
+
 
     // CLASE DE LOS DADOS
 
