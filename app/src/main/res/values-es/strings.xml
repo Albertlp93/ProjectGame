@@ -102,6 +102,9 @@
     <string name="udp_UserPassword">Contraseña: </string>
     <string name="udp_UserPasswordError">Error al obtener la contraseña</string>
     <string name="udp_altitude">Altitud: </string>
+    <string name="udp_TitleUserInfo">User Information</string>
+    <string name="udp_TitleUserLocation">Location Information</string>
+    <string name="udp_GetLocation">Get Location</string>
     <string name="ur_error_user_creation">Error creando usuario</string>
     <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
 
