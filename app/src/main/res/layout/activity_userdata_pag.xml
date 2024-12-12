@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón para volver -->
+    <!-- Boton para volver -->
 
     <LinearLayout
         android:id="@+id/userInfoLinearLayout"
@@ -80,6 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/udp_latitude"
+            android:textColor="#263238"
             android:textSize="16sp" />
 
         <TextView
@@ -87,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/udp_longitude"
+            android:textColor="#263238"
             android:textSize="16sp" />
 
         <TextView
@@ -94,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/udp_precision"
+            android:textColor="#263238"
             android:textSize="16sp" />
 
         <TextView
@@ -101,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/udp_altitude"
+            android:textColor="#263238"
             android:textSize="16sp" />
     </LinearLayout>
 
