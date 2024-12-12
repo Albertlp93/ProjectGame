@@ -99,6 +99,10 @@
     <string name="udp_not_permision">Permisos de localizacion denegados</string>
     <string name="ur_error_user_creation">Error creando usuario</string>
     <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
+    <string name="puntuacion_label">Puntuación: %1$d</string>
+
+
+
 
 
 </resources>

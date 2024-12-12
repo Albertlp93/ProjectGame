@@ -2,8 +2,6 @@ package com.projectgame.projectgame;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -11,41 +9,42 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 public class HistoricalPag extends AppCompatActivity {
 
-    //ATRIBUTOS
-    private BaseDeDatosHelper dbHelper;
+    // ATRIBUTOS
+    private FirebaseFirestore db;
     private String nombreUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //LAYOUT
+        // LAYOUT
         setContentView(R.layout.activity_historical_pag);
 
-        //INICIALIZACIONES
-        dbHelper = new BaseDeDatosHelper(this);
+        // INICIALIZACIONES
+        db = FirebaseFirestore.getInstance();
         int puntuacion = getIntent().getIntExtra("puntuacion", 0);
 
-        //INICIALIZAR BOTONES
+        // INICIALIZAR BOTONES
         Button buttonVolver = findViewById(R.id.buttonVolver);
 
-        //INICIALIZAR CAMPOS
+        // INICIALIZAR CAMPOS
         TextView textViewPuntuacion = findViewById(R.id.textViewPuntuacion);
-        textViewPuntuacion.setText("Puntuación: " + puntuacion); //Mostrar la puntuación
+        textViewPuntuacion.setText(String.format(getString(R.string.puntuacion_label), puntuacion)); // Mostrar la puntuación
 
-        //Puntuaciones de los jugadores
+        // Puntuaciones de los jugadores
         mostrarPuntuaciones();
 
-        //OBTENER - Nombre Usuario
+        // OBTENER - Nombre Usuario
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
 
-
-        //BOTON - VOLVER
+        // BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
-
-            //MOVER A LA SIGUIENTE PAGINA {ThirdPag}
+            // MOVER A LA SIGUIENTE PAGINA {ThirdPag}
             Intent intent = new Intent(HistoricalPag.this, ThirdPag.class);
             intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
@@ -53,24 +52,16 @@ public class HistoricalPag extends AppCompatActivity {
         });
     }
 
-    //METODO - MOSTRAR PUNTUACIONES
+    // METODO - MOSTRAR PUNTUACIONES
     private void mostrarPuntuaciones() {
         String hp_name = getString(R.string.hp_name);
         String hp_score = getString(R.string.hp_score);
         String hp_no_data = getString(R.string.hp_no_data);
 
-        //Obtener la base de datos en modo lectura
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        //Obtener usuarios y puntuaciones
-        Cursor cursor = db.rawQuery("SELECT " + BaseDeDatosHelper.COLUMN_NOMBRE + ", " +
-                BaseDeDatosHelper.COLUMN_PUNTUACION + " FROM " +
-                BaseDeDatosHelper.TABLE_USUARIOS, null);
-
         TableLayout tableLayout = findViewById(R.id.tableLayoutResultados);
         tableLayout.removeAllViews();
 
-        //Agregar encabezados
+        // Agregar encabezados
         TableRow headerRow = new TableRow(this);
         TextView headerNombre = new TextView(this);
         headerNombre.setText(hp_name);
@@ -80,46 +71,47 @@ public class HistoricalPag extends AppCompatActivity {
         headerRow.addView(headerPuntuacion);
         tableLayout.addView(headerRow);
 
-        if (cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") String nombre = cursor.getString(cursor.getColumnIndex(BaseDeDatosHelper.COLUMN_NOMBRE));
-                int puntuacionIndex = cursor.getColumnIndex(BaseDeDatosHelper.COLUMN_PUNTUACION);
+        // Obtener puntuaciones de Firestore
+        db.collection("usuarios")
+                .orderBy("puntuacion", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (var document : queryDocumentSnapshots.getDocuments()) {
+                            String nombre = document.getString("nombre");
+                            int puntuacion = document.getLong("puntuacion").intValue();
 
-                // Verifica que el índice de puntuación no sea -1
-                if (puntuacionIndex != -1) {
-                    int puntuacion = cursor.getInt(puntuacionIndex);
+                            // Crear una nueva fila para la tabla
+                            TableRow row = new TableRow(this);
+                            TextView nombreTextView = new TextView(this);
+                            nombreTextView.setText(nombre);
+                            nombreTextView.setPadding(8, 8, 8, 8);
+                            nombreTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
-                    // Crear una nueva fila para la tabla
-                    TableRow row = new TableRow(this);
-                    TextView nombreTextView = new TextView(this);
-                    nombreTextView.setText(nombre);
-                    nombreTextView.setPadding(8, 8, 8, 8);
-                    nombreTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                            TextView puntuacionTextView = new TextView(this);
+                            puntuacionTextView.setText(String.valueOf(puntuacion));
+                            puntuacionTextView.setPadding(8, 8, 8, 8);
+                            puntuacionTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
-                    TextView puntuacionTextView = new TextView(this);
-                    puntuacionTextView.setText(String.valueOf(puntuacion));
-                    puntuacionTextView.setPadding(8, 8, 8, 8);
-                    puntuacionTextView.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                            // Añadir las vistas a la fila
+                            row.addView(nombreTextView);
+                            row.addView(puntuacionTextView);
 
-                    // Añadir las vistas a la fila
-                    row.addView(nombreTextView);
-                    row.addView(puntuacionTextView);
-
-                    // Añadir la fila al TableLayout
-                    tableLayout.addView(row);
-                }
-            } while (cursor.moveToNext());
-        }
-        else {
-            TextView noDataText = new TextView(this);
-            noDataText.setText(hp_no_data);
-            noDataText.setPadding(16, 16, 16, 16);
-            tableLayout.addView(noDataText);
-        }
-
-        cursor.close();
-        db.close();
+                            // Añadir la fila al TableLayout
+                            tableLayout.addView(row);
+                        }
+                    } else {
+                        TextView noDataText = new TextView(this);
+                        noDataText.setText(hp_no_data);
+                        noDataText.setPadding(16, 16, 16, 16);
+                        tableLayout.addView(noDataText);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    TextView noDataText = new TextView(this);
+                    noDataText.setText(hp_no_data);
+                    noDataText.setPadding(16, 16, 16, 16);
+                    tableLayout.addView(noDataText);
+                });
     }
-
-
 }
