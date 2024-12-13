@@ -85,7 +85,7 @@
     <string name="gp_calendar_denied">Calendar permission denied</string>
     <string name="gp_screenshot_saved">Screenshot saved in gallery</string>
     <string name="gp_error_saving_screenshot">Error saving screenshot</string>
-    <string name="gp_victory_saved_calendar">Victory saved in Google Calendar </string>
+    <string name="gp_victory_saved_calendar">Victory saved in Google Calendar</string>
     <string name="gp_event_created_URI">Event created with URI: </string>
     <string name="gp_error_saving_calendar">Error saving to Google Calendar</string>
     <string name="gp_error_insertion">Error: Event insertion failed</string>
@@ -98,13 +98,13 @@
     <string name="gp_won">You have won!</string>
     <string name="gp_victory">Victory!</string>
     <string name="gp_lost">You have lost! Try again</string>
-    <string name="gp_recharged_coins"> coins </string>
-    <string name="gp_calendar_select">Select calendar: </string>
+    <string name="gp_recharged_coins"> coins</string>
+    <string name="gp_calendar_select">Select calendar:</string>
 
     <!-- HISTORICALPAG -->
     <string name="hp_name">Name: </string>
     <string name="hp_score">Score: </string>
-    <string name="hp_no_data">No game data available </string>
+    <string name="hp_no_data">No game data available</string>
     <string name="puntuacion_label">Puntuación: %1$d</string>
 
     <!-- SECONDPAG -->
@@ -119,6 +119,12 @@
     <string name="udp_altitud">Altitude: </string>
     <string name="udp_distance"> meters</string>
     <string name="udp_not_permision">Location permission denied</string>
+    <string name="ubicacion_actual">Ubicación Actual</string>
+    <string name="latitud_esperando">Latitud: Esperando&#8230;</string>
+    <string name="longitud_esperando">Longitud: Esperando&#8230;</string>
+    <string name="precision_esperando">Precisión: Esperando&#8230;</string>
+    <string name="altitud_esperando">Altitud: Esperando&#8230;</string>
+    <string name="obtener_ubicacion">Obtener Ubicación</string>
 
     <!-- USERREPOSITORY -->
     <string name="ur_error_user_creation">Error creating user</string>
