@@ -17,14 +17,12 @@
     <string name="btn_start">START</string>
 
     <!-- TERCERA PESTAÑA -->
-
     <string name="btn_inicioJuego">Start game</string>
     <string name="btn_historico">Historical data</string>
     <string name="btn_user">User information</string>
     <string name="btn_config">Settings</string>
 
     <!-- REGISTRO -->
-
     <string name="hint_nuevo_usuario">New user</string>
     <string name="hint_nueva_contraseña">New password</string>
     <string name="hint_confirmar_contraseña">Set password</string>
@@ -121,25 +119,6 @@
     <string name="udp_altitud">Altitude: </string>
     <string name="udp_distance"> meters</string>
     <string name="udp_not_permision">Location permission denied</string>
-    <string name="udp_UserName">Nombre de Usuario: </string>
-    <string name="udp_UserNameError">Error al obtener el nombre de usuario</string>
-    <string name="udp_UserPassword">Contraseña: </string>
-    <string name="udp_UserPasswordError">Error al obtener la contraseña</string>
-    <string name="udp_altitude">Altitud: </string>
-    <string name="udp_TitleUserInfo">User Information</string>
-    <string name="udp_TitleUserLocation">Location Information</string>
-    <string name="udp_GetLocation">Get Location</string>
-
-
-
-
-
-
-
-
-
-
-
 
     <!-- USERREPOSITORY -->
     <string name="ur_error_user_creation">Error creating user</string>
