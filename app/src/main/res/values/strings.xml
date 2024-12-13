@@ -119,6 +119,14 @@
     <string name="udp_altitud">Altitude: </string>
     <string name="udp_distance"> meters</string>
     <string name="udp_not_permision">Location permission denied</string>
+    <string name="udp_UserName">Nombre de Usuario: </string>
+    <string name="udp_UserNameError">Error al obtener el nombre de usuario</string>
+    <string name="udp_UserPassword">Contraseña: </string>
+    <string name="udp_UserPasswordError">Error al obtener la contraseña</string>
+    <string name="udp_altitude">Altitud: </string>
+    <string name="udp_TitleUserInfo">User Information</string>
+    <string name="udp_TitleUserLocation">Location Information</string>
+    <string name="udp_GetLocation">Get Location</string>
     <string name="ubicacion_actual">Ubicación Actual</string>
     <string name="latitud_esperando">Latitud: Esperando&#8230;</string>
     <string name="longitud_esperando">Longitud: Esperando&#8230;</string>
