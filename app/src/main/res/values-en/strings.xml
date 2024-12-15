@@ -91,6 +91,7 @@
     <string name="sp_user_unknown">User unknown</string>
     <string name="sp_error_query">Error executing query</string>
     <string name="spn_msg_login">Log in to Google to access the game</string>
+    <string name="hp_party_data">There is no starting data.</string>
     <string name="udp_not_location">No location available</string>
     <string name="udp_latitude">"Latitude: "</string>
     <string name="udp_longitude">"Longitude: "</string>
@@ -107,14 +108,12 @@
     <string name="udp_TitleUserInfo">User Information</string>
     <string name="udp_TitleUserLocation">Location Information</string>
     <string name="udp_GetLocation">Get Location</string>
+    <string name="ups_label_pool_position">Pool Position</string>
     <string name="ur_error_user_creation">Error creating user</string>
     <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
     <string name="puntuacion_label">Puntuación: %1$d</string>
-
-
-
-
-
+    <string name="ups_label_prize">JACKPOT</string>
+    <string name="btn_pool_position">Pool position</string>
 
 
 </resources>

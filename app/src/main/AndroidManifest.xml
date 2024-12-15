@@ -62,9 +62,10 @@
             android:name=".UserDataPagFirebase"
             android:exported="false" />
         <activity
+            android:name=".PoolPositionFirebase"
+            android:exported="false" />
+        <activity
             android:name=".gamePag"
             android:exported="false" />
-
     </application>
-
 </manifest>

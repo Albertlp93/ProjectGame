@@ -91,6 +91,7 @@
     <string name="sp_user_unknown">Usuario desconocido</string>
     <string name="sp_error_query">Error de ejecucion de query</string>
     <string name="spn_msg_login">Logeate en Google para acceder al juego</string>
+    <string name="hp_party_data">No hay datos de inicio</string>
     <string name="udp_not_location">Localizacion no disponible</string>
     <string name="udp_latitude">"Laatitud: "</string>
     <string name="udp_longitude">"Longitud: "</string>
@@ -108,12 +109,11 @@
     <string name="udp_UserNameError">Error al obtener el nombre de usuario</string>
     <string name="udp_UserPasswordError">Error al obtener la contraseña</string>
 
+    <string name="ups_label_pool_position">Mejores jugadores</string>
     <string name="ur_error_user_creation">Error creando usuario</string>
     <string name="default_web_client_id">270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com</string>
     <string name="puntuacion_label">Puntuación: %1$d</string>
-
-
-
-
+    <string name="ups_label_prize">PREMIO</string>
+    <string name="btn_pool_position">Top jugadores</string>
 
 </resources>

@@ -19,9 +19,10 @@ public class ThirdPag extends AppCompatActivity {
         setContentView(R.layout.activity_third_pag);
 
         // INICIALIZAR BOTONES
-        Button buttonIniciar = findViewById(R.id.buttonIniciar);     // Iniciar juego
-        Button buttonHistorico = findViewById(R.id.buttonHistorico); // Histórico juego
-        Button buttonUserData = findViewById(R.id.buttonUserData);   // Datos usuario
+        Button buttonIniciar = findViewById(R.id.buttonIniciar);         // Iniciar juego
+        Button buttonHistorico = findViewById(R.id.buttonHistorico);     // Histórico juego
+        Button buttonUserData = findViewById(R.id.buttonUserData);       // Datos usuario
+        Button buttonPoolPosition = findViewById(R.id.buttonPosition);   // Posición usuario
 
         // OBTENER - Nombre Usuario
         nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
@@ -88,6 +89,23 @@ public class ThirdPag extends AppCompatActivity {
 
                 // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
                 Intent intent = new Intent(ThirdPag.this, UserDataPagFirebase.class);
+                intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
+                startActivity(intent);
+            }
+        });
+
+        // BOTON - POOL POSITION
+        buttonPoolPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+                    Toast.makeText(ThirdPag.this, "El nombre de usuario no está disponible", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
+                Intent intent = new Intent(ThirdPag.this, PoolPositionFirebase.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
                 intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);

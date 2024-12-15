@@ -16,11 +16,19 @@
     <string name="btn_olvidaste_contraseña">Recover</string>
     <string name="btn_start">START</string>
 
-    <!-- TERCERA PESTAÑA -->
+    <!-- THIRDPAG-->
     <string name="btn_inicioJuego">Start game</string>
     <string name="btn_historico">Historical data</string>
     <string name="btn_user">User information</string>
     <string name="btn_config">Settings</string>
+    <string name="btn_pool_position">Pool position</string>
+
+    <!-- SECONDPAG -->
+    <string name="sp_user_unknown">User unknown</string>
+    <string name="sp_error_query">Error executing query</string>
+
+    <!-- SECONDPAG_FIREBASE-->
+    <string name="spn_msg_login">Log in to Google to access the game</string>
 
     <!-- REGISTRO -->
     <string name="hint_nuevo_usuario">New user</string>
@@ -57,7 +65,6 @@
     <string name="lbl_registrarse">Sign in</string>
     <string name="btn_results">Results</string>
 
-    <!-- ARCHIVOS JAVA -->
     <!-- BASE DE DATOS HELPER -->
     <string name="db_location_saved">Location saved: Latitude=%1$s, Longitude=%2$s, User=%3$s</string>
     <string name="db_score_not_found">The column score does not exist in the cursor.</string>
@@ -106,13 +113,8 @@
     <string name="hp_score">Score: </string>
     <string name="hp_no_data">No game data available</string>
     <string name="puntuacion_label">Score: %1$d</string>
+    <string name="hp_party_data">There is no starting data.</string>
 
-    <!-- SECONDPAG -->
-    <string name="sp_user_unknown">User unknown</string>
-    <string name="sp_error_query">Error executing query</string>
-
-    <!-- SECONDPAG NEW-->
-    <string name="spn_msg_login">Log in to Google to access the game</string>
 
 
     <!-- USERDATAPAG -->
@@ -132,6 +134,9 @@
     <string name="udp_TitleUserLocation">Location Information</string>
     <string name="udp_GetLocation">Get Location</string>
 
+    <!-- USERSPOSITIONS -->
+    <string name="ups_label_prize">JACKPOT</string>
+    <string name="ups_label_pool_position">Pool Position</string>
 
     <!-- USERREPOSITORY -->
     <string name="ur_error_user_creation">Error creating user</string>

@@ -31,14 +31,14 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.586" />
+        app:layout_constraintVertical_bias="0.737" />
 
     <Button
         android:id="@+id/buttonHistorico"
         android:layout_width="162dp"
         android:layout_height="54dp"
         android:layout_gravity="left"
-        android:layout_marginBottom="320dp"
+        android:layout_marginBottom="304dp"
         android:text="@string/btn_historico"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +55,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonPosition"
+        android:layout_width="162dp"
+        android:layout_height="54dp"
+        android:layout_gravity="left"
+        android:layout_marginBottom="132dp"
+        android:text="@string/btn_pool_position"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
 
