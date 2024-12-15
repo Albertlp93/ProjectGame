@@ -90,6 +90,7 @@
     <string name="hp_no_data">"No game data available "</string>
     <string name="sp_user_unknown">User unknown</string>
     <string name="sp_error_query">Error executing query</string>
+    <string name="spn_msg_login">Log in to Google to access the game</string>
     <string name="udp_not_location">No location available</string>
     <string name="udp_latitude">"Latitude: "</string>
     <string name="udp_longitude">"Longitude: "</string>
@@ -98,12 +99,6 @@
     <string name="udp_distance">" meters"</string>
     <string name="udp_not_permision">Location permission denied</string>
 
-    <string name="ubicacion_actual">Ubicación Actual</string>
-    <string name="latitud_esperando">Latitud: Esperando&#8230;</string>
-    <string name="longitud_esperando">Longitud: Esperando&#8230;</string>
-    <string name="precision_esperando">Precisión: Esperando&#8230;</string>
-    <string name="altitud_esperando">Altitud: Esperando&#8230;</string>
-    <string name="obtener_ubicacion">Obtener Ubicación</string>
     <string name="udp_UserName">Nombre de Usuario: </string>
     <string name="udp_UserNameError">Error al obtener el nombre de usuario</string>
     <string name="udp_UserPassword">Contraseña: </string>

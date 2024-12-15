@@ -105,11 +105,15 @@
     <string name="hp_name">Name: </string>
     <string name="hp_score">Score: </string>
     <string name="hp_no_data">No game data available</string>
-    <string name="puntuacion_label">Puntuación: %1$d</string>
+    <string name="puntuacion_label">Score: %1$d</string>
 
     <!-- SECONDPAG -->
     <string name="sp_user_unknown">User unknown</string>
     <string name="sp_error_query">Error executing query</string>
+
+    <!-- SECONDPAG NEW-->
+    <string name="spn_msg_login">Log in to Google to access the game</string>
+
 
     <!-- USERDATAPAG -->
     <string name="udp_not_location">No location available</string>
@@ -127,12 +131,7 @@
     <string name="udp_TitleUserInfo">User Information</string>
     <string name="udp_TitleUserLocation">Location Information</string>
     <string name="udp_GetLocation">Get Location</string>
-    <string name="ubicacion_actual">Ubicación Actual</string>
-    <string name="latitud_esperando">Latitud: Esperando&#8230;</string>
-    <string name="longitud_esperando">Longitud: Esperando&#8230;</string>
-    <string name="precision_esperando">Precisión: Esperando&#8230;</string>
-    <string name="altitud_esperando">Altitud: Esperando&#8230;</string>
-    <string name="obtener_ubicacion">Obtener Ubicación</string>
+
 
     <!-- USERREPOSITORY -->
     <string name="ur_error_user_creation">Error creating user</string>

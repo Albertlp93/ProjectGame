@@ -87,7 +87,7 @@ public class ThirdPag extends AppCompatActivity {
                 }
 
                 // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
-                Intent intent = new Intent(ThirdPag.this, UserDataPag.class);
+                Intent intent = new Intent(ThirdPag.this, UserDataPagFirebase.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
                 intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
