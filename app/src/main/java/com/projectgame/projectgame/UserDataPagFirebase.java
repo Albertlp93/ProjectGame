@@ -44,10 +44,10 @@ public class UserDataPagFirebase extends AppCompatActivity{
         btnObtenerUbicacion = findViewById(R.id.btnObtenerUbicacion);
 
         // INICIALIZAR CAMPOS
-        latitudText = findViewById(R.id.latitudText);
-        longitudText = findViewById(R.id.longitudText);
+        latitudText   = findViewById(R.id.latitudText);
+        longitudText  = findViewById(R.id.longitudText);
         precisionText = findViewById(R.id.precisionText);
-        altitudText = findViewById(R.id.altitudText);
+        altitudText   = findViewById(R.id.altitudText);
 
         // OBTENER - Nombre Usuario
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
