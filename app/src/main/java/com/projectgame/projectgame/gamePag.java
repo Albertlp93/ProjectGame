@@ -22,6 +22,7 @@ import android.media.SoundPool;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -242,9 +243,13 @@ public class gamePag extends AppCompatActivity {
             diceResult.setText(gp_results + sum);
 
             if (sum == playerBet) {
-                playerCoins += 10;
+                // Si gana la apuesta
+                obtenerYSumarPremio();
                 Toast.makeText(gamePag.this, gp_won, Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
+                // Si pierde la apuesta, sumar 50 al premio
+                incrementarPremio();
                 Toast.makeText(gamePag.this, gp_lost, Toast.LENGTH_SHORT).show();
             }
 
@@ -312,6 +317,48 @@ public class gamePag extends AppCompatActivity {
             soundPool.release();
             soundPool = null;
         }
+    }
+
+    // MeTODO: Incrementar premio en 50 puntos en Firebase
+    private void incrementarPremio() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .update("premio", FieldValue.increment(50))
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio incrementado en 50"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error incrementando premio", e));
+    }
+
+    // MeTODO: Obtener el valor del premio y actualizar la puntuación del jugador
+    private void obtenerYSumarPremio() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Long premio = documentSnapshot.getLong("premio");
+                        if (premio != null) {
+                            // Sumar el premio a la puntuación del jugador
+                            playerCoins += premio.intValue();
+                            updateCoinsDisplay();
+                            Toast.makeText(gamePag.this, "Ganaste el premio de $" + premio, Toast.LENGTH_SHORT).show();
+                            // Reiniciar el premio a 0 en Firebase
+                            reiniciarPremio();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error obteniendo el premio", e));
+    }
+
+    // MeTODO: Reiniciar el premio a 0 en Firebase
+    private void reiniciarPremio() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .update("premio", 0)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio reiniciado a 0"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando premio", e));
     }
 
 }
