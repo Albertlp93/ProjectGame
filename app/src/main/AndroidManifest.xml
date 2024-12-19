@@ -47,6 +47,9 @@
             android:name=".SecondPag"
             android:exported="false" />
         <activity
+            android:name=".SecondPagFirebase"
+            android:exported="false" />
+        <activity
             android:name=".ThirdPag"
             android:exported="false" />
         <activity
@@ -56,9 +59,13 @@
             android:name=".UserDataPag"
             android:exported="false" />
         <activity
+            android:name=".UserDataPagFirebase"
+            android:exported="false" />
+        <activity
+            android:name=".PoolPositionFirebase"
+            android:exported="false" />
+        <activity
             android:name=".gamePag"
             android:exported="false" />
-
     </application>
-
 </manifest>

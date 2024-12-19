@@ -6,67 +6,32 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/userInfoTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/udp_TitleUserInfo"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Título -->
 
-    <!-- Boton para volver -->
+    <!-- Información de ubicación -->
 
-    <LinearLayout
-        android:id="@+id/userInfoLinearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userInfoTitle">
+    <!-- Botón para obtener ubicación -->
 
-        <TextView
-            android:id="@+id/userNameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/udp_UserName"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/userPasswordText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/udp_UserPassword"
-            android:textSize="16sp" />
-    </LinearLayout>
+    <!-- Botón para regresar -->
 
     <TextView
         android:id="@+id/locationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="@string/udp_TitleUserLocation"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userInfoLinearLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/infoLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="64dp"
         android:background="@android:color/darker_gray"
         android:orientation="vertical"
         android:padding="8dp"
@@ -112,10 +77,9 @@
         android:id="@+id/btnObtenerUbicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:text="@string/udp_GetLocation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/infoLinearLayout" />
 
@@ -123,11 +87,11 @@
         android:id="@+id/buttonVolver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="196dp"
         android:text="@string/btn_regresar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnObtenerUbicacion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ThirdPag extends AppCompatActivity {
     // ATRIBUTOS
     private String nombreUsuario;
+    private String passwordUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +19,24 @@ public class ThirdPag extends AppCompatActivity {
         setContentView(R.layout.activity_third_pag);
 
         // INICIALIZAR BOTONES
-        Button buttonIniciar = findViewById(R.id.buttonIniciar);     // Iniciar juego
-        Button buttonHistorico = findViewById(R.id.buttonHistorico); // Histórico juego
-        Button buttonUserData = findViewById(R.id.buttonUserData);   // Datos usuario
+        Button buttonIniciar = findViewById(R.id.buttonIniciar);         // Iniciar juego
+        Button buttonHistorico = findViewById(R.id.buttonHistorico);     // Histórico juego
+        Button buttonUserData = findViewById(R.id.buttonUserData);       // Datos usuario
+        Button buttonPoolPosition = findViewById(R.id.buttonPosition);   // Posición usuario
 
         // OBTENER - Nombre Usuario
-        nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        nombreUsuario   = getIntent().getStringExtra("nombreUsuario");
+        passwordUsuario = getIntent().getStringExtra("contraseña");
+
+        // Si nombreUsuario es null, asignar un valor por defecto
+        if (nombreUsuario == null) {
+            nombreUsuario = "UsuarioDesconocido";
+        }
+
+        // Si nombreUsuario es null, asignar un valor por defecto
+        if (nombreUsuario == null) {
+            nombreUsuario = "UsuarioDesconocido";
+        }
 
         // Si nombreUsuario es null, asignar un valor por defecto
         if (nombreUsuario == null) {
@@ -43,6 +56,7 @@ public class ThirdPag extends AppCompatActivity {
                 Intent intent = new Intent(ThirdPag.this, gamePag.class);
                 // Pasar el nombre de usuario a la siguiente actividad
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });
@@ -59,6 +73,7 @@ public class ThirdPag extends AppCompatActivity {
                 // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
                 Intent intent = new Intent(ThirdPag.this, HistoricalPag.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });
@@ -73,8 +88,26 @@ public class ThirdPag extends AppCompatActivity {
                 }
 
                 // MOVER A LA SIGUIENTE PAGINA {UserDataPag}
-                Intent intent = new Intent(ThirdPag.this, UserDataPag.class);
+                Intent intent = new Intent(ThirdPag.this, UserDataPagFirebase.class);
                 intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
+                startActivity(intent);
+            }
+        });
+
+        // BOTON - POOL POSITION
+        buttonPoolPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+                    Toast.makeText(ThirdPag.this, "El nombre de usuario no está disponible", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // MOVER A LA SIGUIENTE PAGINA {HistoricalPag}
+                Intent intent = new Intent(ThirdPag.this, PoolPositionFirebase.class);
+                intent.putExtra("nombreUsuario", nombreUsuario);
+                intent.putExtra("contraseña", passwordUsuario);
                 startActivity(intent);
             }
         });

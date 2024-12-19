@@ -30,7 +30,7 @@
         android:id="@+id/textViewNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay datos de partida."
+        android:text="@string/hp_party_data"
         android:textSize="18sp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"

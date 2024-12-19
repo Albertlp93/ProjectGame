@@ -16,12 +16,9 @@ import android.widget.Toast;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
-
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -35,6 +32,8 @@ public class gamePag extends AppCompatActivity {
     private FirebaseFirestore db;
     private SoundPool soundPool;
     private int diceRollSound;
+    private int playerBet = 50;
+    private int playerCoins;
     private Dice dice1;
     private Dice dice2;
     private ImageView diceImage1;
@@ -44,6 +43,8 @@ public class gamePag extends AppCompatActivity {
     private Button buttonVolver;
     private Button buttonRecargar;
     private Button buttonMostrarResultados;
+    private String nombreUsuario;
+    private UserRepository userRepository;
     private int[] diceImages = {
             R.drawable.dice_1,
             R.drawable.dice_2,
@@ -53,10 +54,6 @@ public class gamePag extends AppCompatActivity {
             R.drawable.dice_6
     };
 
-    private int playerBet = 50;
-    private int playerCoins;
-    private String nombreUsuario;
-    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +64,22 @@ public class gamePag extends AppCompatActivity {
         userRepository = new UserRepository(this);
         db = FirebaseFirestore.getInstance();
 
-        obtenerTopDiez(); // Método para recuperar el Top 10 de jugadores
+        obtenerTopDiez();
 
         dice1 = new Dice();
         dice2 = new Dice();
 
-        // INICIALIZAR BOTONES Y COMPONENTES
+        // INICIALIZAR BOTONES
         buttonRecargar = findViewById(R.id.buttonRecargar);
         buttonVolver = findViewById(R.id.buttonVolver);
         Button rollButton = findViewById(R.id.rollButton);
         buttonMostrarResultados = findViewById(R.id.buttonMostrarResultados);
+        initializeSoundPool();
+
+        //INICIALIZAR TEXTOS
         coinsTextView = findViewById(R.id.coinsTextView);
+
+        //INICIALIZAR COMPONENTES
         diceImage1 = findViewById(R.id.diceImage1);
         diceImage2 = findViewById(R.id.diceImage2);
         diceResult = findViewById(R.id.diceResult);
@@ -229,6 +231,12 @@ public class gamePag extends AppCompatActivity {
         String gp_victory = getString(R.string.gp_victory);
         String gp_lost = getString(R.string.gp_lost);
 
+        // Reproducir el sonido del dado
+        if (soundPool != null) {
+            soundPool.play(diceRollSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
+
+
         animateDice(diceImage1);
         animateDice(diceImage2);
 
@@ -242,9 +250,13 @@ public class gamePag extends AppCompatActivity {
             diceResult.setText(gp_results + sum);
 
             if (sum == playerBet) {
-                playerCoins += 10;
+                // Si gana la apuesta
+                obtenerYSumarPremio();
                 Toast.makeText(gamePag.this, gp_won, Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
+                // Si pierde la apuesta, sumar 50 al premio
+                incrementarPremio();
                 Toast.makeText(gamePag.this, gp_lost, Toast.LENGTH_SHORT).show();
             }
 
@@ -280,7 +292,7 @@ public class gamePag extends AppCompatActivity {
     }
 
 
-    // CLASE DE LOS DADOS
+    //CLASE DE LOS DADOS
 
     private class Dice {
         public int roll() {
@@ -302,6 +314,15 @@ public class gamePag extends AppCompatActivity {
 
         // Cargar el sonido del dado
         diceRollSound = soundPool.load(this, R.raw.dado_sonido, 1);
+
+        // Listener para confirmar que el sonido está cargado
+        soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+            if (status == 0) {
+                Log.d("SoundPool", "Sonido cargado correctamente");
+            } else {
+                Log.e("SoundPool", "Error cargando el sonido");
+            }
+        });
     }
 
     //METODO - LIBERAR RECURSOS
@@ -312,6 +333,51 @@ public class gamePag extends AppCompatActivity {
             soundPool.release();
             soundPool = null;
         }
+    }
+
+    //METODO - INCREMENTAR PREMIO EN FIREBASE
+    private void incrementarPremio() {
+
+        int incremento = 50;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .update("premio", FieldValue.increment(incremento))
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio incrementado en 50"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error incrementando premio", e));
+    }
+
+    //METODO - Obtener premio + actualizar puntuacion jugador
+    private void obtenerYSumarPremio() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Long premio = documentSnapshot.getLong("premio");
+                        if (premio != null) {
+                            // Sumar el premio a la puntuación del jugador
+                            playerCoins += premio.intValue();
+                            updateCoinsDisplay();
+                            Toast.makeText(gamePag.this, "Ganaste el premio de $" + premio, Toast.LENGTH_SHORT).show();
+                            // Reiniciar el premio a 0 en Firebase
+                            reiniciarPremio();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error obteniendo el premio", e));
+    }
+
+    //METODO - Reiniciar premio a 0 en Firebase
+    private void reiniciarPremio() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("premioActual")
+                .document("O8pIDi42aYUwBU3gMb58")
+                .update("premio", 0)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio reiniciado a 0"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando premio", e));
     }
 
 }

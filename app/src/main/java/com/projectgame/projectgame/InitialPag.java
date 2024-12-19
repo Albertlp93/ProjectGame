@@ -36,7 +36,7 @@ public class InitialPag extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // MOVER A LA SIGUIENTE PAGINA {SecondPag}
-                Intent intent = new Intent(InitialPag.this, SecondPag.class);
+                Intent intent = new Intent(InitialPag.this, SecondPagFirebase.class);
                 startActivity(intent);
             }
         });

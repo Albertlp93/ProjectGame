@@ -17,6 +17,7 @@ public class HistoricalPag extends AppCompatActivity {
     // ATRIBUTOS
     private FirebaseFirestore db;
     private String nombreUsuario;
+    private String passwordUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,14 @@ public class HistoricalPag extends AppCompatActivity {
 
         // OBTENER - Nombre Usuario
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        passwordUsuario = getIntent().getStringExtra("contraseña");
 
         // BOTON - VOLVER
         buttonVolver.setOnClickListener(v -> {
             // MOVER A LA SIGUIENTE PAGINA {ThirdPag}
             Intent intent = new Intent(HistoricalPag.this, ThirdPag.class);
             intent.putExtra("nombreUsuario", nombreUsuario);
+            intent.putExtra("contraseña", passwordUsuario);
             startActivity(intent);
             finish();
         });

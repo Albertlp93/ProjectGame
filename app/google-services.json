@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "270631014169-96j6r11177hpfncf9fi5158a465hp10o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectgame.projectgame",
+            "certificate_hash": "461cd8629fa24d3620e9f0359ed570b889730087"
+          }
+        },
+        {
           "client_id": "270631014169-jeg307malo2000h5ms01acoev1fj4dog.apps.googleusercontent.com",
           "client_type": 3
         }
