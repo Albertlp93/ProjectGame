@@ -116,4 +116,9 @@
     <string name="ups_label_prize">PREMIO</string>
     <string name="btn_pool_position">Top jugadores</string>
 
+    <string name="help_dialog_title">Ayuda</string>
+    <string name="help_dialog_message">Aquí están las reglas del juego:\n\n1. Elige un número del panel de apuestas (2-12).\n2. Lanza los dados.\n3. Si el resultado coincide con tu apuesta, ganas.\n4. Sigue jugando y acumula monedas.</string>
+    <string name="ok">Entendido</string>
+
+
 </resources>
