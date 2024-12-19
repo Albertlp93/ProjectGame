@@ -1,7 +1,8 @@
 package com.projectgame.projectgame;
 
-import android.Manifest;
+
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,13 +18,21 @@ import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import android.graphics.Bitmap;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class gamePag extends AppCompatActivity {
 
@@ -45,6 +54,10 @@ public class gamePag extends AppCompatActivity {
     private Button buttonMostrarResultados;
     private String nombreUsuario;
     private UserRepository userRepository;
+
+    private ImageButton buttonCaptureScreenshot;
+
+    private ImageButton helpButton;
     private int[] diceImages = {
             R.drawable.dice_1,
             R.drawable.dice_2,
@@ -53,7 +66,6 @@ public class gamePag extends AppCompatActivity {
             R.drawable.dice_5,
             R.drawable.dice_6
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +86,17 @@ public class gamePag extends AppCompatActivity {
         buttonVolver = findViewById(R.id.buttonVolver);
         Button rollButton = findViewById(R.id.rollButton);
         buttonMostrarResultados = findViewById(R.id.buttonMostrarResultados);
+        helpButton = findViewById(R.id.helpButton);
         initializeSoundPool();
+
+        // Encontrar el botón de captura de pantalla
+        buttonCaptureScreenshot = findViewById(R.id.buttonCaptureScreenshot);
+
+        // Configurar funcionalidad del botón de ayuda
+        helpButton.setOnClickListener(v -> mostrarAyuda());
+
+        // Configurar el listener para el botón
+        buttonCaptureScreenshot.setOnClickListener(v -> captureScreenshot());
 
         //INICIALIZAR TEXTOS
         coinsTextView = findViewById(R.id.coinsTextView);
@@ -145,6 +167,50 @@ public class gamePag extends AppCompatActivity {
             intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
         });
+    }
+
+    private void mostrarAyuda() {
+        // Crear un AlertDialog para mostrar la información
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.help_dialog_title));
+        builder.setMessage(getString(R.string.help_dialog_message));
+        builder.setPositiveButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+    private void captureScreenshot() {
+        // Obtener la vista raíz de la actividad
+        View rootView = getWindow().getDecorView().getRootView();
+
+        // Habilitar el dibujo en caché de la vista
+        rootView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(rootView.getDrawingCache());
+        rootView.setDrawingCacheEnabled(false);
+
+        // Guardar la imagen
+        saveScreenshot(bitmap);
+    }
+
+    private void saveScreenshot(Bitmap bitmap) {
+        // Crear un nombre único para el archivo
+        String fileName = "screenshot_" + System.currentTimeMillis() + ".png";
+
+        // Guardar en el almacenamiento público
+        File directory = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Capturas");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File file = new File(directory, fileName);
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            Toast.makeText(this, "Captura guardada en: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+            // Opcional: Añadir la imagen a la galería
+            MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), fileName, null);
+        } catch (IOException e) {
+            Toast.makeText(this, "Error guardando captura: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("Screenshot", "Error guardando captura", e);
+        }
     }
 
     // METODO - ACTUALIZAR PUNTUACION INICIAL EN FIRESTORE
@@ -236,7 +302,6 @@ public class gamePag extends AppCompatActivity {
             soundPool.play(diceRollSound, 1.0f, 1.0f, 1, 0, 1.0f);
         }
 
-
         animateDice(diceImage1);
         animateDice(diceImage2);
 
@@ -253,8 +318,7 @@ public class gamePag extends AppCompatActivity {
                 // Si gana la apuesta
                 obtenerYSumarPremio();
                 Toast.makeText(gamePag.this, gp_won, Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 // Si pierde la apuesta, sumar 50 al premio
                 incrementarPremio();
                 Toast.makeText(gamePag.this, gp_lost, Toast.LENGTH_SHORT).show();
@@ -290,7 +354,6 @@ public class gamePag extends AppCompatActivity {
                         throwable -> Log.e("gamePag", "Error actualizando puntuación", throwable)
                 );
     }
-
 
     //CLASE DE LOS DADOS
 
@@ -379,5 +442,4 @@ public class gamePag extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio reiniciado a 0"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando premio", e));
     }
-
 }
