@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+
 import android.widget.ImageButton; // Cambia a ImageButton
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +48,7 @@ public class InitialPag extends AppCompatActivity {
             startActivity(intent);
         });
 
+
     }
 
     private void toggleMusic() {
@@ -79,4 +81,7 @@ public class InitialPag extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
+
+
+
 }

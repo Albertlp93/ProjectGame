@@ -33,6 +33,12 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class gamePag extends AppCompatActivity {
 
@@ -442,4 +448,43 @@ public class gamePag extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio reiniciado a 0"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando premio", e));
     }
+
+    private void obtenerUsuarioREST(String userId) {
+        String FIREBASE_BASE_URL = "https://firestore.googleapis.com/v1/projects/projectgame-fp061/";
+
+        FirebaseAPI api = RetrofitClient.getClient(FIREBASE_BASE_URL).create(FirebaseAPI.class);
+
+        // Define la colección y el ID del documento
+        String collection = "usuarios";
+        String documentId = userId;
+
+        api.getUserData(collection, documentId).enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Procesa la respuesta
+                    Map<String, Object> userData = response.body();
+                    String nombre = (String) userData.get("nombre");
+                    Long victorias = (Long) userData.get("victorias");
+
+                    Log.d("Retrofit", "Nombre: " + nombre + ", Victorias: " + victorias);
+
+                    // Mostrar los datos en la interfaz
+                    Toast.makeText(gamePag.this, "Usuario: " + nombre + ", Victorias: " + victorias, Toast.LENGTH_LONG).show();
+                } else {
+                    Log.e("Retrofit", "Error en la respuesta: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.e("Retrofit", "Error al obtener datos del usuario", t);
+            }
+        });
+    }
+
+
+
+
+
 }

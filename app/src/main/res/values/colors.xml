@@ -21,5 +21,6 @@
     <color name="GreenPocker">#006400</color>
     <color name="colorPrimary">#2980B9</color>
     <color name="colorPrimaryDark">#1A5276</color>
-    <color name="dark_green">#004d00</color> <!-- Define aquí el verde oscuro -->
+    <color name="dark_green">#004d00</color>
+    <color name="red">#FF0000</color>
 </resources>
