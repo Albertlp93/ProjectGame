@@ -89,6 +89,9 @@ public class SecondPagFirebase extends AppCompatActivity {
     }
 
     private void autenticarConFirebase(String idToken) {
+
+        String spn_msg_welcome = getString(R.string.spn_msg_welcome);
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
@@ -96,7 +99,7 @@ public class SecondPagFirebase extends AppCompatActivity {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (user != null) {
                             String userEmail = user.getEmail() == null ? "UsuarioDesconocido" : user.getEmail();
-                            Toast.makeText(this, "Bienvenido: " + userEmail, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, spn_msg_welcome + userEmail, Toast.LENGTH_SHORT).show();
 
                             // Redirigir al usuario
                             Intent intent = new Intent(SecondPagFirebase.this, ThirdPag.class);

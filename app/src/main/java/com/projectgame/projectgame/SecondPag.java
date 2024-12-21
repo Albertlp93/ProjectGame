@@ -103,6 +103,9 @@ public class SecondPag extends AppCompatActivity {
     }
 
     private void autenticarConFirebase(String idToken) {
+
+        String spn_msg_welcome = getString(R.string.spn_msg_welcome);
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
@@ -115,7 +118,7 @@ public class SecondPag extends AppCompatActivity {
                                 Toast.makeText(this, "Correo no disponible, asignando valor por defecto.", Toast.LENGTH_SHORT).show();
                             }
 
-                            Toast.makeText(this, "Bienvenido: " + userEmail, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, spn_msg_welcome + userEmail, Toast.LENGTH_SHORT).show();
 
                             // Redirigir al usuario a ThirdPag con el correo electrónico
                             Intent intent = new Intent(SecondPag.this, ThirdPag.class);

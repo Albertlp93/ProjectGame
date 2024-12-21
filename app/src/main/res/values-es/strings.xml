@@ -21,6 +21,7 @@
     <string name="btn_historico">Datos Historicos</string>
     <string name="btn_user">Datos Usuario</string>
     <string name="btn_config">Configuracion</string>
+    <string name="spn_msg_welcome">"Bienvenido: "</string>
     <string name="hint_nuevo_usuario">Nuevo Usuario</string>
     <string name="hint_nueva_contraseña">Nueva Contraseña</string>
     <string name="hint_confirmar_contraseña">Confirmar Contraseña</string>
@@ -124,7 +125,7 @@
 
     <string name="help_dialog_title">Ayuda</string>
     <string name="help_dialog_message">Aquí están las reglas del juego:\n\n1. Elige un número del panel de apuestas (2-12).\n2. Lanza los dados.\n3. Si el resultado coincide con tu apuesta, ganas.\n4. Sigue jugando y acumula monedas.</string>
-    <string name="ok">Entendido</string>
+    <string name="ok">Ok</string>
     <string name="gp_error_score">Error obteniendo la puntuacion</string>
     <string name="gp_error_score_update">Error actualizando la puntuacion</string>
     <string name="gp_player">"Jugador: "</string>

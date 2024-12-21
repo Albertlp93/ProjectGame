@@ -12,6 +12,7 @@
     <string name="btn_historico">Historical data</string>
     <string name="btn_user">User information</string>
     <string name="btn_config">Settings</string>
+    <string name="spn_msg_welcome">"Welcome: "</string>
     <string name="hint_nuevo_usuario">New user</string>
     <string name="hint_nueva_contraseña">New password</string>
     <string name="hint_confirmar_contraseña">Set password</string>
@@ -123,7 +124,7 @@
 
     <string name="help_dialog_title">Ayuda</string>
     <string name="help_dialog_message">Here are the rules of the game:  1. Choose a number from the betting panel (2-12). 2. Roll the dice. 3. If the result matches your bet, you win. 4. Keep playing and collect coins.</string>
-    <string name="ok">Understood</string>
+    <string name="ok">Ok</string>
     <string name="gp_error_score">"Error getting Score "</string>
     <string name="gp_error_score_update">Error updating Score</string>
     <string name="gp_player">"Player: "</string>

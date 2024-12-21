@@ -29,6 +29,7 @@
 
     <!-- SECONDPAG_FIREBASE-->
     <string name="spn_msg_login">Log in to Google to access the game</string>
+    <string name="spn_msg_welcome">Welcome: </string>"
 
     <!-- REGISTRO -->
     <string name="hint_nuevo_usuario">New user</string>
@@ -121,7 +122,7 @@
     <string name="gp_calendar_select">Select calendar:</string>
     <string name="help_dialog_title">Help</string>
     <string name="help_dialog_message">Here are the rules of the game:  1. Choose a number from the betting panel (2-12). 2. Roll the dice. 3. If the result matches your bet, you win. 4. Keep playing and collect coins.</string>
-    <string name="ok">Understood</string>
+    <string name="ok">Ok</string>
     <string name="gp_player">Player: </string>
     <string name="gp_victories">Victories: </string>
     <string name="gp_top_10_nt_found">Top 10 not found</string>
