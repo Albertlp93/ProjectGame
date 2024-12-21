@@ -66,10 +66,12 @@ public class PoolPositionFirebase extends AppCompatActivity {
                         Long premio = documentSnapshot.getLong("premio");
                         if (premio != null) {
                             botePremio.setText("Bote del Premio: $" + premio);
-                        } else {
+                        }
+                        else {
                             botePremio.setText("Bote del Premio: No disponible");
                         }
-                    } else {
+                    }
+                    else {
                         botePremio.setText("Bote del Premio: No encontrado");
                     }
                 })

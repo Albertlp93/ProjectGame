@@ -54,7 +54,8 @@ public class InitialPag extends AppCompatActivity {
             mediaPlayer.pause(); // Pausar la música
             isMusicPlaying = false;
             ((ImageButton) findViewById(R.id.buttonToggleMusic)).setImageResource(R.drawable.ic_volume_off); // Cambia el icono
-        } else {
+        }
+        else {
             mediaPlayer.start(); // Reproducir la música
             isMusicPlaying = true;
             ((ImageButton) findViewById(R.id.buttonToggleMusic)).setImageResource(R.drawable.ic_volume_up); // Cambia el icono

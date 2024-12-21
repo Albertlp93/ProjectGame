@@ -100,6 +100,7 @@ public class gamePag extends AppCompatActivity {
 
         //INICIALIZAR TEXTOS
         coinsTextView = findViewById(R.id.coinsTextView);
+        String gp_error_score = getString(R.string.gp_error_score);
 
         //INICIALIZAR COMPONENTES
         diceImage1 = findViewById(R.id.diceImage1);
@@ -121,12 +122,13 @@ public class gamePag extends AppCompatActivity {
                                 // Si el usuario no tiene créditos, inicializar con 50
                                 playerCoins = 50;
                                 actualizarPuntuacionInicial();
-                            } else {
+                            }
+                            else {
                                 playerCoins = puntuacion;
                             }
                             updateCoinsDisplay();
                         },
-                        throwable -> Log.e("gamePag", "Error obteniendo puntuación", throwable)
+                        throwable -> Log.e("gamePag", gp_error_score, throwable)
                 );
 
         buttonRecargar.setVisibility(View.GONE);
@@ -191,6 +193,10 @@ public class gamePag extends AppCompatActivity {
     }
 
     private void saveScreenshot(Bitmap bitmap) {
+
+        String gp_screenshot_sav          = getString(R.string.gp_screenshot_sav);
+        String gp_error_saving_screenshot = getString(R.string.gp_error_saving_screenshot);
+
         // Crear un nombre único para el archivo
         String fileName = "screenshot_" + System.currentTimeMillis() + ".png";
 
@@ -203,30 +209,40 @@ public class gamePag extends AppCompatActivity {
         File file = new File(directory, fileName);
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            Toast.makeText(this, "Captura guardada en: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, gp_screenshot_sav + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
 
             // Opcional: Añadir la imagen a la galería
             MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), fileName, null);
         } catch (IOException e) {
-            Toast.makeText(this, "Error guardando captura: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e("Screenshot", "Error guardando captura", e);
+            Toast.makeText(this, gp_error_saving_screenshot + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("Screenshot", gp_error_saving_screenshot, e);
         }
     }
 
     // METODO - ACTUALIZAR PUNTUACION INICIAL EN FIRESTORE
     private void actualizarPuntuacionInicial() {
+
+        String gp_score_update       = getString(R.string.gp_score_update);
+        String gp_error_score_update = getString(R.string.gp_error_score_update);
+
         userRepository.crearUsuario(nombreUsuario, playerCoins)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> Log.d("gamePag", "Puntuación actualizada"),
-                        throwable -> Log.e("gamePag", "Error actualizando puntuación", throwable)
+                        () -> Log.d("gamePag", gp_score_update),
+                        throwable -> Log.e("gamePag", gp_error_score_update, throwable)
                 );
 
     }
 
     // METODO - OBTENER TOP 10 JUGADORES
     private void obtenerTopDiez() {
+
+        String gp_player          = getString(R.string.gp_player);
+        String gp_victories       = getString(R.string.gp_victories);
+        String gp_error_gettin10  = getString(R.string.gp_error_gettin10);
+        String gp_top_10_nt_found = getString(R.string.gp_top_10_nt_found);
+
         db.collection("usuarios")
                 .orderBy("victorias", Query.Direction.DESCENDING)
                 .limit(10)
@@ -236,13 +252,13 @@ public class gamePag extends AppCompatActivity {
                         for (var document : queryDocumentSnapshots.getDocuments()) {
                             String nombre = document.getString("nombre");
                             Long victorias = document.getLong("victorias");
-                            Log.d("Top10", "Jugador: " + nombre + ", Victorias: " + victorias);
+                            Log.d("Top10", gp_player + nombre + gp_victories + victorias);
                         }
                     } else {
-                        Log.d("Top10", "No se encontraron jugadores en el top 10");
+                        Log.d("Top10", gp_top_10_nt_found);
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Top10", "Error obteniendo el top 10", e));
+                .addOnFailureListener(e -> Log.e("Top10", gp_error_gettin10, e));
     }
 
     // METODO - ACTUALIZACION TEXTO DE MONEDAS
@@ -346,12 +362,16 @@ public class gamePag extends AppCompatActivity {
 
     // METODO - ACTUALIZAR PUNTUACION EN FIRESTORE
     private void actualizarPuntuacionFirestore() {
+
+        String gp_score_update       = getString(R.string.gp_score_update);
+        String gp_error_score_update = getString(R.string.gp_error_score_update);
+
         userRepository.crearUsuario(nombreUsuario, playerCoins)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> Log.d("gamePag", "Puntuación actualizada"),
-                        throwable -> Log.e("gamePag", "Error actualizando puntuación", throwable)
+                        () -> Log.d("gamePag", gp_score_update),
+                        throwable -> Log.e("gamePag", gp_error_score_update, throwable)
                 );
     }
 
@@ -365,6 +385,10 @@ public class gamePag extends AppCompatActivity {
 
     //METODO - INICIALIZAR SONIDO DADOS
     private void initializeSoundPool() {
+
+        String gp_sound       = getString(R.string.gp_sound);
+        String gp_error_sound = getString(R.string.gp_error_sound);
+
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -381,9 +405,9 @@ public class gamePag extends AppCompatActivity {
         // Listener para confirmar que el sonido está cargado
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             if (status == 0) {
-                Log.d("SoundPool", "Sonido cargado correctamente");
+                Log.d("SoundPool", gp_sound);
             } else {
-                Log.e("SoundPool", "Error cargando el sonido");
+                Log.e("SoundPool", gp_error_sound);
             }
         });
     }
@@ -403,16 +427,23 @@ public class gamePag extends AppCompatActivity {
 
         int incremento = 50;
 
+        String gp_premio_incrementado = getString(R.string.gp_premio_incrementado);
+        String gp_error_incrementando = getString(R.string.gp_error_incrementando);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("premioActual")
                 .document("O8pIDi42aYUwBU3gMb58")
                 .update("premio", FieldValue.increment(incremento))
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio incrementado en 50"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error incrementando premio", e));
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", gp_premio_incrementado))
+                .addOnFailureListener(e -> Log.e("Firestore", gp_error_incrementando, e));
     }
 
     //METODO - Obtener premio + actualizar puntuacion jugador
     private void obtenerYSumarPremio() {
+
+        String gp_win_prize   = getString(R.string.gp_win_prize);
+        String gp_error_prize = getString(R.string.gp_error_prize);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("premioActual")
                 .document("O8pIDi42aYUwBU3gMb58")
@@ -424,22 +455,26 @@ public class gamePag extends AppCompatActivity {
                             // Sumar el premio a la puntuación del jugador
                             playerCoins += premio.intValue();
                             updateCoinsDisplay();
-                            Toast.makeText(gamePag.this, "Ganaste el premio de $" + premio, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(gamePag.this, gp_win_prize + premio, Toast.LENGTH_SHORT).show();
                             // Reiniciar el premio a 0 en Firebase
                             reiniciarPremio();
                         }
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error obteniendo el premio", e));
+                .addOnFailureListener(e -> Log.e("Firestore", gp_error_prize, e));
     }
 
     //METODO - Reiniciar premio a 0 en Firebase
     private void reiniciarPremio() {
+
+        String gp_prize_reset       = getString(R.string.gp_prize_reset);
+        String gp_error_prize_reset = getString(R.string.gp_error_prize_reset);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("premioActual")
                 .document("O8pIDi42aYUwBU3gMb58")
                 .update("premio", 0)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Premio reiniciado a 0"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando premio", e));
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", gp_prize_reset))
+                .addOnFailureListener(e -> Log.e("Firestore", gp_error_prize_reset, e));
     }
 }

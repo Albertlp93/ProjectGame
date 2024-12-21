@@ -51,13 +51,16 @@
     <string name="db_location_saved">Localizacion guardada: Latitud=%1$s, Longitud=%2$s, Usuario=%3$s</string>
     <string name="db_no_users">No hay usuarios en la base de datos.</string>
     <string name="db_error">Error al guardar la ubicación.</string>
+    <string name="db_locacion_sav">"Localizacion guardada: "</string>
     <string name="db_score_not_found">La columna \'Puntucion\' no existe en el cursor.</string>
     <string name="db_user_not_found">Usuario no encontrado, puntuacion inicial 30.</string>
+    <string name="db_users_not_found">Usuario no encontrado</string>
     <string name="db_user_created">Usuario credo correctamente</string>
     <string name="db_user_not_created">Error al crear el usuario</string>
     <string name="db_name">"Nombre: "</string>
     <string name="db_score">Puntuacion:</string>
     <string name="db_columns_found">Una o mas columns no existen en el cursor.</string>
+    <string name="db_user">"Usuario: "</string>
     <string name="cc_new_user">Usuario registrdo correctamente</string>
     <string name="cc_error_register">Error registrando al usuario</string>
     <string name="cc_access">Porfavor inserte un usuario y contraseña</string>
@@ -71,6 +74,7 @@
     <string name="gp_calendar_granted">Permisos de calendario aceptados</string>
     <string name="gp_calendar_denied">Permisos de calendario rechazados</string>
     <string name="gp_screenshot_saved">Imagen guardada en la galeria</string>
+    <string name="gp_screenshot_sav">"Captura de pantalla guardada en: "</string>
     <string name="gp_error_saving_screenshot">Error guardando la imagen</string>
     <string name="gp_victory_saved_calendar">Victoria guardada en Google Calendar</string>
     <string name="gp_event_created_URI">"Evento creado con URI: "</string>
@@ -79,12 +83,14 @@
     <string name="gp_error_saving_event">Ha ocurrido un error mientras se guardaba el evento</string>
     <string name="gp_error_exception">"Excepcion: "</string>
     <string name="gp_error_clendar_ID">Error obteniendo el ID del calendario</string>
+    <string name="gp_score_update">Puntuacion actualizada correctamente</string>
     <string name="gp_calendar_no_available">Calendario no disponible</string>
     <string name="gp_calendar_select">"Selecciona un calendario: "</string>
     <string name="gp_calendar_failed_load">Error al cargar el calendario</string>
     <string name="gp_results">"Resultados: "</string>
     <string name="gp_won">¡Has ganado!</string>
     <string name="gp_victory">¡Victoria!</string>
+    <string name="gp_error_prize_reset">Error reseteando el premio</string>
     <string name="hp_name">"Nombre: "</string>
     <string name="hp_score">"Puntuacion: "</string>
     <string name="hp_no_data">No datos de juego disponibles</string>
@@ -119,6 +125,24 @@
     <string name="help_dialog_title">Ayuda</string>
     <string name="help_dialog_message">Aquí están las reglas del juego:\n\n1. Elige un número del panel de apuestas (2-12).\n2. Lanza los dados.\n3. Si el resultado coincide con tu apuesta, ganas.\n4. Sigue jugando y acumula monedas.</string>
     <string name="ok">Entendido</string>
+    <string name="gp_error_score">Error obteniendo la puntuacion</string>
+    <string name="gp_error_score_update">Error actualizando la puntuacion</string>
+    <string name="gp_player">"Jugador: "</string>
+    <string name="gp_victories">"Victorias: "</string>
+    <string name="gp_top_10_nt_found">Top 10 no encontrado</string>
+    <string name="gp_error_gettin10">Error obteniendo el top 10</string>
+    <string name="gp_sound">Sonido cargado correctamente</string>
+    <string name="gp_error_sound">Error cargando el sonido</string>
+    <string name="gp_premio_incrementado">Premio incrementado en 50e</string>
+    <string name="gp_error_incrementando">Error incrementando el premio</string>
+    <string name="gp_error_prize">Error obteniendo el premio</string>
+    <string name="gp_win_prize">Has ganado el premio de $</string>
+    <string name="gp_prize_reset">Premio reseteado a $0</string>
+    <string name="db_error_verify">Error verificando al usuario</string>
+    <string name="db_score_updated">"Puntuacion actualizada correctamente por: "</string>
+    <string name="db_score_not_updated">Error actualizando la puntuacion</string>
+    <string name="db_score_error">Error obteniendo la puntuacion</string>
+    <string name="db_user_error">Error obteniendo el usuario</string>
 
 
 </resources>

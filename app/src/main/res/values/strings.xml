@@ -67,15 +67,23 @@
 
     <!-- BASE DE DATOS HELPER -->
     <string name="db_location_saved">Location saved: Latitude=%1$s, Longitude=%2$s, User=%3$s</string>
+    <string name="db_locacion_sav">Location saved: </string>
     <string name="db_score_not_found">The column score does not exist in the cursor.</string>
     <string name="db_user_not_found">User not found, initial score set to 30.</string>
-    <string name="db_user_created">User created successfully.</string>
+    <string name="db_users_not_found">Users not found.</string>
+    <string name="db_user_created">User created successfully: </string>
     <string name="db_user_not_created">Error creating user.</string>
     <string name="db_score">Score: </string>
     <string name="db_columns_found">One or more columns do not exist in the cursor.</string>
     <string name="db_no_users">There are no users in the database.</string>
     <string name="db_error">Error saving location.</string>
     <string name="db_name">Name: </string>
+    <string name="db_error_verify">Error verifying user.</string>
+    <string name="db_score_updated">Score updated successfully for: </string>"
+    <string name="db_score_not_updated">Error updating score.</string>
+    <string name="db_score_error">Error getting score.</string>
+    <string name="db_user_error">Error getting user.</string>
+    <string name="db_user">User: </string>"
 
     <!-- CREAR CUENTA -->
     <string name="cc_new_user">User registered successfully</string>
@@ -91,14 +99,18 @@
     <string name="gp_calendar_granted">Calendar permission granted</string>
     <string name="gp_calendar_denied">Calendar permission denied</string>
     <string name="gp_screenshot_saved">Screenshot saved in gallery</string>
-    <string name="gp_error_saving_screenshot">Error saving screenshot</string>
+    <string name="gp_screenshot_sav">Screenshot saved in: </string>
     <string name="gp_victory_saved_calendar">Victory saved in Google Calendar</string>
     <string name="gp_event_created_URI">Event created with URI: </string>
     <string name="gp_error_saving_calendar">Error saving to Google Calendar</string>
+    <string name="gp_error_saving_screenshot">Error saving screenshot: </string>
     <string name="gp_error_insertion">Error: Event insertion failed</string>
     <string name="gp_error_saving_event">Error occurred while saving the event</string>
     <string name="gp_error_exception">Exception: </string>
     <string name="gp_error_clendar_ID">Error getting calendar ID: </string>
+    <string name="gp_error_score">Error getting Score </string>
+    <string name="gp_error_score_update">Error updating Score</string>
+    <string name="gp_score_update">Score updated successfully</string>
     <string name="gp_calendar_no_available">Calendar not available</string>
     <string name="gp_calendar_failed_load">Failed to load calendar</string>
     <string name="gp_results">Results: </string>
@@ -107,9 +119,25 @@
     <string name="gp_lost">You have lost! Try again</string>
     <string name="gp_recharged_coins"> coins</string>
     <string name="gp_calendar_select">Select calendar:</string>
-    <string name="help_dialog_title">Ayuda</string>
-    <string name="help_dialog_message">Aquí están las reglas del juego:\n\n1. Elige un número del panel de apuestas (2-12).\n2. Lanza los dados.\n3. Si el resultado coincide con tu apuesta, ganas.\n4. Sigue jugando y acumula monedas.</string>
-    <string name="ok">Entendido</string>
+    <string name="help_dialog_title">Help</string>
+    <string name="help_dialog_message">Here are the rules of the game:  1. Choose a number from the betting panel (2-12). 2. Roll the dice. 3. If the result matches your bet, you win. 4. Keep playing and collect coins.</string>
+    <string name="ok">Understood</string>
+    <string name="gp_player">Player: </string>
+    <string name="gp_victories">Victories: </string>
+    <string name="gp_top_10_nt_found">Top 10 not found</string>
+    <string name="gp_error_gettin10">Error getting top 10 </string>
+    <string name="gp_sound">Sound loading successful</string>
+    <string name="gp_error_sound">Error loading sound</string>
+    <string name="gp_premio_incrementado">Prize incrised by 50e</string>
+    <string name="gp_error_incrementando">Error increasing prize</string>
+    <string name="gp_error_prize">Error getting prize</string>
+    <string name="gp_win_prize">You have won the prize $</string>"
+    <string name="gp_prize_reset">Prize reset to $0</string>"
+    <string name="gp_error_prize_reset">Error resetting prize</string>
+
+
+
+
 
 
     <!-- HISTORICALPAG -->

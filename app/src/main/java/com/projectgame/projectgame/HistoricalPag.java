@@ -1,6 +1,5 @@
 package com.projectgame.projectgame;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,7 +7,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -65,16 +63,15 @@ public class HistoricalPag extends AppCompatActivity {
         tableLayout.removeAllViews();
 
         // Agregar encabezados
-        TableRow headerRow = new TableRow(this);
-        TextView headerNombre = new TextView(this);
-        headerNombre.setText(hp_name);
+        TableRow headerRow        = new TableRow(this);
+        TextView headerNombre     = new TextView(this);
         TextView headerPuntuacion = new TextView(this);
+        headerNombre.setText(hp_name);
         headerPuntuacion.setText(hp_score);
         headerRow.addView(headerNombre);
         headerRow.addView(headerPuntuacion);
         tableLayout.addView(headerRow);
 
-        // Obtener puntuaciones de Firestore
         // Obtener puntuaciones de Firestore
         db.collection("usuarios")
                 .orderBy("puntuacion", Query.Direction.DESCENDING)
@@ -105,7 +102,8 @@ public class HistoricalPag extends AppCompatActivity {
                             // Añadir la fila al TableLayout
                             tableLayout.addView(row);
                         }
-                    } else {
+                    }
+                    else {
                         TextView noDataText = new TextView(this);
                         noDataText.setText(hp_no_data);
                         noDataText.setPadding(16, 16, 16, 16);
